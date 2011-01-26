@@ -1,0 +1,12 @@
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/**/*
+*.log
+tmp/**/*
+tmp/*
+doc/api
+doc/app
+*.swp
+*~
+.idea
