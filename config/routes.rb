@@ -7,9 +7,16 @@ Licemerov::Application.routes.draw do
   get 'logout' => 'user_sessions#destroy', :as => :logout
   get 'login' => 'user_sessions#new', :as => :login
 
-  # User profile 
+  resources :user_sessions, :only => :create
+
+  # User profile route
   get '/:user_profile' => 'users#show', :as => :user_profile
 
+  # User routes
+  resources :users, :only => [:create, :update]
+
+  # User Details routes
+  resources :user_details, :only => [:update]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

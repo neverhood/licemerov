@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user_session, :current_user
 
+  before_filter :existent_user
+
   private
 
   def current_user_session
@@ -52,8 +54,8 @@ class ApplicationController < ActionController::Base
   end
 
   def existent_user
-    @user = User.find(:conditions => {:login => params[:user_login]})
-    redirect_to('/', :alert => "User #{params[:user_login]} not found") unless @user
+    @user = User.where(:login => params[:user_profile]).first
+    redirect_to('/', :alert => "User #{params[:user_profile]} not found") unless @user
   end
 
 end
