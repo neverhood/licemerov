@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   end
 
   def home_page
-    user_profile_url(:user_profile => self.login)
+    "/#{self.login}"
   end
 
 end

@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
 
-  
+  skip_before_filter :existent_user, :only => [:new, :create]
+
   before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :only => [:edit, :update]
+  before_filter :require_owner, :only => [:edit, :update]
 
   def show
   end
@@ -21,7 +22,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      redirect_to(@user, :notice => 'Welcome!')
+      redirect_to(@user.home_page, :notice => 'Welcome!')
     else
       render :action => :new
     end
