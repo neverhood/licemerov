@@ -1,7 +1,14 @@
 Licemerov::Application.routes.draw do
 
   root :to => 'main#index'
-  
+
+  # user sessions routes
+  get 'registration' => 'users#new', :as => :register
+  get 'logout' => 'user_sessions#destroy', :as => :logout
+  get 'login' => 'user_sessions#new', :as => :login
+
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
