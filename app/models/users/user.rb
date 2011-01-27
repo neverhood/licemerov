@@ -2,7 +2,7 @@
 #
 class NotRestrictedValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    record.errors[attribute] << "'#{value}' is forbidden, sorry" unless !User::RESTRICTED_LOGINS.index(value.to_sym)
+    record.errors[attribute] << "Using '#{value}' is forbidden, sorry" unless !User::RESTRICTED_LOGINS.index(value.to_sym)
   end
 end
 
