@@ -25,4 +25,8 @@ class User < ActiveRecord::Base
     self.user_details
   end
 
+  def home_page
+    user_profile_url(:user_profile => self.login)
+  end
+
 end

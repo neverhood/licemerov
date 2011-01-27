@@ -19,7 +19,16 @@ class ApplicationController < ActionController::Base
     unless current_user
       store_location
       flash[:notice] = "Please log in"
-      #redirect_to login_url
+      redirect_to login_url
+      false
+    end
+  end
+
+  def require_owner
+    if current_user && @user
+      redirect_to current_user.home_page unless current_user.equal? @user
+    else
+      redirect_to :controller => :main
       false
     end
   end
@@ -28,7 +37,7 @@ class ApplicationController < ActionController::Base
     if current_user
        store_location
        flash[:notice] = "You're already authenticated!"
-       redirect_to current_user
+       redirect_to current_user.home_page
        false
     end
   end
