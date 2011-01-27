@@ -8,14 +8,16 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module Licemerov
   class Application < Rails::Application
-  
+    # Autoload nested directories in app/controllers and app/models
 
-          config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/*"].find_all {|f| File.stat(f).directory?}
-          config.autoload_paths += Dir["#{Rails.root.to_s}/app/controllers/*"].find_all {|f| File.stat(f).directory?}
+    config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/*"].find_all {|f| File.stat(f).directory?}
+    config.autoload_paths += Dir["#{Rails.root.to_s}/app/controllers/*"].find_all {|f| File.stat(f).directory?}
 
-	  config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
-          config.action_view.stylesheet_expansions[:defaults] = %w(reset application)
-	  config.action_view.javascript_expansions[:cdn] = %w(https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js rails)\n
+    # Stylesheets and Javascripts
+
+    config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
+    config.action_view.stylesheet_expansions[:defaults] = %w(reset application)
+    config.action_view.javascript_expansions[:cdn] = %w(https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js rails)\n
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
