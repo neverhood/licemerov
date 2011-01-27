@@ -1,0 +1,16 @@
+<h1>Please login</h1>
+
+<%= form_for @session do |f| %>
+    <div class="row">
+      <%= f.label :login %>: <%= f.text_field :login %>
+    </div>
+    <div class="row">
+      <%= f.label :password %>: <%= f.password_field :password %>
+    </div>
+    <div class="row">
+      <%= f.label :remember_me %> <%= f.check_box :remember_me %>
+    </div>
+    <div class="submit">
+      <%= f.submit %>
+    </div>
+<% end %>
