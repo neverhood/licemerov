@@ -1,3 +1,5 @@
 /* Applications.css */
 
-
+/* Rails specific */
+div.field_with_errors {display:inline}
+/* Rails specific END */
