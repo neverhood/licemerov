@@ -1,0 +1,30 @@
+<h1> Прэуэт! </h1>
+
+<h3> Please register </h3>
+
+<% if @user.errors.any? -%>
+    <h2>
+      <%= pluralize(@user.errors.count, 'error') %>:
+    </h2>
+    <ul>
+      <% @user.errors.full_messages.each do |error| %>
+          <li> <%= error %> </li>
+      <% end %>
+    </ul>
+<% end %>
+
+<%= form_for @user do |f| -%>
+    <div class="row">
+      <%= f.label :login %>: <%= f.text_field :login %>
+    </div>
+    <div class="row">
+      <%= f.label :email %>: <%= f.text_field :email %>
+    </div>
+    <div class="row">
+      <%= f.label :password %>: <%= f.password_field :password %>
+    </div>
+    <div class="row">
+      <%= f.label :password_confirmation %>: <%= f.password_field :password_confirmation %>
+    </div>
+    <%= f.submit 'register' %>
+<% end %>

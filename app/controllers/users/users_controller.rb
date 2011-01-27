@@ -1,15 +1,13 @@
 class UsersController < ApplicationController
 
   def show
-
   end
 
   def edit
-
+    @details = current_user.details
   end
 
   def update
-
   end
 
   def new # registration page

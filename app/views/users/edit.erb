@@ -1,0 +1,14 @@
+<h1>Hello, <%= current_user.login %></h1>
+
+<%= form_for @details, :html => {:method => :post} do |f| %>
+
+    <div class="row">
+      <%= f.label :first_name %>: <%= f.text_field :first_name, :value => @details.first_name %>
+    </div>
+    <div class="row">
+      <%= f.label :last_name %>: <%= f.text_field :last_name, :value => @details.last_name %>
+    </div>
+
+    <%= f.submit %>
+
+<% end %>
