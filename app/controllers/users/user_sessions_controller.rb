@@ -3,6 +3,7 @@ class UserSessionsController < ApplicationController
   US = UserSession # shortcut
 
   skip_before_filter :existent_user
+
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_user, :only => [:destroy]
 
@@ -10,7 +11,7 @@ class UserSessionsController < ApplicationController
     @session = US.new
   end
 
-  #noinspection RubyArgCount
+
   def create
     @session = US.new(params[:user_session])
     if @session.save
