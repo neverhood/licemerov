@@ -1,1 +1,5 @@
-<%= @user.login %>
+<% if owner %>
+    <h1>This is your profile, <%= current_user.login %></h1>
+<% else %>
+    <h1><%= @user.login %></h1>
+<% end %>

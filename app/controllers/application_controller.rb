@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :current_user_session, :current_user
+  helper_method :current_user_session, :current_user, :owner, :home_page
 
   before_filter :existent_user
 
@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
 
   def require_owner
     if current_user && @user
-      redirect_to current_user.home_page unless current_user.equal? @user
+      redirect_to current_user.home_page unless current_user == @user
     else
       redirect_to :controller => :main
       false
@@ -59,7 +59,15 @@ class ApplicationController < ActionController::Base
   end
 
   def home_page
-    user_profile_url(:user_profile => current_user.login)
+    current_user && user_profile_url(:user_profile => current_user.login)
+  end
+
+  def owner
+    if current_user && @user
+      @user == current_user
+    else
+      false
+    end
   end
 
 end
