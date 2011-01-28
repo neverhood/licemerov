@@ -2,7 +2,8 @@
 #
 class NotRestrictedValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    record.errors[attribute] << "Using '#{value}' is forbidden, sorry" unless !User::RESTRICTED_LOGINS.index(value.to_sym)
+    record.errors[attribute] << ": Using #{attribute} '#{value}' is forbidden, sorry" unless
+        !User::RESTRICTED_LOGINS.index(value) #.find {|login| value =~ /#{login}/}
   end
 end
 
@@ -13,11 +14,13 @@ class User < ActiveRecord::Base
 
   has_one :user_details # e.g -> Name, gender etc
 
+  after_create :create_details
+
   acts_as_authentic { |config| config.login_field :login }
 
   # Array of restricted logins
-  RESTRICTED_LOGINS = [:login, :user, :admin, :administrator, :main, :index, :users, :photos, :attachments, :attachment,
-    :photo, :user_session, :user_sessions, :logout, :register, :registration]
+  RESTRICTED_LOGINS = %w(main login user admin administrator main index users photos attachments attachment
+    photo user_session user_sessions logout register registration)
 
 
   # Alias to relation
@@ -25,8 +28,9 @@ class User < ActiveRecord::Base
     self.user_details
   end
 
-  def home_page
-    "/#{self.login}"
+  def create_details
+    self.create_user_details
   end
+
 
 end
