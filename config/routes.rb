@@ -10,7 +10,7 @@ Licemerov::Application.routes.draw do
   resources :user_sessions, :only => :create
 
   # User profile route
-  get '/:user_profile' => 'users#show', :as => :user_profile
+  get '/:user_profile' => 'users#show', :as => :user_profile, :constraints => {:user_profile => /.{3,15}/}
 
   # User routes
   resources :users, :only => [:create, :update]
