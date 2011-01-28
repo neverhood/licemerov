@@ -58,4 +58,8 @@ class ApplicationController < ActionController::Base
     redirect_to('/', :alert => "User #{params[:user_profile]} not found") unless @user
   end
 
+  def home_page
+    user_profile_url(:user_profile => current_user.login)
+  end
+
 end

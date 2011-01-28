@@ -15,7 +15,8 @@ class UserSessionsController < ApplicationController
   def create
     @session = US.new(params[:user_session])
     if @session.save
-      redirect_to(home_page(@session.login), :notice => 'Welcome!')
+      @current_user = US.find.record
+      redirect_to(home_page, :notice => 'Welcome!')
     else
       render :action => :new
     end
