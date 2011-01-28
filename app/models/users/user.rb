@@ -9,7 +9,7 @@ end
 class User < ActiveRecord::Base
 
   validates :email, :presence => true, :uniqueness => true, :length => {:maximum => 25, :minimum => 5}
-  validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 4}, :not_restricted => true
+  validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 3}, :not_restricted => true
 
   has_one :user_details # e.g -> Name, gender etc
 
