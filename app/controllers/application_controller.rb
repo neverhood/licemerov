@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     if current_user
        store_location
        flash[:notice] = "You're already authenticated!"
-       redirect_to current_user.home_page
+       redirect_to home_page
        false
     end
   end
