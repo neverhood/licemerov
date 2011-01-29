@@ -7,7 +7,6 @@ class UserSessionsControllerTest < ActionController::TestCase
 
   test 'Login page' do
     get :new
-    puts request.fullpath
     assert_response :success
   end
 

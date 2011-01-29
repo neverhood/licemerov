@@ -54,8 +54,12 @@ class ApplicationController < ActionController::Base
   end
 
   def existent_user
-    @user = User.where(:login => params[:user_profile]).first
-    redirect_to('/', :alert => "User #{params[:user_profile]} not found") unless @user
+    unless ((params[:user_profile].length > 2) && (params[:user_profile].length < 16))
+      redirect_to root_path
+    else
+      @user = User.where(:login => params[:user_profile]).first
+      redirect_to(root_path, :alert => "User #{params[:user_profile]} not found") unless @user
+    end
   end
 
   def home_page
