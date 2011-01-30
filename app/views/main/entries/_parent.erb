@@ -2,12 +2,13 @@
   <strong><%= link_to entry.login, user_profile_path(:user_profile => entry.login) %></strong> said:
   <div>
     <%= entry.body %>
+  </div>
+  <strong class="reply">Reply</strong>
 
     <ul class="children">
       <% entry.children.each do |entry| %>
-          <%= render :partial => 'main/entries/children', :locals => {:entry => entry} %>
+          <%= render :partial => 'main/entries/child', :locals => {:entry => entry} %>
       <% end %>
     </ul>
 
-  </div>
 </div>

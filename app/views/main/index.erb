@@ -1,10 +1,8 @@
 <h1>Hello, taht is main page</h1>
 
 
-<%= form_for @entry, :remote => true do |f| %>
-    <%= f.text_area :body %> <br />
-    <%= f.submit 'Say it!' %>
-<% end %>
+<%= render :partial => 'main/forms/parent' %>
+
 <div id='wall'>
   <% @entries.each do |entry| %>
     <%= render :partial => 'main/entries/parent', :locals => {:entry => entry} %>

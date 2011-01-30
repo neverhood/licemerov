@@ -1,4 +1,5 @@
 <%= form_for @entry, :remote => true, :html => {:id => :response_form} do |f| %>
     <%= f.text_area :body, :cols => 50, :rows => 4 %> <br />
+    <%= f.hidden_field :parent_id %>
     <%= f.submit 'Say it!' %>
 <% end %>

@@ -1,8 +1,11 @@
+var type = "<%= @entry.type %>";
+var id = "entry-<%= @entry.id %>";
+var entry = "<%= escape_javascript(render :partial => @entry.type_partial, :locals => {:entry => @entry} ) %>";
 
-var entry = "<%= escape_javascript(render :partial => 'main/entries/parent', :locals => {:entry => @entry} ) %>";
-        $('#wall').prepend(entry); $('#entry-<%= @entry.id %>').fadeOut().fadeIn();
-        <% if @entry.parent? %>
+        if (type == 'parent') {
+            $(entry).prependTo('#wall').fadeOut().fadeIn();
             $('#parent_form').clearForm();
-        <% else %>
+        } else {
+            $(entry).appendTo($('#entry-<%= @entry.parent_id %> ul')).fadeOut().fadeIn();
             $('#response_form').clearForm();
-        <% end %>
+        }
