@@ -12,7 +12,7 @@ var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : n
             if (type == 'parent')
                 $(entry).prependTo('#wall').fadeOut().fadeIn()
             else
-                $(entry).appendTo($('#entry-<%= @entry.parent_id %> ul')).fadeOut().fadeIn();
+                $(entry).prependTo($('#entry-<%= @entry.parent_id %> ul')).fadeOut().fadeIn();
             $(form).clearForm();
         }
 

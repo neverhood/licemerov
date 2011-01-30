@@ -9,7 +9,7 @@
   <% end %>
 
   <ul class="responses">
-    <% entry.children.each do |entry| %>
+    <% entry.children.reverse.each do |entry| %>
         <%= render :partial => 'main/entries/response', :locals => {:entry => entry} %>
     <% end %>
   </ul>
