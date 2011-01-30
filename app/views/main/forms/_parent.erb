@@ -1,0 +1,4 @@
+<%= form_for @entry, :remote => true do |f| %>
+    <%= f.text_area :body %> <br />
+    <%= f.submit 'Say it!' %>
+<% end %>
