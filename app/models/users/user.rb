@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
     photo user_session user_sessions logout register registration)
 
 
+  def gender
+    self.details.sex == 0 ? 'female' : 'male'
+  end
+  
   # Alias to relation
   def details
     self.user_details

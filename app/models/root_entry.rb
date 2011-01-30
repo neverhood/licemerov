@@ -10,6 +10,10 @@ class RootEntry < ActiveRecord::Base
 
   validates :body, :presence => true, :length => {:minimum => 2, :maximum => 150}
 
+  def author
+    User.where(:id => self.user_id).first
+  end
+
   def type
     self.parent? ? 'parent' : 'response'
   end
@@ -25,4 +29,9 @@ class RootEntry < ActiveRecord::Base
   def children
     RootEntry.where(:parent_id => self.id)
   end
+
+  def author_gender
+    self.author_sex == 0 ? 'female' : 'male'
+  end
+
 end

@@ -24,6 +24,8 @@ $.fn.clearForm = function() {
 
 $(document).ready(function() {
 
+    $('div.parent .body, div.parent ul.responses').corner('tr br');
+
     $('#parent_form, #response_form').keyup(function() {
         var submit = $(this).children('input[type="submit"]');
         if ($(this).children('textarea').val().length >= 2)
@@ -36,13 +38,15 @@ $(document).ready(function() {
 
     $('.reply').live('click', function() {
         var form = $('#response_form');
-        var div = $(this).parent('div');
-        var id = div.attr('id').replace(/entry-/, '');
+        var div = $(this).next();
+        var id = $(this).parent('div').attr('id').replace(/entry-/, '');
         if (! (div.children('#response_form').length && form.is(':visible')) ) {
             form.clearForm();
             form.appendTo(div).show().
                     find('input[name*="parent_id"]').val(id);
             form.children('textarea').focus();
+        } else {
+            form.hide();
         }
     });
 

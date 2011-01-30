@@ -1,18 +1,34 @@
 /* Applications.css */
 
-/* Rails specific */
+/***************** Rails specific *****************/
 /*div.field_with_errors {display:inline} */
 div.notice {}
 div.alert {}
-/* Rails specific END */
+/***************** Rails specific END *****************/
 
-/* Shared */
-/* Bases */
-ul { padding: 0 0 0 10px }
-/* Bases end */
+/***************** Shared *****************/
+/**** Bases ****/
 
-/* Forms */
+/**** Bases END ****/
+
+/**** Forms ****/
 #response_form {display:none;}
-/* Forms */
+/**** Forms ****/
 
-/* Shared end */
+/**** Posts ****/
+strong.reply {cursor:pointer}
+
+.author-male a {color:#32A6D4}
+.author-female a {color:#D94A64}
+
+div.response div {margin-top:15px; padding: 10px;}
+
+div.parent .body {width: 600px; padding:5px; margin: 15px;}
+div.response .body {color:white; padding:5px; margin-top:15px;}
+
+div.parent ul.responses {background:#2F2933; color:white; width: 660px; margin: 5px 0 5px 10px;}
+
+div.response {margin: 10px 10px 10px 25px;}
+/**** Posts END ****/
+
+/***************** Shared end *****************/

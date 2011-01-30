@@ -1,6 +1,8 @@
-<div id='entry-<%= entry.id %>'>
-  <strong><%= link_to entry.login, user_profile_path(:user_profile => entry.login) %></strong> said:
-  <div>
+<div id='entry-<%= entry.id %>' class="response">
+  <strong class="author-<%= entry.author_gender %>">
+    <%= link_to entry.login, user_profile_path(:user_profile => entry.login) %>
+  </strong> said:
+  <div class="body">
     <%= entry.body %>
   </div>
 </div>

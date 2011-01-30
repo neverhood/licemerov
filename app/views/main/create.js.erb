@@ -14,5 +14,6 @@ var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : n
             else
                 $(entry).prependTo($('#entry-<%= @entry.parent_id %> ul')).fadeOut().fadeIn();
             $(form).clearForm();
+            $('div.parent .body, div.parent ul.responses').corner('tr br');
         }
 
