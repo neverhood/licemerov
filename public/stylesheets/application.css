@@ -8,7 +8,7 @@ div.alert {}
 
 /***************** Shared *****************/
 /**** Bases ****/
-
+body {background: url(/images/background.png)}
 /**** Bases END ****/
 
 /**** Forms ****/
