@@ -1,11 +1,20 @@
 var type = "<%= @entry.type %>";
+var form = $('#' + type + '_form');
 var id = "entry-<%= @entry.id %>";
 var entry = "<%= escape_javascript(render :partial => @entry.type_partial, :locals => {:entry => @entry} ) %>";
+var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : nil %>".split(',');
+        if (errors[0] == '') errors.pop(); // Remove blank element
 
-        if (type == 'parent') {
-            $(entry).prependTo('#wall').fadeOut().fadeIn();
-            $('#parent_form').clearForm();
-        } else {
-            $(entry).appendTo($('#entry-<%= @entry.parent_id %> ul')).fadeOut().fadeIn();
-            $('#response_form').clearForm();
+
+        if (errors.length > 0) { // Errors didn't let it happen
+            appendErrors(errors, form);
+        } else { // No errors
+            form.children('.field_with_errors').remove();
+            form.children('input[type="submit"]').attr('disabled', 'disabled');
+            if (type == 'parent')
+                $(entry).prependTo('#wall').fadeOut().fadeIn()
+            else
+                $(entry).appendTo($('#entry-<%= @entry.parent_id %> ul')).fadeOut().fadeIn();
+            $(form).clearForm();
         }
+

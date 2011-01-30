@@ -3,12 +3,15 @@
   <div>
     <%= entry.body %>
   </div>
-  <strong class="reply">Reply</strong>
 
-    <ul class="children">
-      <% entry.children.each do |entry| %>
-          <%= render :partial => 'main/entries/child', :locals => {:entry => entry} %>
-      <% end %>
-    </ul>
+  <% if current_user %>
+      <strong class="reply">Reply</strong>
+  <% end %>
+
+  <ul class="responses">
+    <% entry.children.each do |entry| %>
+        <%= render :partial => 'main/entries/response', :locals => {:entry => entry} %>
+    <% end %>
+  </ul>
 
 </div>

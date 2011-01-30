@@ -11,11 +11,11 @@ class RootEntry < ActiveRecord::Base
   validates :body, :presence => true, :length => {:minimum => 2, :maximum => 150}
 
   def type
-    self.parent? ? 'parent' : 'child'
+    self.parent? ? 'parent' : 'response'
   end
 
   def type_partial
-    self.parent? ? 'main/entries/parent' : 'main/entries/child'
+    self.parent? ? 'main/entries/parent' : 'main/entries/response'
   end
 
   def parent?

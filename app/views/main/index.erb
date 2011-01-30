@@ -1,7 +1,7 @@
 <h1>Hello, taht is main page</h1>
 
 
-<%= render :partial => 'main/forms/parent' %>
+<%= render :partial => 'main/forms/parent' if current_user %>
 
 <div id='wall'>
   <% @entries.each do |entry| %>
