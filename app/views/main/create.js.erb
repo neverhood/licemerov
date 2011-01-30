@@ -9,8 +9,6 @@ var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : n
         if (errors.length > 0) { // Errors didn't let it happen
             appendErrors(errors, form);
         } else { // No errors
-            form.children('.field_with_errors').remove();
-            form.children('input[type="submit"]').attr('disabled', 'disabled');
             if (type == 'parent')
                 $(entry).prependTo('#wall').fadeOut().fadeIn()
             else
