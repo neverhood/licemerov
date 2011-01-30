@@ -1,3 +1,8 @@
 
 var entry = "<%= escape_javascript(render :partial => 'main/entries/parent', :locals => {:entry => @entry} ) %>";
         $('#wall').prepend(entry); $('#entry-<%= @entry.id %>').fadeOut().fadeIn();
+        <% if @entry.parent? %>
+            $('#parent_form').clearForm();
+        <% else %>
+            $('#response_form').clearForm();
+        <% end %>

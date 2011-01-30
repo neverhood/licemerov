@@ -11,6 +11,10 @@ class RootEntry < ActiveRecord::Base
   validates :body, :presence => true, :length => {:minimum => 2, :maximum => 150}
 
 
+  def parent?
+    !self.parent_id.nil?
+  end
+
   def children
     RootEntry.where(:parent_id => self.id)
   end

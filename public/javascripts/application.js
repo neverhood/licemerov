@@ -2,9 +2,24 @@
 // This file is automatically included by javascript_include_tag :defaults
 var $loader = "<img id='loader' src='images/loader.gif' />";
 
+$.fn.clearForm = function() {
+  this.each(function() {
+    var type = this.type, tag = this.tagName.toLowerCase();
+    if (tag == 'form')
+      return $(':input',this).clearForm();
+    if (type == 'text' || type == 'password' || tag == 'textarea')
+      $('#' + this.id).val('');
+    else if (type == 'checkbox' || type == 'radio')
+      this.checked = false;
+    else if (tag == 'select')
+      this.selectedIndex = -1;
+  });
+};
+
+
 $(document).ready(function() {
 
-   $('#new_root_entry').bind("ajax:beforeSend", function() {toggleLoader(this)}).
+   $('#parent_form').bind("ajax:beforeSend", function() {toggleLoader(this)}).
             bind("ajax:complete", function() {toggleLoader(this)});
 
 });
