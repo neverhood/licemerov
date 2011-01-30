@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110130111245) do
+ActiveRecord::Schema.define(:version => 20110130115342) do
 
   create_table "root_entries", :force => true do |t|
     t.integer  "user_id",    :default => 0
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20110130111245) do
     t.string   "avatar_url", :default => ""
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "parent_id"
   end
 
   create_table "user_details", :force => true do |t|
