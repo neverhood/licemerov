@@ -5,3 +5,7 @@ div.field_with_errors {display:inline}
 div.notice {}
 div.alert {}
 /* Rails specific END */
+
+/* Shared */
+ul { padding: 0 0 0 10px }
+/* Shared end */

@@ -1,0 +1,6 @@
+<div id='entry-<%= entry.id %>'>
+  <strong><%= link_to entry.login, user_profile_path(:user_profile => entry.login) %></strong> said:
+  <div>
+    <%= entry.body %>
+  </div>
+</div>
