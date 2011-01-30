@@ -1,6 +1,7 @@
 class MainController < ApplicationController
 
   skip_before_filter :existent_user
+  before_filter :require_user, :only => [:create, :update]
 
   def index
     @entries = RootEntry.where(:parent_id => nil).order('created_at DESC')
