@@ -10,10 +10,11 @@ var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : n
             appendErrors(errors, form);
         } else { // No errors
             if (type == 'parent')
-                $(entry).prependTo('#wall').fadeOut().fadeIn()
+                $(entry).prependTo('#wall').hide().slideDown();
             else
-                $(entry).prependTo($('#entry-<%= @entry.parent_id %> ul')).fadeOut().fadeIn();
+                $('#entry-<%= @entry.parent_id%>').find('.head-hidden, .head').addClass('head').removeClass('head-hidden').next().
+                        prepend($(entry)).find(':first-child').hide().slideDown();
             $(form).clearForm();
-            $('div.parent .body, div.parent ul.responses').corner('tr br');
+            $('div.parent .body').corner();
         }
 

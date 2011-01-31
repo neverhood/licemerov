@@ -24,7 +24,7 @@ $.fn.clearForm = function() {
 
 $(document).ready(function() {
 
-    $('div.parent .body, div.parent ul.responses').corner('tr br');
+    $('div.parent .body, div.parent ul.responses').corner();
 
     $('#parent_form, #response_form').keyup(function() {
         var submit = $(this).children('input[type="submit"]');
@@ -42,7 +42,7 @@ $(document).ready(function() {
         var id = $(this).parent('div').attr('id').replace(/entry-/, '');
         if (! (div.children('#response_form').length && form.is(':visible')) ) {
             form.clearForm();
-            form.appendTo(div).show().
+            form.appendTo(div).fadeIn().
                     find('input[name*="parent_id"]').val(id);
             form.children('textarea').focus();
         } else {

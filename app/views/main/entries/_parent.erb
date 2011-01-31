@@ -1,4 +1,5 @@
 <div id="entry-<%= entry.id %>" class="parent">
+
   <strong class="author-<%= entry.author_gender %>">
     <%= link_to entry.login, user_profile_path(:user_profile => entry.login) %>
   </strong> said:
@@ -12,6 +13,11 @@
       <div class="form-placeholder"></div>
   <% end %>
 
+  <% if entry.children.any? -%>
+      <div class="head"></div>
+  <% else %>
+      <div class="head-hidden"></div>
+  <% end -%>
   <ul class="responses">
     <% entry.children.reverse.each do |entry| %>
         <%= render :partial => 'main/entries/response', :locals => {:entry => entry} %>

@@ -27,7 +27,8 @@ class RootEntry < ActiveRecord::Base
   end
 
   def children
-    RootEntry.where(:parent_id => self.id)
+    return @children if defined?(@children)
+    @children = RootEntry.where(:parent_id => self.id).all
   end
 
   def author_gender
