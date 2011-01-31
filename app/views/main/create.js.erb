@@ -15,6 +15,6 @@ var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : n
                 $('#entry-<%= @entry.parent_id%>').find('.head-hidden, .head').addClass('head').removeClass('head-hidden').next().
                         prepend($(entry)).find(':first-child').hide().slideDown();
             $(form).clearForm();
-            $('div.parent .body').corner();
+            $('div.parent .body, div.parent ul.responses').corner();
         }
 

@@ -10,7 +10,7 @@ class MainController < ApplicationController
 
   def create
     @entry = RootEntry.new(:body => params[:root_entry][:body], :user_id => current_user.id,
-                           :login => current_user.login, :parent_id => params[:root_entry][:parent_id])
+                           :login => current_user.login, :parent_id => params[:root_entry][:parent_id], :author_sex => current_user.sex)
     @entry.save
     respond_to do |format|
       format.js {render :layout => false}

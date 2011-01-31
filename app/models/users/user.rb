@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :uniqueness => true, :length => {:maximum => 25, :minimum => 5}
   validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 3}, :not_restricted => true
 
+  delegate :sex, :first_name, :last_name, :to => :user_details
+
   has_one :user_details # e.g -> Name, gender etc
 
   after_create :create_details
@@ -25,7 +27,7 @@ class User < ActiveRecord::Base
   def gender
     self.details.sex == 0 ? 'female' : 'male'
   end
-  
+
   # Alias to relation
   def details
     self.user_details
@@ -34,6 +36,14 @@ class User < ActiveRecord::Base
   def create_details
     self.create_user_details
   end
+
+  private
+
+#  def method_missing(method, *args, &block)
+#    if method != :id
+#      details.respond_to?(method) ? details.send(method, *args, &block) : super
+#    end
+#  end
 
 
 end
