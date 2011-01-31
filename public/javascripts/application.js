@@ -3,7 +3,7 @@
 var $loader = "<img id='loader' src='images/loader.gif' />";
 
 $.fn.clearForm = function() {
-    this.each(function() {
+    return this.each(function() {
         var type = this.type, tag = this.tagName.toLowerCase();
         if (tag == 'form') {
             $(this).children('.field_with_errors').remove();
@@ -20,7 +20,6 @@ $.fn.clearForm = function() {
             this.selectedIndex = -1;
     });
 };
-
 
 $(document).ready(function() {
 
@@ -39,27 +38,21 @@ $(document).ready(function() {
     $('.reply').live('click', function() {
         var form = $('#response_form');
         var div = $(this).next();
-        var id = $(this).parent('div').attr('id').replace(/entry-/, '');
-        if (! (div.children('#response_form').length && form.is(':visible')) ) {
-            form.clearForm();
-            form.appendTo(div).fadeIn().
-                    find('input[name*="parent_id"]').val(id);
-            form.children('textarea').focus();
-        } else {
+        var id = $(this).parents('.parent').attr('id').replace(/entry-/, '');
+        if (! (div.children('#response_form').length && form.is(':visible')) )
+            form.clearForm().appendTo(div).fadeIn().find('textarea').focus().next().val(id);
+        else
             form.hide();
-        }
     });
 
 });
 
 function toggleLoader(form) {
     var submit = $(form).find('input[type="submit"]');
-    if (submit.is(':visible')) {
-        submit.hide();
-        $(form).append($loader);
-    } else {
-        submit.show();
-        $('#loader').remove();
+    if (submit.is(':visible'))
+        submit.hide().parent('form').append($loader);
+    else {
+        submit.show().next().remove(); // Show submit button and hide next element, which is #loader
         if ($(form).children('input[name*="parent_id"]').length && !($(form).children('.field_with_errors').length))
             $(form).hide();
     }

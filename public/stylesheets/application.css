@@ -21,20 +21,21 @@ strong.reply {cursor:pointer}
 .author-male a {color:#32A6D4}
 .author-female a {color:#D94A64}
 
-
 /*div.response div {margin-top:15px; padding: 10px;}*/
+
 div.parent .head, div.parent .head-hidden {
-    background: url(/images/arr.gif) no-repeat 22px 4px;
+    background: url(/images/arr.gif) no-repeat 34px 4px;
     overflow: hidden; height:15px; z-index:1;
 }
+
 div.parent .head-hidden { display: none; }
+/* BLUE: #5599BB */
+div.parent .body {background:white;width: 600px; padding:5px; margin: 10px;}
+div.response .body {color:#696969; background:white; padding:0px; margin-top:10px;}
 
-div.parent .body {background:#5599BB;width: 600px; padding:5px; margin: 15px;}
-div.response .body {color:#696969; background:white; padding:5px; margin-top:5px;}
+div.response {padding:5px 10px;}
 
-div.response {padding:10px;}
-
-div.parent ul.responses {background:white; color:black; width: 670px; margin: 0 0 5px 10px;}
+div.parent ul.responses {background:white; color:black; width: 670px; margin: 0 0 5px 25px;}
 
 /*div.response {margin: 10px 10px 10px 25px;}*/
 /**** Posts END ****/
