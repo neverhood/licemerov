@@ -6,8 +6,19 @@ gem 'rails', '3.0.3'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3-ruby', :require => 'sqlite3'
+
+# Authlogic for authentication
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git',
   :branch => 'rails3'
+
+# Paperclip (photos handling) && mime-types for validation needs
+gem 'paperclip'
+gem 'mime-types', :require => 'mime/types'
+
+
+# Remotipart is used to send response outside the frame ( ajax uploads )
+gem 'remotipart', :git => 'git://github.com/formasfunction/remotipart.git'
+
 
 
 # Use unicorn as the web server

@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/formasfunction/remotipart.git
+  revision: e1a38fe5aef40e2918f840ca5c51b95c383ff4a1
+  specs:
+    remotipart (0.2.1)
+
+GIT
   remote: git://github.com/odorcicd/authlogic.git
   revision: a087ad0cba3c165ba22fcf176c28b6f7517931e8
   branch: rails3
@@ -47,6 +53,9 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    paperclip (2.3.8)
+      activerecord
+      activesupport
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -80,5 +89,8 @@ PLATFORMS
 
 DEPENDENCIES
   authlogic!
+  mime-types
+  paperclip
   rails (= 3.0.3)
+  remotipart!
   sqlite3-ruby
