@@ -2,13 +2,14 @@
 // This file is automatically included by javascript_include_tag :defaults
 var $loader = "<img id='loader' src='images/loader.gif' />";
 
-$.fn.clearForm = function() {
+$.fn.formClear = function() {
     return this.each(function() {
         var type = this.type, tag = this.tagName.toLowerCase();
         if (tag == 'form') {
+            $(this).children('input[type="file"]').replaceWith($(this).children('input[type="file"]').clone(true));
             $(this).children('.field_with_errors').remove();
             $(this).children('input[type="submit"]').attr('disabled', 'disabled');
-            return $(':input',this).clearForm();
+            return $(':input',this).formClear();
         }
         if (type == 'text' || type == 'password' || tag == 'textarea') {
             this.value = '';
@@ -18,12 +19,19 @@ $.fn.clearForm = function() {
             this.checked = false;
         else if (tag == 'select')
             this.selectedIndex = -1;
+        else if (tag == 'file') {
+            alert('heh');
+            //For IE
+            $(this).replaceWith($(this).clone(true));
+            //For other browsers
+            $(this).val();
+        }
     });
 };
 
 $(document).ready(function() {
 
-    $('div.parent .body, div.parent ul.responses').corner();
+    $('div.parent .body, div.parent ul.responses, img.regular').corner();
 
     $('#parent_form, #response_form').keyup(function() {
         var submit = $(this).children('input[type="submit"]');
@@ -40,7 +48,7 @@ $(document).ready(function() {
         var div = $(this).next();
         var id = $(this).parents('.parent').attr('id').replace(/entry-/, '');
         if (! (div.children('#response_form').length && form.is(':visible')) )
-            form.clearForm().appendTo(div).fadeIn().find('textarea').focus().next().val(id);
+            form.formClear().appendTo(div).fadeIn().find('textarea').focus().next().val(id);
         else
             form.hide();
     });
