@@ -13,7 +13,7 @@ var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : n
                 $(entry).prependTo('#wall').hide().slideDown();
             else
                 $('#entry-<%= @entry.parent_id%>').find('.head-hidden, .head').addClass('head').removeClass('head-hidden').next().
-                        prepend($(entry)).find(':first-child').hide().slideDown();
+                        append($(entry)).find('div#' + id).hide().slideDown();
             $(form).clearForm();
             $('div.parent .body, div.parent ul.responses').corner();
         }

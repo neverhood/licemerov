@@ -32,7 +32,7 @@ $(document).ready(function() {
         else
             submit.attr('disabled', 'disabled');
     }).
-            bind("ajax:beforeSend", function() {toggleLoader(this)}).
+            bind("ajax:loading", function() {toggleLoader(this)}). // TODO: Wait for 'remotipart' release for new rails.js and change 'loading' to 'beforeSend'
             bind("ajax:complete", function() {toggleLoader(this)});
 
     $('.reply').live('click', function() {
@@ -43,6 +43,13 @@ $(document).ready(function() {
             form.clearForm().appendTo(div).fadeIn().find('textarea').focus().next().val(id);
         else
             form.hide();
+    });
+
+    $('img.regular, img.enlarged').live('click', function() {  // Enlarge image on click. It`s WEB 2.0, motherfucker
+        var type = this.className.toLowerCase();
+        var opposite_type = type == 'regular' ? 'enlarged' : 'regular';
+        $(this).addClass(opposite_type).removeClass(type).
+                attr('src', this.src.replace(type, opposite_type));
     });
 
 });
