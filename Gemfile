@@ -12,13 +12,13 @@ gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git',
   :branch => 'rails3'
 
 # Paperclip (photos handling) && mime-types for validation needs
+# Remotipart is used to send response outside the frame ( ajax uploads )
 gem 'paperclip'
 gem 'mime-types', :require => 'mime/types'
-
-
-# Remotipart is used to send response outside the frame ( ajax uploads )
 gem 'remotipart', :git => 'git://github.com/formasfunction/remotipart.git'
 
+# rails g jquery:install
+gem 'jquery-rails'
 
 
 # Use unicorn as the web server

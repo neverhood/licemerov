@@ -1,8 +1,11 @@
 <div id="entry-<%= entry.id %>" class="parent">
 
-<%= raw author(entry) %> said:
+  <%= raw author(entry) %> said:
 
   <div class="body">
+    <% if entry.image.exists? %>
+        <div><%= entry.image.url %></div>
+    <% end %>
     <%= entry.body %>
     <% if current_user %>
         <%= raw reply_button %>
