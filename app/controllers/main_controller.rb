@@ -15,6 +15,7 @@ class MainController < ApplicationController
     @entry.user_id, @entry.login, @entry.author_sex = current_user.id, current_user.login, current_user.sex
     @entry.save
     respond_to do |format|
+      format.html { redirect_to '/'}
       format.js {render :layout => false}
     end
 
