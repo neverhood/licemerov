@@ -18,7 +18,7 @@ class UserSessionsController < ApplicationController
       @current_user = US.find.record
       redirect_to(home_page, :notice => 'Welcome!')
     else
-      render :action => :new
+      redirect_to(login_path, :alert => 'Failed to log in, please try again')
     end
   end
 

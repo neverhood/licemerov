@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      redirect_to(@user.home_page, :notice => 'Welcome!')
+      redirect_to(home_page, :notice => 'Welcome!')
     else
       render :action => :new
     end
