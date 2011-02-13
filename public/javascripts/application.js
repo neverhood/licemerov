@@ -2,43 +2,37 @@
 // This file is automatically included by javascript_include_tag :defaults
 var $loader = "<img id='loader' src='images/loader.gif' />";
 
-$.fn.formClear = function() {
+$.fn.clearForm = function() {
     return this.each(function() {
         var type = this.type, tag = this.tagName.toLowerCase();
         if (tag == 'form') {
-            $(this).children('input[type="file"]').replaceWith($(this).children('input[type="file"]').clone(true));
             $(this).children('.field_with_errors').remove();
-            $(this).children('input[type="submit"]').attr('disabled', 'disabled');
-            return $(':input',this).formClear();
+            return $(':input',this).clearForm();
         }
+        if (type == 'file') {
+          this.value = '';
+          $(this).replaceWith($(this).clone(true));
+        }
+        if (type == 'submit')
+            if (this.disabled != null) this.disabled = 'disabled';
         if (type == 'text' || type == 'password' || tag == 'textarea') {
-            this.value = '';
-            $('#' + this.id).val('');
-        }
-        else if (type == 'checkbox' || type == 'radio')
+            this.value = '';  $('#' + this.id).val(''); }
+        if (type == 'checkbox' || type == 'radio')
             this.checked = false;
-        else if (tag == 'select')
+        if (tag == 'select')
             this.selectedIndex = -1;
-        else if (tag == 'file') {
-            alert('heh');
-            //For IE
-            $(this).replaceWith($(this).clone(true));
-            //For other browsers
-            $(this).val();
-        }
     });
 };
 
 $(document).ready(function() {
 
-    $('div.parent .body, div.parent ul.responses, img.regular').corner();
+    $('div.parent .body, div.parent ul.responses').corner();
+    $('form').clearForm();
+
 
     $('#parent_form, #response_form').keyup(function() {
-        var submit = $(this).children('input[type="submit"]');
-        if ($(this).children('textarea').val().length >= 2)
-            submit.removeAttr('disabled');
-        else
-            submit.attr('disabled', 'disabled');
+        var submit = this.elements[this.elements.length - 1];
+        (this.elements[2].value.length >= 2) ? submit.disabled = '' : submit.disabled = 'disabled'; // elemets[2] is a textarea
     }).
             bind("ajax:loading", function() {toggleLoader(this)}). // TODO: Wait for 'remotipart' release for new rails.js and change 'loading' to 'beforeSend'
             bind("ajax:complete", function() {toggleLoader(this)});
@@ -48,15 +42,16 @@ $(document).ready(function() {
         var div = $(this).next();
         var id = $(this).parents('.parent').attr('id').replace(/entry-/, '');
         if (! (div.children('#response_form').length && form.is(':visible')) )
-            form.formClear().appendTo(div).fadeIn().find('textarea').focus().next().val(id);
+            form.clearForm().appendTo(div).fadeIn().find('textarea').focus().next().val(id);
         else
             form.hide();
+        $('#parent_form').clearForm();
     });
 
     $('img.regular, img.enlarged').live('click', function() {  // Enlarge image on click. It`s WEB 2.0, motherfucker
-        var type = this.className.toLowerCase();
-        var opposite_type = type == 'regular' ? 'enlarged' : 'regular';
+        var type = this.className, opposite_type = type == 'regular' ? 'enlarged' : 'regular';
         $(this).addClass(opposite_type).removeClass(type).
+                css({height:toggleSize($(this), 'height'), width:toggleSize($(this), 'width')}).
                 attr('src', this.src.replace(type, opposite_type));
     });
 
@@ -72,6 +67,11 @@ function toggleLoader(form) {
             $(form).hide();
     }
 }
+
+function toggleSize(img, attr) {
+    return(parseInt(img.css(attr)) + (img.attr('class') == 'enlarged' ? 100 : -100) + 'px');
+}
+
 
 function appendErrors(errors, form) { // Render object errors
     $.each(errors, function(index) {

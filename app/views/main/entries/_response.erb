@@ -4,5 +4,8 @@
   </strong> said:
   <div class="body">
     <%= entry.body %>
+    <% if entry.image.exists? %>
+      <div><%= image_tag entry.image.url, :class => :regular %></div>
+    <% end %>
   </div>
 </div>

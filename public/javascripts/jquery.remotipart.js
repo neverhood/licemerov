@@ -15,7 +15,7 @@ jQuery(function ($) {
 		          	url = url.split('?'); // split on GET params
 					if(url[0].substr(-3) != '.js') url[0] += '.js'; // force rails to respond to respond to the request with :format = js
 					url = url.join('?'); // join on GET params
-					
+
 	                el.ajaxSubmit({
 	                    url: url,
 	                    dataType: 'script',
