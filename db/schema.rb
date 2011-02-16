@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110216102122) do
+ActiveRecord::Schema.define(:version => 20110216185000) do
 
   create_table "root_entries", :force => true do |t|
     t.integer  "user_id",            :default => 0
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(:version => 20110216102122) do
     t.string   "first_name"
     t.string   "last_name"
     t.date     "birth_date"
-    t.integer  "sex"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "country"
@@ -61,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20110216102122) do
     t.string   "last_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sex",                 :default => 1
   end
 
 end

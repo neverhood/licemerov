@@ -21,6 +21,10 @@
       <%= f.label :email %>: <%= f.text_field :email %>
     </div>
     <div class="row">
+      <%= f.label :sex %>: Male<%= f.radio_button :sex, 1, :checked => true %>
+                           Female<%= f.radio_button :sex, 0 %>
+    </div>
+    <div class="row">
       <%= f.label :password %>: <%= f.password_field :password %>
     </div>
     <div class="row">

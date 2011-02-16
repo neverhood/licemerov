@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :uniqueness => true, :length => {:maximum => 25, :minimum => 5}
   validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 3}, :not_restricted => true
 
-  delegate :sex, :first_name, :last_name, :city, :country, :avatar, :to => :user_details
+  delegate :first_name, :last_name, :city, :country, :avatar, :to => :user_details
 
   has_one :user_details # e.g -> Name, gender etc
 
@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
 
 
   def gender
-    self.details.sex == 0 ? 'female' : 'male'
+    self.sex == 0 ? 'female' : 'male'
   end
 
   # Alias to relation

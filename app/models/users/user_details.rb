@@ -8,6 +8,8 @@ end
 
 class UserDetails < ActiveRecord::Base
 
+  delegate :sex, :to => :user
+
   has_attached_file :avatar,
                     #:path => Settings.services.assets.path,
                     #:url => Settings.services.assets.url,
