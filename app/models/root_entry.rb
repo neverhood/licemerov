@@ -21,8 +21,8 @@ class RootEntry < ActiveRecord::Base
                         :regular => ['300x300>', :jpg],
                         :enlarged => ['400x400>', :jpg],
                     }
- # validates_attachment_content_type :image, :content_type => ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
-  #                                  :unless => Proc.new  { |model| model.image }
+  validates_attachment_content_type :image, :content_type => ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
+                                    :unless => Proc.new  { |model| model.image }
   validates_attachment_size :image, :less_than => 1.megabytes, :unless => Proc.new { |model| model.image }
 
 

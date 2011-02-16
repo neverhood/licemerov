@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :uniqueness => true, :length => {:maximum => 25, :minimum => 5}
   validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 3}, :not_restricted => true
 
-  delegate :sex, :first_name, :last_name, :to => :user_details
+  delegate :sex, :first_name, :last_name, :city, :country, :avatar, :to => :user_details
 
   has_one :user_details # e.g -> Name, gender etc
 
@@ -39,11 +39,6 @@ class User < ActiveRecord::Base
 
   private
 
-#  def method_missing(method, *args, &block)
-#    if method != :id
-#      details.respond_to?(method) ? details.send(method, *args, &block) : super
-#    end
-#  end
 
 
 end

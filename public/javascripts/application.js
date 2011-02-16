@@ -13,8 +13,9 @@ $.fn.clearForm = function() {
           this.value = '';
           $(this).replaceWith($(this).clone(true));
         }
-        if (type == 'submit')
-            if (this.disabled != null) this.disabled = 'disabled';
+        if (type == 'submit') {
+           if (this.form.id == 'parent_form' || this.form.id == 'response_form') this.disabled = 'disabled';
+        }
         if (type == 'text' || type == 'password' || tag == 'textarea') {
             this.value = '';  $('#' + this.id).val(''); }
         if (type == 'checkbox' || type == 'radio')

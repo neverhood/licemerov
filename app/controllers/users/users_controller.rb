@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @current_user = @user = User.new(params[:user])
     if @user.save
       redirect_to(home_page, :notice => 'Welcome!')
     else
