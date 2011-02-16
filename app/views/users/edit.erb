@@ -1,4 +1,15 @@
 <h1>Hello, <%= current_user.login %></h1>
+<% @details = current_user.details %>
+
+<% if current_user.errors.any? || current_user.details.errors.any? %>
+  <%  errors = current_user.errors.full_messages + current_user.details.errors.full_messages %>
+  <h2><%= pluralize(errors.count, 'error') %> occured: </h2>
+  <ul>
+    <% errors.each do |error| %>
+      <li> <%= error %> </li>
+    <% end %>
+  </ul>
+<% end %>
 
 <%= form_for current_user, :html => {:method => :put} do |f| %>
 
@@ -13,6 +24,10 @@
             :selected => @details.country_origin ? @details.country_origin.russian_name : nil
     })
       %>
+    </div>
+    <div class="row">
+      <%= f.label :city %> <%= f.text_field :city, :value => @details.city %>
+    </div>
     <div class="row">
       <%= f.label :sex %>  Male <%= f.radio_button :sex, 1, :checked => current_user.sex == 1 %>
                          Female <%= f.radio_button :sex, 0, :checked => current_user.sex == 0 %>

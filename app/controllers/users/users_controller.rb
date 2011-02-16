@@ -13,8 +13,13 @@ class UsersController < ApplicationController
   end
 
   def update
-    current_user.update_attributes(params[:user])
-    current_user.details.update_attributes(params[:user])
+    if current_user.update_attributes(params[:user]) && current_user.details.update_attributes(params[:user])
+      redirect_to(edit_user_profile_path(:user_profile => current_user.login),
+                  :notice => 'Succesfully updated')
+    else
+      @details = current_user.details 
+      render :action => :edit
+    end
   end
 
   def new # registration page
