@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
 
-  skip_before_filter :existent_user, :only => [:new, :create]
+  skip_before_filter :existent_user, :only => [:new, :create, :update]
 
   before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_owner, :only => [:edit, :update]
+  before_filter :require_owner, :only => [:edit]
 
   def show
   end
@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    current_user.details.update_attributes(params[:user])
   end
 
   def new # registration page

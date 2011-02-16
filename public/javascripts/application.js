@@ -28,7 +28,7 @@ $.fn.clearForm = function() {
 $(document).ready(function() {
 
     $('div.parent .body, div.parent ul.responses').corner();
-    $('form').clearForm();
+    $('#parent_form, #response_form').clearForm();
 
 
     $('#parent_form, #response_form').keyup(function() {

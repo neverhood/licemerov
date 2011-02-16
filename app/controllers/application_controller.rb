@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
 
   def require_owner
     if current_user && @user
-      redirect_to current_user.home_page unless current_user == @user
+      redirect_to home_page unless current_user == @user
     else
       redirect_to :controller => :main
       false

@@ -1,3 +1,11 @@
+class PredefinedCountryValidator < ActiveModel::EachValidator
+  # You can`t register with restricted login!!!
+  def validate_each(record, attribute, value)
+    record.errors[attribute] << ": Using #{attribute} '#{value}' is forbidden, sorry" unless
+        Countries.where(:name => value).first #.find {|login| value =~ /#{login}/}
+  end
+end
+
 class UserDetails < ActiveRecord::Base
 
   has_attached_file :avatar,
@@ -15,5 +23,14 @@ class UserDetails < ActiveRecord::Base
   validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
                                     :unless => Proc.new  { |model| model.avatar }
   validates_attachment_size :avatar, :less_than => 1.megabytes, :unless => Proc.new { |model| model.avatar }
+
+  validates :country, :predefined_country => true
+
+  def country_origin
+    Countries.where(:name => self.country).first
+  end
+
+  private
+
 
 end
