@@ -9,8 +9,6 @@ class MainController < ApplicationController
   end
 
   def create
-    #@entry = RootEntry.new(:body => params[:root_entry][:body], :user_id => current_user.id,
-    #                       :login => current_user.login, :parent_id => params[:root_entry][:parent_id], :author_sex => current_user.sex)
     @entry = RootEntry.new(params[:root_entry])
     @entry.user_id, @entry.login, @entry.author_sex = current_user.id, current_user.login, current_user.sex
     @entry.save

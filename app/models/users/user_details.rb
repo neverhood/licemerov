@@ -2,13 +2,14 @@ class PredefinedCountryValidator < ActiveModel::EachValidator
   # You can`t register with restricted login!!!
   def validate_each(record, attribute, value)
     record.errors[attribute] << ": Using #{attribute} '#{value}' is forbidden, sorry" unless
-        Countries.where(:name => value).first #.find {|login| value =~ /#{login}/}
+        Countries.where(:name => value).first || value.nil? #.find {|login| value =~ /#{login}/}
   end
 end
 
 class UserDetails < ActiveRecord::Base
 
-  delegate :sex, :to => :user
+  belongs_to :user
+  delegate :sex, :sex=, :to => :user
 
   has_attached_file :avatar,
                     #:path => Settings.services.assets.path,

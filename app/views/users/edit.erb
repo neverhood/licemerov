@@ -12,7 +12,10 @@
       <%= f.label :country %> <%= f.select(:country, Countries.all.map {|c| [c.russian_name, c.name]}, :html => {
             :selected => @details.country_origin ? @details.country_origin.russian_name : nil
     })
-    %>
+      %>
+    <div class="row">
+      <%= f.label :sex %>  Male <%= f.radio_button :sex, 1, :checked => current_user.sex == 1 %>
+                         Female <%= f.radio_button :sex, 0, :checked => current_user.sex == 0 %>
     </div>
 
     <%= f.submit %>

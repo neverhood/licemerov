@@ -11,7 +11,8 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :uniqueness => true, :length => {:maximum => 25, :minimum => 5}
   validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 3}, :not_restricted => true
 
-  delegate :first_name, :last_name, :city, :country, :avatar, :to => :user_details
+  delegate :first_name, :first_name=, :last_name, :last_name=, :city, :city=, :country, :country=,
+    :avatar, :avatar=, :to => :user_details
 
   has_one :user_details # e.g -> Name, gender etc
 
