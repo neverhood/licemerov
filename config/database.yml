@@ -20,3 +20,11 @@ production:
   database: db/production.sqlite3
   pool: 5
   timeout: 5000
+
+# Countries data
+
+countries:
+  adapter: sqlite3
+  database: db/countries.sqlite3
+  poll: 5
+  timeout: 5000
