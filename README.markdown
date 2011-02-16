@@ -1,5 +1,5 @@
 # Licemerov
 
-This is a social network build on
+This is a social network built using 
 [*Rails3]
 
