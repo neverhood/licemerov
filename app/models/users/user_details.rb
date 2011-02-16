@@ -30,6 +30,10 @@ class UserDetails < ActiveRecord::Base
   validates :country, :predefined_country => true, :allow_nil => true
   validates :city, :length => {:minimum => 3, :maximum => 25}, :allow_nil => true
 
+  def age
+    Time.now.year - birth_date.year - (birth_date.change(:year => Time.now.year) > Time.now ? 1 : 0) unless birth_date.nil?
+  end
+
   def country_origin
     Countries.where(:name => self.country).first
   end
