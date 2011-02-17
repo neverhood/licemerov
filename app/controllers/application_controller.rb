@@ -1,3 +1,12 @@
+class String
+    def translit
+      Russian::Transliteration.transliterate(self)
+    end
+    def translit!
+      self.replace Russian::Transliteration.transliterate(self)
+    end
+end
+
 class ApplicationController < ActionController::Base
   protect_from_forgery
 

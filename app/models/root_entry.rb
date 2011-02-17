@@ -25,6 +25,7 @@ class RootEntry < ActiveRecord::Base
                                     :unless => Proc.new  { |model| model.image }
   validates_attachment_size :image, :less_than => 1.megabytes, :unless => Proc.new { |model| model.image }
 
+  before_create :randomize_file_name
 
   def author
     User.where(:id => self.user_id).first
@@ -49,6 +50,13 @@ class RootEntry < ActiveRecord::Base
 
   def author_gender
     self.author_sex == 0 ? 'female' : 'male'
+  end
+
+  private
+
+  def randomize_file_name
+    extension = File.extname(image_file_name).downcase
+    self.image.instance_write(:file_name, "#{ActiveSupport::SecureRandom.hex(16)}#{extension}")
   end
 
 end
