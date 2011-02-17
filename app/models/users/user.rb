@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 3}, :not_restricted => true
 
   delegate :first_name, :first_name=, :last_name, :last_name=, :city, :city=, :country, :country=,
-    :avatar, :avatar=, :phone, :phone=, :age, :to => :user_details
+    :avatar, :avatar=, :phone, :phone=, :birth_date, :birth_date=, :website, :website=, :age, :to => :user_details
 
   has_one :user_details # e.g -> Name, gender etc
 

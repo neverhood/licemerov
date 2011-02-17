@@ -1,4 +1,4 @@
-<h1>Hello, <%= current_user.login %></h1>
+<h1><%= t :hello, :name => current_user.login %></h1>
 <% @details = current_user.details %>
 
 <% if current_user.errors.any? || current_user.details.errors.any? %>
@@ -10,29 +10,37 @@
     <% end %>
   </ul>
 <% end %>
-
 <%= form_for current_user, :html => {:method => :put} do |f| %>
 
     <div class="row">
-      <%= f.label :first_name %>: <%= f.text_field :first_name, :value => @details.first_name  %>
+      <%= f.label(t :first_name) %>: <%= f.text_field :first_name, :value => @details.first_name  %>
     </div>
     <div class="row">
-      <%= f.label :last_name %>: <%= f.text_field :last_name, :value => @details.last_name %>
+      <%= f.label(t :last_name)  %>: <%= f.text_field :last_name, :value => @details.last_name %>
     </div>
     <div class="row">
-      <%= f.label :country %> <%= f.select(:country, Countries.all.map {|c| [c.russian_name, c.name]}, :html => {
+      <%= f.label(t :country) %> <%= f.select(:country, Countries.all.map {|c| [c.russian_name, c.name]}, :html => {
             :selected => @details.country_origin ? @details.country_origin.russian_name : nil
     })
       %>
     </div>
     <div class="row">
-      <%= f.label :city %> <%= f.text_field :city, :value => @details.city %>
+      <%= f.label(t :sex) %> <%= f.text_field :city, :value => @details.city %>
     </div>
     <div class="row">
-      <%= f.label :sex %>  Male <%= f.radio_button :sex, 1, :checked => current_user.sex == 1 %>
-                         Female <%= f.radio_button :sex, 0, :checked => current_user.sex == 0 %>
+      <%= f.label(t :city) %> <%= t :male %> <%= f.radio_button :sex, 1, :checked => current_user.sex == 1 %>
+                              <%= t :female %> <%= f.radio_button :sex, 0, :checked => current_user.sex == 0 %>
+    </div>
+    <div class="row">
+      <%= f.label(t :phone) %>  <%= f.text_field :phone, :value => @details.phone %>
+    </div>
+    <div class="row">
+      <%= f.label(t :website) %> <%= f.text_field :website, :value => @details.website %>
+    </div>
+    <div class="row">
+      <%= f.label(t :birth_date) %> <%= f.date_select :birth_date, {:start_year => 1950, :end_year => Time.now.year} %>
     </div>
 
-    <%= f.submit %>
+    <%= f.submit :value => t(:update) %>
 
 <% end %>
