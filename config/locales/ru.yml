@@ -19,6 +19,17 @@ ru:
   image: Картинка
   reply: Ответить
 
+  # HEADER
+  main_page: На главную
+  profile: Мой профиль
+  logout: Выйти
+  login: Войти
+  register: Регистрация
+
+  # PROFILE
+  edit_details: Изменить Данные
+  
+
   date:
     formats:
       default: "%d/%M/%Y"

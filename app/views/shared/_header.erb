@@ -1,0 +1,10 @@
+<div id='header'>
+  <%= link_to t(:main_page), root_path %>
+  <% if current_user %>
+    <%= link_to t(:profile), home_page %>
+    <%= link_to t(:logout), logout_path %>
+  <% else %>
+    <%= link_to t(:login), login_path %>
+    <%= link_to t(:register), register_path %>
+  <% end %>
+</div>
