@@ -17,6 +17,8 @@ gem 'paperclip'
 gem 'mime-types', :require => 'mime/types'
 gem 'remotipart', :git => 'git://github.com/formasfunction/remotipart.git'
 
+# For internalization sake
+gem 'unicode'
 # rails g jquery:install
 gem 'jquery-rails'
 

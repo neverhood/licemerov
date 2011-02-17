@@ -5,6 +5,9 @@ class String
     def translit!
       self.replace Russian::Transliteration.transliterate(self)
     end
+    def unicode_downcase
+      Unicode.downcase(self)
+    end
 end
 
 class ApplicationController < ActionController::Base

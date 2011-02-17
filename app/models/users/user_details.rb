@@ -14,14 +14,14 @@ class UserDetails < ActiveRecord::Base
   has_attached_file :avatar,
                     #:path => Settings.services.assets.path,
                     #:url => Settings.services.assets.url,
-                    :default_style => :regular,
+                    :default_style => :thumb,
                     #:default_url =>
                     #    Settings.services.assets.defaults_path,
                     #:whiny_thumbnails => true,
                     :styles => {
-                        :thumb => ['100x100#', :jpg],
-                        :regular => ['300x200>', :jpg],
-                        :enlarged => ['400x300>', :jpg],
+                        :thumb => ['80x80<', :jpg],
+                        :small => ['200x100>', :jpg],
+                        :regular => ['400x300>', :jpg]
                     }
   validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
                                     :unless => Proc.new  { |model| model.avatar }
