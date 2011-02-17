@@ -3,7 +3,7 @@ module MainHelper
   def reply_button
     <<BUTTON
         <div>
-          <strong class="reply">Reply</strong>
+          <strong class="reply">#{t :reply}</strong>
           <div class="form-placeholder"></div>
         </div>
 BUTTON

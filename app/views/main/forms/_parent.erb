@@ -1,5 +1,5 @@
 <%= form_for @entry, :remote => true, :html => {:id => :parent_form, :multipart => true} do |f| %>
     <%= f.text_area :body, :cols => 50, :rows => 5 %> <br />
-    <%= f.label :image %> <%= f.file_field :image %> <br/>
-    <%= f.submit 'Say it!', :disabled => true %>
+    <%= f.label(t :image) %> <%= f.file_field :image %> <br/>
+    <%= f.submit(t(:say), :disabled => true) %>
 <% end %>

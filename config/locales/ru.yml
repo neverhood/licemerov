@@ -14,6 +14,10 @@ ru:
   website: Веб Сайт
   birth_date: Дата рождения
   update: Сохранить
+  said: Говорит
+  say: Сказать
+  image: Картинка
+  reply: Ответить
 
   date:
     formats:
