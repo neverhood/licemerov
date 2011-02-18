@@ -81,13 +81,24 @@ function appendErrors(errors, form) { // Render object errors
         form.prepend("<div class='field_with_errors'>" + errors[index] + "</div>");
     });
 }
-
+// TODO: documentation
 function updateCrop(coords) {
-  var ratio = (parseInt($('#cropbox').attr('rel')));
+  var ratio = (parseInt($('#cropbox').attr('data-ratio'))); // The rate of original image / resized image
   $('#crop_x').val(Math.floor(coords.x * ratio)).next().val(Math.floor(coords.y * ratio)).
     next().val(Math.floor(coords.w * ratio)).next().val(Math.floor(coords.h * ratio));
 }
 
 function jcropParams() {
-  return {onChange: updateCrop, onSelect: updateCrop, setSelect: [0,0,500,500], aspectRation:1}
+  return {onChange: refreshAvatarPreview, onSelect: updateCrop, aspectRation:1}
 }
+
+function refreshAvatarPreview(coords) {
+  var rx = 200/coords.w, ry = 200/coords.h;
+  var height = parseInt($('#cropbox').attr('data-height'));
+  var width = parseInt($('#cropbox').attr('data-width'));
+  $('#preview').css({width: Math.round(rx * width) + 'px', height: Math.round(ry * height) + 'px',
+       marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+       marginTop: '-' + Math.round(ry * coords.y) + 'px'});
+}
+
+

@@ -6,9 +6,9 @@ class UserDetailsController < ApplicationController
 
   def update
     if current_user.details.update_attributes(params[:user_details])
-      render :text => current_user.details.cropping?
+      redirect_to(edit_user_profile_path(:user_profile => current_user.login, 
+                                         :section => :edit_avatar), :notice => 'Success')
     else
-      render :text => current_user.details.cropping?
     end
   end
 

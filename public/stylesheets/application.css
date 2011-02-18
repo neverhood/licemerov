@@ -43,3 +43,7 @@ div.parent ul.responses {background:white; color:black; width: 670px; margin: 0 
 /**** Posts END ****/
 
 /***************** Shared end *****************/
+
+/***************** Profiles *****************/
+div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
+/***************** Profiles END ***************/
