@@ -83,7 +83,7 @@ function appendErrors(errors, form) { // Render object errors
 }
 //  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
 function updateCrop(coords) {
-  var ratio = (parseInt($('#cropbox').attr('data-ratio'))); // The rate of original image / resized image
+  var ratio = (parseFloat($('#cropbox').attr('data-ratio'))); // The rate of original image / resized image
   $('#crop_x').val(Math.floor(coords.x * ratio)).next().val(Math.floor(coords.y * ratio)).
     next().val(Math.floor(coords.w * ratio)).next().val(Math.floor(coords.h * ratio));
 }
@@ -94,8 +94,9 @@ function jcropParams() {
 
 function refreshAvatarPreview(coords) {
   var rx = 200/coords.w, ry = 200/coords.h;
-  var height = parseInt($('#cropbox').attr('data-height'));
-  var width = parseInt($('#cropbox').attr('data-width'));
+  var geometry = $('#cropbox').attr('data-geometry');
+  var height = parseInt(geometry.replace(/.*x/, ''));
+  var width = parseInt(geometry.replace(/x.*/, ''));
   $('#preview').css({width: Math.round(rx * width) + 'px', height: Math.round(ry * height) + 'px',
        marginLeft: '-' + Math.round(rx * coords.x) + 'px',
        marginTop: '-' + Math.round(ry * coords.y) + 'px'});

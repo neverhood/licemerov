@@ -2,7 +2,7 @@ class PredefinedCountryValidator < ActiveModel::EachValidator
   # You can`t register with restricted login!!!
   def validate_each(record, attribute, value)
     record.errors[attribute] << ": Using #{attribute} '#{value}' is forbidden, sorry" unless
-        Countries.where(:name => value).first
+        Countries.where(:name => value).first || value.nil? || value.blank?
   end
 end
 
@@ -25,7 +25,7 @@ class UserDetails < ActiveRecord::Base
                     :styles => {
                         :thumb => {:geometry => "110x110>", :format => :jpg, :processors => [:cropper]},
                         :small => {:geometry => "200x200>", :format => :jpg, :processors => [:cropper]},
-                        :for_cropping => ['600x600>', :jpg]
+                        :large => ['600x600>', :jpg]
                     }
   after_post_process :save_avatar_dimensions
 
@@ -35,6 +35,7 @@ class UserDetails < ActiveRecord::Base
 
   validates :country, :predefined_country => true
   validates :city, :length => {:maximum => 25}
+  validate :avatar_geometry
 
 
   def age
@@ -45,20 +46,8 @@ class UserDetails < ActiveRecord::Base
     Countries.where(:name => self.country).first
   end
 
-  def dimensions
-    begin
-      eval(self.avatar_dimensions)
-    rescue Exception
-      nil
-    end
-  end
-
   def cropping?
     !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
-  end
-
-  def new_avatar?
-    self.avatar_file_name_changed?
   end
 
   private
@@ -68,15 +57,17 @@ class UserDetails < ActiveRecord::Base
   end
 
   def save_avatar_dimensions
-    original_geo, cropping_geo = avatar_geometry, avatar_geometry(:for_cropping)
-    self.avatar_dimensions = {:original => {:width => original_geo.width, :height => original_geo.height},
-                              :for_cropping => {:width => cropping_geo.width, :height => cropping_geo.height}}.to_s
+    if avatar.geometry.width > 100 && avatar.geometry.height > 100
+      self.avatar_dimensions = {:original => {:width => avatar.geometry.width, :height => avatar.geometry.height},
+                                :large => {:width => avatar.geometry(:large).width, :height => avatar.geometry(:large).height}}.to_s
+    end
   end
 
-  def avatar_geometry(style = :original)
-    @geometry ||= {}
-    @geometry[style] ||= Paperclip::Geometry.from_file(avatar.queued_for_write[style])
+  def avatar_geometry
+    if self.avatar_file_name_changed?
+      self.errors.add(:avatar,
+              'is too small( should be at least 100x100 px image)') if (avatar.geometry.height < 100 || avatar.geometry.width < 100)
+    end
   end
-
 
 end
