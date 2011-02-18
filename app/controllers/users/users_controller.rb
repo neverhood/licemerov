@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   end
 
   def edit
+    render :template => (section_exists?(params[:section]) ? "users/#{params[:section]}" : 'users/edit' )
   end
 
   def update
@@ -32,6 +33,16 @@ class UsersController < ApplicationController
     else
       render :action => :new
     end
+  end
+
+  private
+
+  def edit_sections
+    ['edit_avatar']
+  end
+
+  def section_exists?(section)
+    edit_sections.index(section) ? true : false
   end
 
 

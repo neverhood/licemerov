@@ -8,8 +8,12 @@ end
 
 class UserDetails < ActiveRecord::Base
 
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+
   belongs_to :user
   delegate :sex, :sex=, :to => :user
+
+  after_update :reprocess_avatar, :if => :cropping?
 
   has_attached_file :avatar,
                     #:path => Settings.services.assets.path,
@@ -19,9 +23,9 @@ class UserDetails < ActiveRecord::Base
                     #    Settings.services.assets.defaults_path,
                     #:whiny_thumbnails => true,
                     :styles => {
-                        :thumb => ['80x80<', :jpg],
-                        :small => ['200x100>', :jpg],
-                        :regular => ['400x300>', :jpg]
+                        :thumb => {:geometry => "110x110>", :format => :jpg, :processors => [:cropper]},
+                        :small => {:geometry => "200x200>", :format => :jpg, :processors => [:cropper]},
+                        :for_cropping => ['600x600>', :jpg]
                     }
   validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
                                     :unless => Proc.new  { |model| model.avatar }
@@ -38,7 +42,19 @@ class UserDetails < ActiveRecord::Base
     Countries.where(:name => self.country).first
   end
 
+  def avatar_geometry(style = :original)
+    @geometry ||= Hash.new
+    @geometry[style] ||= Paperclip::Geometry.from_file(avatar.path(style))
+  end
+
+  def cropping?
+    !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+  end
+
   private
 
+  def reprocess_avatar
+    avatar.reprocess!
+  end
 
 end

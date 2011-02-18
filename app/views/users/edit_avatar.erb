@@ -1,0 +1,21 @@
+<%= render :partial => 'shared/users/sections' %>
+<% @details = current_user.details %>
+<% rate = @details.avatar_geometry.width / @details.avatar_geometry(:for_cropping).width %>
+<% content_for(:head) do %>
+  <%= stylesheet_link_tag "jcrop.css" %>
+  <%= javascript_include_tag "jcrop.js" %>
+<% end %>
+
+
+<%= form_for current_user.details, :html => {:method => :put, :multipart => true} do |f| %>
+  <%= (image_tag @details.avatar.url(:for_cropping), :rel => rate, :id => :cropbox) if @details.avatar.exists? %>
+  <br />
+  <%= image_tag @details.avatar.url(:small) %>
+  <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+    <%= f.text_field attribute, :id => attribute %>
+  <% end %>
+  <div class="row">
+    <%= f.label(t :avatar) %> <%= f.file_field :avatar %>
+  </div>
+  <%= f.submit(t :renew_avatar) %>
+<% end %>

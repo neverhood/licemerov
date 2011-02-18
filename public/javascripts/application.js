@@ -30,6 +30,8 @@ $(document).ready(function() {
     $('div.parent .body, div.parent ul.responses').corner();
     $('#parent_form, #response_form').clearForm();
 
+    $('#cropbox').Jcrop(jcropParams());
+
 
     $('#parent_form, #response_form').keyup(function() {
         var submit = this.elements[this.elements.length - 1];
@@ -78,4 +80,14 @@ function appendErrors(errors, form) { // Render object errors
     $.each(errors, function(index) {
         form.prepend("<div class='field_with_errors'>" + errors[index] + "</div>");
     });
+}
+
+function updateCrop(coords) {
+  var ratio = (parseInt($('#cropbox').attr('rel')));
+  $('#crop_x').val(Math.floor(coords.x * ratio)).next().val(Math.floor(coords.y * ratio)).
+    next().val(Math.floor(coords.w * ratio)).next().val(Math.floor(coords.h * ratio));
+}
+
+function jcropParams() {
+  return {onChange: updateCrop, onSelect: updateCrop, setSelect: [0,0,500,500], aspectRation:1}
 }
