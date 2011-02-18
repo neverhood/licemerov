@@ -27,13 +27,15 @@ class UserDetails < ActiveRecord::Base
                         :small => {:geometry => "200x200>", :format => :jpg, :processors => [:cropper]},
                         :for_cropping => ['600x600>', :jpg]
                     }
+  after_post_process :save_avatar_dimensions
+
   validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
                                     :unless => Proc.new  { |model| model.avatar }
   validates_attachment_size :avatar, :less_than => 1.megabytes, :unless => Proc.new { |model| model.avatar }
 
   validates :country, :predefined_country => true
   validates :city, :length => {:maximum => 25}
-#  validates :city, :existance => false, :length => {:minimum => 3, :maximum => 25}
+
 
   def age
     Time.now.year - birth_date.year - (birth_date.change(:year => Time.now.year) > Time.now ? 1 : 0) unless birth_date.nil?
@@ -43,13 +45,12 @@ class UserDetails < ActiveRecord::Base
     Countries.where(:name => self.country).first
   end
 
-  def avatar_geometry(style = :original)
-    @geometry ||= Hash.new
-    @geometry[style] ||= Paperclip::Geometry.from_file(avatar.path(style))
-  end
-
   def cropping?
     !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+  end
+
+  def new_avatar?
+    self.avatar_file_name_changed?
   end
 
   private
@@ -57,5 +58,17 @@ class UserDetails < ActiveRecord::Base
   def reprocess_avatar
     avatar.reprocess!
   end
+
+  def save_avatar_dimensions
+    original_geo, cropping_geo = avatar_geometry, avatar_geometry(:for_cropping)
+    self.avatar_dimensions = {:original => {:width => original_geo.width, :height => original_geo.height},
+                              :for_cropping => {:width => cropping_geo.width, :height => cropping_geo.height}}.to_s
+  end
+
+  def avatar_geometry(style = :original)
+    @geometry ||= {}
+    @geometry[style] ||= Paperclip::Geometry.from_file(avatar.queued_for_write[style])
+  end
+
 
 end

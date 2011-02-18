@@ -1,7 +1,7 @@
 <%= render :partial => 'shared/users/sections' %>
 <% @details = current_user.details %>
-<% avatar_geo = @details.avatar_geometry(:for_cropping) if @details.avatar.exists? %>
-<% rate = (@details.avatar_geometry.width / avatar_geo.width) if @details.avatar.exists? %>
+<%# avatar_geo = @details.avatar_geometry(:for_cropping) if @details.avatar.exists? %>
+<%# rate = (@details.avatar_geometry.width / avatar_geo.width) if @details.avatar.exists? %>
 <% content_for(:head) do %>
   <%= stylesheet_link_tag "jcrop.css" %>
   <%= javascript_include_tag "jcrop.js" %>
@@ -9,16 +9,16 @@
 
 
 <%= form_for current_user.details, :html => {:method => :put, :multipart => true} do |f| %>
-  <%= (image_tag @details.avatar.url(:for_cropping), 'data-width' => avatar_geo.width,
+  <%# (image_tag @details.avatar.url(:for_cropping), 'data-width' => avatar_geo.width,
        'data-height' => avatar_geo.height, 'data-ratio' => rate, :id => :cropbox) if @details.avatar.exists? %>
-       <strong> Current avatar: </strong><%= image_tag @details.avatar.url(:small) if @details.avatar.exists? %>
+       <strong> Current avatar: </strong><%# image_tag @details.avatar.url(:small) if @details.avatar.exists? %>
   <h4>Preview</h4>
   <div id='avatar-preview'>
-    <%= (image_tag @details.avatar.url(:for_cropping), :id => :preview) if @details.avatar.exists? %>
+    <%# (image_tag @details.avatar.url(:for_cropping), :id => :preview) if @details.avatar.exists? %>
   </div>
-  <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
-    <%= f.text_field attribute, :id => attribute %>
-  <% end %>
+  <%# for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+    <%# f.text_field attribute, :id => attribute %>
+  <%# end %>
   <div class="row">
     <%= f.label(t :avatar) %> <%= f.file_field :avatar %>
   </div>

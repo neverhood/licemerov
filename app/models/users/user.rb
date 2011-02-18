@@ -44,7 +44,5 @@ class User < ActiveRecord::Base
     self.create_user_details
   end
 
-  # To reduce the amount of db requests, 'sex' is also stored in all comments user creates
-  # So if user changes his sex we must change all his comments
 
 end
