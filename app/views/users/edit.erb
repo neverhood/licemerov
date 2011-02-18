@@ -26,12 +26,9 @@
       %>
     </div>
     <div class="row">
-      <%= f.label(t :sex) %> <%= f.text_field :city, :value => @details.city %>
+      <%= f.label(t :city) %> <%= f.text_field :city, :value => @details.city %>
     </div>
-    <div class="row">
-      <%= f.label(t :city) %> <%= t :male %> <%= f.radio_button :sex, 1, :checked => current_user.sex == 1 %>
-                              <%= t :female %> <%= f.radio_button :sex, 0, :checked => current_user.sex == 0 %>
-    </div>
+
     <div class="row">
       <%= f.label(t :phone) %>  <%= f.text_field :phone, :value => @details.phone %>
     </div>

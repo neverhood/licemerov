@@ -16,7 +16,6 @@ class User < ActiveRecord::Base
 
   has_one :user_details # e.g -> Name, gender etc
 
-  before_save :change_entries_sex
   after_create :create_details
 
   acts_as_authentic { |config| config.login_field :login }
@@ -46,14 +45,6 @@ class User < ActiveRecord::Base
   end
 
   # To reduce the amount of db requests, 'sex' is also stored in all comments user creates
-  # So if user changes his sex we must change all his comments 
-  def change_entries_sex
-    if self.sex_changed?
-      RootEntry.where(:user_id => self.id).each do |entry|
-        entry.author_sex = self.sex
-        entry.save
-      end
-    end
-  end
+  # So if user changes his sex we must change all his comments
 
 end

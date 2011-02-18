@@ -13,8 +13,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if current_user.update_attributes(:sex => params[:user][:sex]) &&
-       current_user.details.update_attributes(params[:user])
+    if current_user.details.update_attributes(params[:user])
       redirect_to(edit_user_profile_path(:user_profile => current_user.login),
                   :notice => 'Succesfully updated')
     else

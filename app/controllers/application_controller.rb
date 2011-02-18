@@ -13,7 +13,7 @@ end
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :current_user_session, :current_user, :profile_owner, :home_page
+  helper_method :current_user_session, :current_user, :profile_owner?, :home_page
 
   before_filter :existent_user
 
@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
     current_user && user_profile_url(:user_profile => current_user.login)
   end
 
-  def profile_owner
+  def profile_owner?
     if current_user && @user
       @user == current_user
     else
