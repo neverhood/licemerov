@@ -1,5 +1,8 @@
 <%= render :partial => 'shared/users/sections' %>
 <% @details = current_user.details %>
+<% if @details.avatar.exists? %>
+    <%= geometry = @details.dimensions %>
+<% end %>
 <%# avatar_geo = @details.avatar_geometry(:for_cropping) if @details.avatar.exists? %>
 <%# rate = (@details.avatar_geometry.width / avatar_geo.width) if @details.avatar.exists? %>
 <% content_for(:head) do %>

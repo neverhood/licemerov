@@ -45,6 +45,14 @@ class UserDetails < ActiveRecord::Base
     Countries.where(:name => self.country).first
   end
 
+  def dimensions
+    begin
+      eval(self.avatar_dimensions)
+    rescue Exception
+      nil
+    end
+  end
+
   def cropping?
     !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
   end
