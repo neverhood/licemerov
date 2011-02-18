@@ -1,7 +1,7 @@
 <%= render :partial => 'shared/users/sections' %>
 <% @details = current_user.details %>
-<% avatar_geo = @details.avatar_geometry(:for_cropping) %>
-<% rate = @details.avatar_geometry.width / avatar_geo.width %>
+<% avatar_geo = @details.avatar_geometry(:for_cropping) if @details.avatar.exists? %>
+<% rate = (@details.avatar_geometry.width / avatar_geo.width) if @details.avatar.exists? %>
 <% content_for(:head) do %>
   <%= stylesheet_link_tag "jcrop.css" %>
   <%= javascript_include_tag "jcrop.js" %>
@@ -14,7 +14,7 @@
        <strong> Current avatar: </strong><%= image_tag @details.avatar.url(:small) if @details.avatar.exists? %>
   <h4>Preview</h4>
   <div id='avatar-preview'>
-    <%= image_tag @details.avatar.url(:for_cropping), :id => :preview %>
+    <%= (image_tag @details.avatar.url(:for_cropping), :id => :preview) if @details.avatar.exists? %>
   </div>
   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
     <%= f.text_field attribute, :id => attribute %>

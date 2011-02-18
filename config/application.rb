@@ -25,6 +25,7 @@ module Licemerov
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib)
+    Dir.glob("./lib/*.{rb}").each { |file| require file } # require each file from lib directory
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.

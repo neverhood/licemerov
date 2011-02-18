@@ -81,7 +81,7 @@ function appendErrors(errors, form) { // Render object errors
         form.prepend("<div class='field_with_errors'>" + errors[index] + "</div>");
     });
 }
-// TODO: documentation
+//  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
 function updateCrop(coords) {
   var ratio = (parseInt($('#cropbox').attr('data-ratio'))); // The rate of original image / resized image
   $('#crop_x').val(Math.floor(coords.x * ratio)).next().val(Math.floor(coords.y * ratio)).
@@ -100,5 +100,5 @@ function refreshAvatarPreview(coords) {
        marginLeft: '-' + Math.round(rx * coords.x) + 'px',
        marginTop: '-' + Math.round(ry * coords.y) + 'px'});
 }
-
+//  ******************* CROPPING FUNCTIONS END ********************
 

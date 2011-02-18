@@ -4,7 +4,7 @@
 
 <% if current_user.errors.any? || current_user.details.errors.any? %>
   <%  errors = current_user.errors.full_messages + current_user.details.errors.full_messages %>
-  <h2><%= pluralize(errors.count, 'error') %> occured: </h2>
+  <h2><%= pluralize(errors.count, 'error') %> : </h2>
   <ul>
     <% errors.each do |error| %>
       <li> <%= error %> </li>

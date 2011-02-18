@@ -2,7 +2,7 @@ class PredefinedCountryValidator < ActiveModel::EachValidator
   # You can`t register with restricted login!!!
   def validate_each(record, attribute, value)
     record.errors[attribute] << ": Using #{attribute} '#{value}' is forbidden, sorry" unless
-        Countries.where(:name => value).first 
+        Countries.where(:name => value).first
   end
 end
 
@@ -31,8 +31,9 @@ class UserDetails < ActiveRecord::Base
                                     :unless => Proc.new  { |model| model.avatar }
   validates_attachment_size :avatar, :less_than => 1.megabytes, :unless => Proc.new { |model| model.avatar }
 
-  validates :country, :predefined_country => true, :allow_nil => true
-  validates :city, :length => {:minimum => 3, :maximum => 25}, :allow_nil => true
+  validates :country, :predefined_country => true
+  validates :city, :length => {:maximum => 25}
+#  validates :city, :existance => false, :length => {:minimum => 3, :maximum => 25}
 
   def age
     Time.now.year - birth_date.year - (birth_date.change(:year => Time.now.year) > Time.now ? 1 : 0) unless birth_date.nil?
