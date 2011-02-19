@@ -32,7 +32,13 @@ ru:
   renew_avatar: Обновить Аватар
   edit_main_details: Основные
   edit_avatar: Аватар(изображение)
-  
+
+  # Notices
+  welcome: Добро Пожаловать
+  succesfully_updated: 'Обновлено Успешно: %{updated}'
+
+  # Controllers
+  user_details: Данные пользователя
 
   date:
     formats:

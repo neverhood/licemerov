@@ -13,7 +13,7 @@ end
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :current_user_session, :current_user, :profile_owner?, :home_page
+  helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page
 
   before_filter :existent_user
 
@@ -85,5 +85,7 @@ class ApplicationController < ActionController::Base
       false
     end
   end
+
+  alias :cu :current_user
 
 end

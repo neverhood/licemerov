@@ -30,7 +30,9 @@ $(document).ready(function() {
     $('div.parent .body, div.parent ul.responses').corner();
     $('#parent_form, #response_form').clearForm();
 
-    $('#cropbox').Jcrop(jcropParams());
+    // Cropping facility ( used to crop user avatars and photos )
+    if ($('#cropbox').length && (typeof $.Jcrop == 'function'))
+        $('#cropbox').Jcrop(jcropParams());
 
 
     $('#parent_form, #response_form').keyup(function() {
@@ -83,7 +85,7 @@ function appendErrors(errors, form) { // Render object errors
 }
 //  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
 function updateCrop(coords) {
-  var ratio = (parseFloat($('#cropbox').attr('data-ratio'))); // The rate of original image / resized image
+  var ratio = (parseFloat($('#cropbox').attr('data-ratio'))); // The rate of original image / re-sized image
   $('#crop_x').val(Math.floor(coords.x * ratio)).next().val(Math.floor(coords.y * ratio)).
     next().val(Math.floor(coords.w * ratio)).next().val(Math.floor(coords.h * ratio));
 }
@@ -93,10 +95,9 @@ function jcropParams() {
 }
 
 function refreshAvatarPreview(coords) {
-  var rx = 200/coords.w, ry = 200/coords.h;
-  var geometry = $('#cropbox').attr('data-geometry');
-  var height = parseInt(geometry.replace(/.*x/, ''));
-  var width = parseInt(geometry.replace(/x.*/, ''));
+  var rx = 200/coords.w, ry = 200/coords.h; 
+  var geometry = $('#cropbox').attr('data-geometry').split('x');
+  var height = parseInt(geometry[1]), width = parseInt(geometry[0]);
   $('#preview').css({width: Math.round(rx * width) + 'px', height: Math.round(ry * height) + 'px',
        marginLeft: '-' + Math.round(rx * coords.x) + 'px',
        marginTop: '-' + Math.round(ry * coords.y) + 'px'});

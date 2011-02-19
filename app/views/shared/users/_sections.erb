@@ -1,4 +1,4 @@
 <div id='edit-profile-sections'>
   <%= link_to t(:edit_main_details), edit_user_profile_path(:user_profile => current_user.login) %>
-  <%= link_to t(:edit_avatar), edit_user_profile_path(:user_profile => current_user.login, :section => :edit_avatar) %>
+  <%= link_to t(:edit_avatar), edit_avatar_path(:user_profile => current_user.login) %>
 </div>

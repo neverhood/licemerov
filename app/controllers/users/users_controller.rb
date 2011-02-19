@@ -9,13 +9,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    render :template => (section_exists?(params[:section]) ? "users/#{params[:section]}" : 'users/edit' )
   end
 
   def update
     if current_user.details.update_attributes(params[:user])
       redirect_to(edit_user_profile_path(:user_profile => current_user.login),
-                  :notice => 'Succesfully updated')
+                  :notice => t(:succesfully_updated, :updated => t(:user_details)))
     else
       render :action => :edit
     end
@@ -28,7 +27,7 @@ class UsersController < ApplicationController
   def create
     @current_user = @user = User.new(params[:user])
     if @user.save
-      redirect_to(home_page, :notice => 'Welcome!')
+      redirect_to(home_page, :notice => t(:welcome))
     else
       render :action => :new
     end
@@ -36,13 +35,6 @@ class UsersController < ApplicationController
 
   private
 
-  def edit_sections
-    ['edit_avatar']
-  end
-
-  def section_exists?(section)
-    edit_sections.index(section) ? true : false
-  end
 
 
 end

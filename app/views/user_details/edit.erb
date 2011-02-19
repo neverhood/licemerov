@@ -1,9 +1,10 @@
 <%= render :partial => 'shared/users/sections' %>
-<% @details = current_user.details %>
+<% @details = cu.details %>
 <% content_for(:head) do %>
   <%= stylesheet_link_tag "jcrop.css" %>
   <%= javascript_include_tag "jcrop.js" %>
 <% end %>
+
 
 
 <%= form_for @details, :html => {:method => :put, :multipart => true} do |f| %>

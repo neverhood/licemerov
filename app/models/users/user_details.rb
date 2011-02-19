@@ -11,7 +11,6 @@ class UserDetails < ActiveRecord::Base
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
   belongs_to :user
-  delegate :sex, :sex=, :to => :user
 
   after_update :reprocess_avatar, :if => :cropping?
 
@@ -56,7 +55,7 @@ class UserDetails < ActiveRecord::Base
     avatar.reprocess!
   end
 
-  def save_avatar_dimensions
+  def save_avatar_dimensions # See lib/attachment.rb for details
     if avatar.geometry.width > 100 && avatar.geometry.height > 100
       self.avatar_dimensions = {:original => {:width => avatar.geometry.width, :height => avatar.geometry.height},
                                 :large => {:width => avatar.geometry(:large).width, :height => avatar.geometry(:large).height}}.to_s
