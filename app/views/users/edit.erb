@@ -2,15 +2,8 @@
 <h1><%= t :hello, :name => current_user.login %></h1>
 <% @details = current_user.details %>
 
-<% if current_user.errors.any? || current_user.details.errors.any? %>
-  <%  errors = current_user.errors.full_messages + current_user.details.errors.full_messages %>
-  <h2><%= pluralize(errors.count, 'error') %> : </h2>
-  <ul>
-    <% errors.each do |error| %>
-      <li> <%= error %> </li>
-    <% end %>
-  </ul>
-<% end %>
+<%= render :partial => 'shared/errors', :locals => {:target => @details} %>
+
 <%= form_for current_user, :html => {:method => :put} do |f| %>
 
     <div class="row">
@@ -36,7 +29,7 @@
       <%= f.label(t :website) %> <%= f.text_field :website, :value => @details.website %>
     </div>
     <div class="row">
-      <%= f.label(t :birth_date) %> <%= f.date_select :birth_date, {:start_year => 1950, :end_year => Time.now.year} %>
+      <%= f.label(t :birth_date) %> <%= f.date_select :birth_date, {:start_year => 1950, :end_year => Time.now.year - 5} %>
     </div>
     <%= f.submit :value => t(:update) %>
 
