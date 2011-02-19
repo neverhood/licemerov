@@ -10,11 +10,11 @@ $.fn.clearForm = function() {
             return $(':input',this).clearForm();
         }
         if (type == 'file') {
-          this.value = '';
-          $(this).replaceWith($(this).clone(true));
+            this.value = '';
+            $(this).replaceWith($(this).clone(true));
         }
         if (type == 'submit') {
-           if (this.form.id == 'parent_form' || this.form.id == 'response_form') this.disabled = 'disabled';
+            if (this.form.id == 'parent_form' || this.form.id == 'response_form') this.disabled = 'disabled';
         }
         if (type == 'text' || type == 'password' || tag == 'textarea') {
             this.value = '';  $('#' + this.id).val(''); }
@@ -25,22 +25,30 @@ $.fn.clearForm = function() {
     });
 };
 
+$(window).load(function() {
+    $.licemerov = {
+        version: '1.0',
+        jcrop_api: null
+    };
+    if(typeof $.Jcrop == 'function') $.licemerov['jcrop_api'] = $.Jcrop('#cropbox', jcropParams());
+});
+
 $(document).ready(function() {
+
 
     $('div.parent .body, div.parent ul.responses').corner();
     $('#parent_form, #response_form').clearForm();
 
-    // Cropping facility ( used to crop user avatars and photos )
-    if ($('#cropbox').length && (typeof $.Jcrop == 'function'))
-        $('#cropbox').Jcrop(jcropParams());
-
-
-    $('#parent_form, #response_form').keyup(function() {
+    $('form#parent_form, form#response_form').keyup(function() {
         var submit = this.elements[this.elements.length - 1];
         (this.elements[2].value.length >= 2) ? submit.disabled = '' : submit.disabled = 'disabled'; // elemets[2] is a textarea
     }).
             bind("ajax:loading", function() {toggleLoader(this)}). // TODO: Wait for 'remotipart' release for new rails.js and change 'loading' to 'beforeSend'
             bind("ajax:complete", function() {toggleLoader(this)});
+
+//    $('form#edit_avatar').change(function() {
+//
+//    });
 
     $('.reply').live('click', function() {
         var form = $('#response_form');
@@ -84,23 +92,33 @@ function appendErrors(errors, form) { // Render object errors
     });
 }
 //  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
+
+$(document).ready(function() {
+    $('#release_jcrop').click(function() {
+        if( $.licemerov.jcrop_api ) {
+            $.licemerov.jcrop_api.release(); $(this).hide();
+            $('form#edit_avatar input[id^="crop"]').val('');
+        }
+    });
+})
+
 function updateCrop(coords) {
-  var ratio = (parseFloat($('#cropbox').attr('data-ratio'))); // The rate of original image / re-sized image
-  $('#crop_x').val(Math.floor(coords.x * ratio)).next().val(Math.floor(coords.y * ratio)).
-    next().val(Math.floor(coords.w * ratio)).next().val(Math.floor(coords.h * ratio));
+    if ($('#release_jcrop').not(':visible')) $('#release_jcrop').show();
+    var ratio = (parseFloat($('#cropbox').attr('data-ratio'))); // The rate of original image / re-sized image
+    $('#crop_x').val(Math.floor(coords.x * ratio)).next().val(Math.floor(coords.y * ratio)).
+            next().val(Math.floor(coords.w * ratio)).next().val(Math.floor(coords.h * ratio));
 }
 
 function jcropParams() {
-  return {onChange: refreshAvatarPreview, onSelect: updateCrop, aspectRation:1}
+    return {onChange: refreshAvatarPreview, onSelect: updateCrop, minSize: [100, 100], aspectRation:1}
 }
 
 function refreshAvatarPreview(coords) {
-  var rx = 200/coords.w, ry = 200/coords.h; 
-  var geometry = $('#cropbox').attr('data-geometry').split('x');
-  var height = parseInt(geometry[1]), width = parseInt(geometry[0]);
-  $('#preview').css({width: Math.round(rx * width) + 'px', height: Math.round(ry * height) + 'px',
-       marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-       marginTop: '-' + Math.round(ry * coords.y) + 'px'});
+    var rx = 200/coords.w, ry = 200/coords.h;
+    var geometry = $('#cropbox').attr('data-geometry').split('x');
+    var height = parseInt(geometry[1]), width = parseInt(geometry[0]);
+    $('#preview').css({width: Math.round(rx * width) + 'px', height: Math.round(ry * height) + 'px',
+        marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+        marginTop: '-' + Math.round(ry * coords.y) + 'px'});
 }
 //  ******************* CROPPING FUNCTIONS END ********************
-
