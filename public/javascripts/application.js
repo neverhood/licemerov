@@ -1,6 +1,6 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
-var $loader = "<img id='loader' src='images/loader.gif' />";
+var $loader = "<img id='loader' src='/images/loader.gif' />";
 
 $.fn.clearForm = function() {
     return this.each(function() {
@@ -14,7 +14,7 @@ $.fn.clearForm = function() {
             $(this).replaceWith($(this).clone(true));
         }
         if (type == 'submit') {
-            if (this.form.id == 'parent_form' || this.form.id == 'response_form') this.disabled = 'disabled';
+            if ((typeof $(this).attr('disabled')) != 'undefined') this.disabled = 'disabled';
         }
         if (type == 'text' || type == 'password' || tag == 'textarea') {
             this.value = '';  $('#' + this.id).val(''); }
@@ -28,16 +28,17 @@ $.fn.clearForm = function() {
 $(window).load(function() {
     $.licemerov = {
         version: '1.0',
+        jcrop_params: {onChange: refreshAvatarPreview, onSelect: updateCrop, minSize: [100, 100], aspectRation:1},
         jcrop_api: null
     };
-    if(typeof $.Jcrop == 'function') $.licemerov['jcrop_api'] = $.Jcrop('#cropbox', jcropParams());
+    if(typeof $.Jcrop == 'function') $.licemerov['jcrop_api'] = $.Jcrop('#cropbox', $.licemerov.jcrop_params);
 });
 
 $(document).ready(function() {
 
 
     $('div.parent .body, div.parent ul.responses').corner();
-    $('#parent_form, #response_form').clearForm();
+    $('#parent_form, #response_form, #edit_avatar').clearForm();
 
     $('form#parent_form, form#response_form').keyup(function() {
         var submit = this.elements[this.elements.length - 1];
@@ -46,9 +47,13 @@ $(document).ready(function() {
             bind("ajax:loading", function() {toggleLoader(this)}). // TODO: Wait for 'remotipart' release for new rails.js and change 'loading' to 'beforeSend'
             bind("ajax:complete", function() {toggleLoader(this)});
 
-//    $('form#edit_avatar').change(function() {
-//
-//    });
+
+    $('form#edit_avatar').submit(function() {
+        toggleLoader(this);
+    }).change(function() {
+        var submit = $(this).find(':submit');
+        ($(this).find(':file').val().length > 0) ? submit.enable() : submit.disable();
+    });
 
     $('.reply').live('click', function() {
         var form = $('#response_form');
@@ -68,10 +73,23 @@ $(document).ready(function() {
                 attr('src', this.src.replace(type, opposite_type));
     });
 
+    $('form :file').change(function() {
+        var $cancel = $(this).next();
+        (this.value.length > 0) ? $cancel.show() : $cancel.hide();
+    });
+
+    $('.cancel-upload').click(function() {
+        var $cancel = $(this).hide();
+        var $field = $cancel.prev();
+        $field.replaceWith($field.clone(true)).val('');
+        if ($cancel.attr('rel') == 'disable')
+            $cancel.parents('form').find(':submit').attr('disabled', 'disabled');
+    });
+
 });
 
 function toggleLoader(form) {
-    var submit = $(form).find('input[type="submit"]');
+    var submit = $(form).find(':submit');
     if (submit.is(':visible'))
         submit.hide().parent('form').append($loader);
     else {
@@ -85,7 +103,6 @@ function toggleSize(img, attr) {
     return(parseInt(img.css(attr)) + (img.attr('class') == 'enlarged' ? 100 : -100) + 'px');
 }
 
-
 function appendErrors(errors, form) { // Render object errors
     $.each(errors, function(index) {
         form.prepend("<div class='field_with_errors'>" + errors[index] + "</div>");
@@ -93,24 +110,27 @@ function appendErrors(errors, form) { // Render object errors
 }
 //  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
 
+
+function releaseJcrop() {
+    $.licemerov.jcrop_api.release();
+    $('#release_jcrop').hide().parent('form').find(':submit').attr('disabled', 'disabled').
+            parent('form').find('input[id^="crop"]').val('');
+}
+
 $(document).ready(function() {
-    $('#release_jcrop').click(function() {
-        if( $.licemerov.jcrop_api ) {
-            $.licemerov.jcrop_api.release(); $(this).hide();
-            $('form#edit_avatar input[id^="crop"]').val('');
-        }
+    $('#release_jcrop, #edit_avatar :file').click(function() {
+        releaseJcrop();
     });
-})
+});
 
 function updateCrop(coords) {
-    if ($('#release_jcrop').not(':visible')) $('#release_jcrop').show();
+    if ($('#release_jcrop').not(':visible')) {
+        $('#edit_avatar').clearForm().find(':submit').attr('disabled', '');
+        $('#release_jcrop').show();
+    }
     var ratio = (parseFloat($('#cropbox').attr('data-ratio'))); // The rate of original image / re-sized image
     $('#crop_x').val(Math.floor(coords.x * ratio)).next().val(Math.floor(coords.y * ratio)).
             next().val(Math.floor(coords.w * ratio)).next().val(Math.floor(coords.h * ratio));
-}
-
-function jcropParams() {
-    return {onChange: refreshAvatarPreview, onSelect: updateCrop, minSize: [100, 100], aspectRation:1}
 }
 
 function refreshAvatarPreview(coords) {

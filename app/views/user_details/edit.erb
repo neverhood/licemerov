@@ -1,31 +1,31 @@
 <%= render :partial => 'shared/users/sections' %>
-<% @details = cu.details %>
+<% @details = current_user.details %>
 <% content_for(:head) do %>
     <%= stylesheet_link_tag "jcrop.css" %>
     <%= javascript_include_tag "jcrop.js" %>
 <% end %>
 
-<% if @details.avatar.exists? %>
-    <%= form_for @details, :html => {:method => :put, :id => :new_avatar}, :remote => true do |f| %>
+
+<%= form_for @details, :html => {:method => :put, :multipart => true, :id => :edit_avatar} do |f| %>
+    <% if @details.avatar.exists? %>
         <%= image_tag @details.avatar.url(:large), 'data-geometry' => @details.avatar.dimensions(:large).to_s,
-                      'data-ratio' => @details.avatar.ratio(:original, :large), :id => :cropbox %>
+                      'data-ratio' => @details.avatar.ratio(:original, :large), :id => :cropbox, :clear => :left %>
+        <div style='float:right;'>
+          <%= image_tag(@details.avatar.url(:small), :id => 'current-avatar') %>
+        </div>
         <input type="button" value="<%= t(:release) %>" id="release_jcrop">
         <h4>Preview</h4>
         <div id='avatar-preview'>
           <%= image_tag @details.avatar.url(:large), :id => :preview  %>
         </div>
         <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
-            <%= f.text_field attribute, :id => attribute %>
-        <% end %>
+            <%= f.hidden_field attribute, :id => attribute %>
+        <% end %> <br />
     <% end %>
-<% end %>
-
-
-<%= form_for @details, :html => {:method => :put, :multipart => true, :id => :edit_avatar}, :remote => true do |f| %>
     <div class="row">
       <%= f.label(t :avatar) %> <%= f.file_field :avatar %>
+      <strong class="cancel-upload" rel="disable">X</strong>
     </div>
-    <%= f.submit(t :renew_avatar) %>
+    <%= f.submit(t(:renew_avatar), :disabled => true) %>
 <% end %>
 
-<strong> Current avatar: </strong><%= image_tag @details.avatar.url(:small) if @details.avatar.exists?%>

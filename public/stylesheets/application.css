@@ -9,7 +9,7 @@ div.alert {}
 /***************** Shared *****************/
 /**** Bases ****/
 /* body {background: url(/images/background.png)} */
-body {background: black;color:white;}
+body {background: white;color:black;}
 /**** Bases END ****/
 
 /**** Forms ****/
@@ -38,7 +38,7 @@ div.parent a {text-decoration:none;}
 div.response {padding:5px 10px;}
 
 div.parent ul.responses {background:white; color:black; width: 670px; margin: 0 0 5px 25px;}
-
+strong.cancel-upload { display: none; cursor:pointer; color:red; }
 /*div.response {margin: 10px 10px 10px 25px;}*/
 /**** Posts END ****/
 

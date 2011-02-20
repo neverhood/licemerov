@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   skip_before_filter :existent_user, :only => [:new, :create, :update]
 
+  before_filter :require_user, :only => [:update, :edit]
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_owner, :only => [:edit]
 

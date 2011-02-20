@@ -1,6 +1,7 @@
 <%= form_for @entry, :remote => true, :html => {:id => :response_form, :multipart => true} do |f| %>
     <%= f.text_area :body, :cols => 50, :rows => 4 %>
     <%= f.hidden_field :parent_id %> <br />
-    <%= f.label(t :image) %> <%= f.file_field :image %> <br/>
+    <%= f.label(t :image) %> <%= f.file_field :image %>
+    <strong class='cancel-upload'>X</strong> <br />
     <%= f.submit t(:say), :disabled => true %>
 <% end %>

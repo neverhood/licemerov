@@ -25,7 +25,7 @@ class RootEntry < ActiveRecord::Base
                                     :unless => Proc.new  { |model| model.image }
   validates_attachment_size :image, :less_than => 1.megabytes, :unless => Proc.new { |model| model.image }
 
-  before_create :randomize_file_name
+  before_create :randomize_file_name, :if => :uploading_image?
 
   def author
     User.where(:id => self.user_id).first
@@ -53,6 +53,10 @@ class RootEntry < ActiveRecord::Base
   end
 
   private
+
+  def uploading_image?
+    !image_file_name.nil?
+  end
 
   def randomize_file_name
     extension = File.extname(image_file_name).downcase
