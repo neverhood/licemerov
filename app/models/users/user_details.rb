@@ -9,11 +9,7 @@ end
 class UserDetails < ActiveRecord::Base
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-
   belongs_to :user
-
-  after_update :reprocess_avatar, :if => :cropping?
-
   has_attached_file :avatar,
                     #:path => Settings.services.assets.path,
                     #:url => Settings.services.assets.url,
@@ -32,6 +28,9 @@ class UserDetails < ActiveRecord::Base
                                     :unless => Proc.new  { |model| model.avatar }
   validates_attachment_size :avatar, :less_than => 1.megabytes, :unless => Proc.new { |model| model.avatar }
 
+  before_save :randomize_file_name, :if => :uploading_avatar?
+  after_update :reprocess_avatar, :if => :cropping?
+  
   validates :country, :predefined_country => true
   validates :city, :length => {:maximum => 25}
   validate :avatar_geometry
@@ -50,6 +49,15 @@ class UserDetails < ActiveRecord::Base
   end
 
   private
+
+  def uploading_avatar?
+    avatar_file_name_changed?
+  end
+
+  def randomize_file_name
+    extension = File.extname(avatar_file_name).downcase
+    self.avatar.instance_write(:file_name, "#{ActiveSupport::SecureRandom.hex(16)}#{extension}")
+  end
 
   def reprocess_avatar
     avatar.reprocess!

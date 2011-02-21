@@ -7,6 +7,7 @@ $.fn.clearForm = function() {
         var type = this.type, tag = this.tagName.toLowerCase();
         if (tag == 'form') {
             $(this).children('.field_with_errors').remove();
+            $(this).find('.cancel-upload').hide();
             return $(':input',this).clearForm();
         }
         if (type == 'file') {

@@ -8,11 +8,19 @@
 
 <%= form_for @details, :html => {:method => :put, :multipart => true, :id => :edit_avatar} do |f| %>
     <% if @details.avatar.exists? %>
-        <%= image_tag @details.avatar.url(:large), 'data-geometry' => @details.avatar.dimensions(:large).to_s,
-                      'data-ratio' => @details.avatar.ratio(:original, :large), :id => :cropbox, :clear => :left %>
-        <div style='float:right;'>
-          <%= image_tag(@details.avatar.url(:small), :id => 'current-avatar') %>
-        </div>
+
+        <table>
+          <tr>
+            <td>
+              <%= image_tag @details.avatar.url(:large), 'data-geometry' => @details.avatar.dimensions(:large).to_s,
+                      'data-ratio' => @details.avatar.ratio(:original, :large), :id => :cropbox %>
+            </td>
+            <td>
+              &emsp;<%= image_tag(@details.avatar.url(:small), :id => 'current-avatar') %>
+            </td>
+          </tr>
+        </table>
+
         <input type="button" value="<%= t(:release) %>" id="release_jcrop">
         <h4>Preview</h4>
         <div id='avatar-preview'>
