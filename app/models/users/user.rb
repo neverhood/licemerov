@@ -34,9 +34,6 @@ class User < ActiveRecord::Base
     self.user_details
   end
 
-  def create_details
-    self.create_user_details
-  end
 
   private
 
