@@ -9,14 +9,16 @@
   <%= yield(:head) %>
 </head>
 <body>
-  <%= render :partial => 'shared/header' %>
-<% if flash[:notice] %>
-  <div class="notice"><%= flash[:notice] %></div>
-<% end %>
-<% if flash[:alert] %>
-  <div class="alert"><%= flash[:alert] %></div>
-<% end %>
-<%= yield %>
+<%= render :partial => 'shared/header' %>
+<div id="wrapper" rel="<%= @user ? @user.id : nil %>">
+  <% if flash[:notice] %>
+      <div class="notice"><%= flash[:notice] %></div>
+  <% end %>
+  <% if flash[:alert] %>
+      <div class="alert"><%= flash[:alert] %></div>
+  <% end %>
+  <%= yield %>
+</div>
 
 </body>
 </html>

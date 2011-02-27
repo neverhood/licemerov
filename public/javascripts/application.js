@@ -56,6 +56,13 @@ $(document).ready(function() {
         ($(this).find(':file').val().length > 0) ? submit.enable() : submit.disable();
     });
 
+    $('a#delete-friend, a#add-friend, a.cancel-deletion').
+            live("ajax:loading", function() { toggleLoader(this)}).
+            live("ajax:complete", function() {toggleLoader(this)});
+
+    // Show deletion item, hide self
+    $('a.cancel-deletion').live("ajax:complete", function() {$(this).prev().show().next().remove();});
+
     $('.reply').live('click', function() {
         var form = $('#response_form');
         var div = $(this).next();
@@ -89,15 +96,25 @@ $(document).ready(function() {
 
 });
 
-function toggleLoader(form) {
-    var submit = $(form).find(':submit');
-    if (submit.is(':visible'))
-        submit.hide().parent('form').append($loader);
-    else {
-        submit.show().next().remove(); // Show submit button and hide next element, which is #loader
-        if ($(form).children('input[name*="parent_id"]').length && !($(form).children('.field_with_errors').length))
-            $(form).hide();
+function toggleLoader(elem) {
+    var $elem = $(elem);
+    if (elem.tagName.toLowerCase() == 'a') {
+        if ($elem.is(':visible'))
+            $elem.before($loader).hide();
+         else
+            $('#loader').remove();
     }
+    else if (elem.tagName.toLowerCase() == 'form') {
+        var submit = $elem.find(':submit');
+        if (submit.is(':visible'))
+            submit.hide().parent('form').append($loader);
+        else {
+            submit.show().next().remove(); // Show submit button and hide next element, which is #loader
+            if ($elem.children('input[name*="parent_id"]').length && !($(elem).children('.field_with_errors').length))
+                $elem.hide();
+        }
+    }
+
 }
 
 function toggleSize(img, attr) {

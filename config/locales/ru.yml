@@ -33,7 +33,14 @@ ru:
   edit_main_details: Основные
   edit_avatar: Аватар(изображение)
   release: Отмена
-
+  delete_friend: 'Больше не получать приглашений от %{name}'
+  add_friend: Добавить в друзья
+  cancel_friend: Отменить приглашение
+  delete_friend: 'Удалить из друзей'
+  friends: Друзья
+  confirm_friend_delete: 'Вы действительно хотите удалить %{name} из друзей?'
+  confirm_blacklisting: 'Вы действительно хотите добавить %{name} в черный список?'
+  cancel_deletion: Отменить
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'

@@ -1,3 +1,16 @@
 <% if profile_owner? %>
-  <%= render :partial => 'shared/users/header' %>
+    <%= render :partial => 'shared/users/header' %>
 <% end %>
+
+<%= link_to t(:friends), user_friends_path(:user_profile => @user.login) %>
+
+<% unless profile_owner? %>
+    <% if current_user.friendship_with(@user) %>
+        <% @friendship = current_user.friendship_with(@user) %>
+        <%= render :partial => 'friendships/actions/destroy' %>
+    <% elsif current_user.friendship_with(@user, :approved => :all).nil? %>
+        <%= render :partial => 'friendships/actions/add' %>
+    <% end %>
+<% end %>
+
+

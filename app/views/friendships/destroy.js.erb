@@ -1,0 +1,5 @@
+var cancel_deletion = '<%= escape_javascript(link_to t(:cancel_deletion),
+ cancel_deletion_friendship_path(@friendship), :remote => true, :class => 'cancel-deletion',
+ :method => :post) %>';
+
+        $('a#delete-friend').after(cancel_deletion).hide();

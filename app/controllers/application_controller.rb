@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page, :details
 
   before_filter :existent_user
+  before_filter :delete_friendships # Delete friendships that were marked as deleted
 
   private
 
@@ -89,6 +90,10 @@ class ApplicationController < ActionController::Base
     else
       false
     end
+  end
+
+  def delete_friendships
+    Friendship.where(:marked_as_deleted => true).all.each {|f| f.destroy}
   end
 
   alias :cu :current_user

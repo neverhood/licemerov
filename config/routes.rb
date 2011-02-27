@@ -21,6 +21,13 @@ Licemerov::Application.routes.draw do
   # User Details routes
   resources :user_details, :only => [:update]
 
+  # User relationship
+  resources :friendships, :only => [:create, :update, :destroy] do #, :path => '/:user_profile/friendships' do
+    post :cancel, :on => :member
+    post :cancel_deletion, :on => :member
+  end
+  get '/:user_profile/friends' => 'friendships#show', :as => :user_friends
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

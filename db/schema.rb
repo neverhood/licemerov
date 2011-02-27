@@ -10,7 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110218114445) do
+ActiveRecord::Schema.define(:version => 20110226102626) do
+
+  create_table "friendships", :force => true do |t|
+    t.integer  "user_id",           :default => 0
+    t.integer  "friend_id",         :default => 0
+    t.boolean  "approved",          :default => false
+    t.boolean  "canceled",          :default => false
+    t.boolean  "marked_as_deleted", :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "root_entries", :force => true do |t|
     t.integer  "user_id",            :default => 0

@@ -1,0 +1,6 @@
+var approved = '<%= params[:approved].to_s %>';
+        if (approved == 0) {
+            $('a#delete-friend').attr('id', 'add-friend').text('<%= t(:add_friend) %>');
+        } else {
+            $('')
+        }

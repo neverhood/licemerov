@@ -1,0 +1,3 @@
+<% for friend in User.friends_of(@user) %>
+    <%= friend.login %> <br/>
+<% end %>
