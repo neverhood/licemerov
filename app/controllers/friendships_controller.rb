@@ -1,11 +1,25 @@
 class FriendshipsController < ApplicationController
 
-  skip_before_filter :existent_user, :except => [:show]
+  skip_before_filter :existent_user, :except => [:show, :show_pending]
   skip_before_filter :delete_friendships, :except => [:show]
   before_filter :require_user
+  before_filter :require_owner, :only => :show_pending
+
 
   def show
+    @friends = User.friends_of(@user)
+    respond_to do |format|
+      format.html { render :template => 'friendships/show.erb' }
+      format.js { render :layout => false }
+    end
+  end
 
+  def show_pending
+    @friends = User.pending_friends_of(current_user)
+    respond_to do |format|
+      format.html { render :template => 'friendships/show_pending.erb' }
+      format.js { render :layout => false }
+    end
   end
 
   def create # Add friend
@@ -31,7 +45,7 @@ class FriendshipsController < ApplicationController
     end
   end
 
-  def destroy # cancel permanently (add to black list)
+  def destroy # delete friendship
     @friendship = Friendship.find params[:id]
     @friendship.marked_as_deleted = true
     @friendship.save
@@ -40,7 +54,7 @@ class FriendshipsController < ApplicationController
     end
   end
 
-  def cancel_deletion
+  def cancel_deletion # cancel friendship deletion
     @friendship = Friendship.find params[:id]
     @friendship.marked_as_deleted = false
     @friendship.save
@@ -52,4 +66,7 @@ class FriendshipsController < ApplicationController
   def cancel # cancel permanently (add to black list)
 
   end
+
+  private
+
 end
