@@ -11,6 +11,7 @@ div.alert {color:red}
 /* body {background: url(/images/background.png)} */
 body {background: white;color:black;}
 /**** Bases END ****/
+a.new-friends {margin-left: -4px; text-decoration:none; color:red;}
 
 /**** Forms ****/
 #response_form {display:none;}
