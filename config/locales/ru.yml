@@ -38,6 +38,7 @@ ru:
   cancel_friend: Отменить приглашение
   delete_friend: 'Удалить из друзей'
   friends: Друзья
+  pending_friends: Новые Друзья
   confirm_friend_delete: 'Вы действительно хотите удалить %{name} из друзей?'
   confirm_blacklisting: 'Вы действительно хотите добавить %{name} в черный список?'
   cancel_deletion: Отменить

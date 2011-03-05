@@ -38,6 +38,7 @@ $(window).load(function() {
 $(document).ready(function() {
 
 
+    $('a.inactive').live('click', function() {return false});
     $('div.parent .body, div.parent ul.responses').corner();
     $('#parent_form, #response_form, #edit_avatar').clearForm();
 
@@ -126,6 +127,7 @@ function appendErrors(errors, form) { // Render object errors
         form.prepend("<div class='field_with_errors'>" + errors[index] + "</div>");
     });
 }
+
 //  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
 
 

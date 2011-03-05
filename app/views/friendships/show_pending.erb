@@ -1,0 +1,9 @@
+<%= link_to t(:friends), user_friends_path(current_user), :remote => true, :id => 'friends' %>
+
+<%= link_to pending_friends_path(current_user), :remote => true, :class => :inactive, :id => 'pending-friends' do %>
+    <span><%= t(:pending_friends) %>(<strong><%= User.pending_friends_of(current_user).count %></strong>)</span>
+<% end %>
+
+<div id="friends">
+  <%= render :partial => 'friendships/friends/friends' %>
+</div>

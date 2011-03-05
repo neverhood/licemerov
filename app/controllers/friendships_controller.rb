@@ -6,7 +6,7 @@ class FriendshipsController < ApplicationController
   before_filter :require_owner, :only => :show_pending
 
 
-  def show
+  def show # Show user friends
     @friends = User.friends_of(@user)
     respond_to do |format|
       format.html { render :template => 'friendships/show.erb' }
@@ -14,7 +14,7 @@ class FriendshipsController < ApplicationController
     end
   end
 
-  def show_pending
+  def show_pending # Show pending user friends ( e.g. someone added current_user to friend list and awaits confirmation
     @friends = User.pending_friends_of(current_user)
     respond_to do |format|
       format.html { render :template => 'friendships/show_pending.erb' }
@@ -22,7 +22,7 @@ class FriendshipsController < ApplicationController
     end
   end
 
-  def create # Add friend
+  def create # Invite friend
     @friendship = current_user.friendships.build(:friend_id => params[:friend_id])
     @friendship.save
     respond_to do |format|

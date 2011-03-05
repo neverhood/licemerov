@@ -1,8 +1,5 @@
-var section = '<%= params[:section] %>';
+var friends_html = '<%= escape_javascript(render :partial => 'friendships/friends/friends') %>';
 
-        if (section == 'new_friends') {
-            alert('NEW FRIENDS'); }
-        else if (section == 'friends') {
-            alert('FRIENDS');
-        }
-   
+
+        $('div#friends').html('');
+        $('a#friends, a#pending-friends').toggleClass('inactive');

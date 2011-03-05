@@ -2,6 +2,14 @@
     <%= render :partial => 'shared/users/header' %>
 <% end %>
 
+<% if User.pending_friends_of(current_user).count.to_i > 0 && profile_owner? %>
+    <%= link_to pending_friends_path(current_user) do %>
+        <span><%= t(:friends) %>(<strong><%= User.pending_friends_of(current_user).count %></strong>)</span>
+    <% end %>
+<% else %>
+    <%= link_to t(:friends), user_friends_path(@user) %>
+<% end %>
+
 
 <% unless profile_owner? %>
     <% if current_user.friendship_with(@user) %>

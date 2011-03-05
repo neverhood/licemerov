@@ -8,6 +8,10 @@ end
 
 class User < ActiveRecord::Base
 
+  def to_param
+    login.parameterize
+  end
+
   validates :email, :presence => true, :uniqueness => true, :length => {:maximum => 25, :minimum => 5}
   validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 3}, :not_restricted => true
 

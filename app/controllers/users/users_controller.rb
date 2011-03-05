@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
   def update
     if current_user.details.update_attributes(params[:user])
-      redirect_to(edit_user_profile_path(:user_profile => current_user.login),
+      redirect_to(edit_user_profile_path(current_user),
                   :notice => t(:succesfully_updated, :updated => t(:user_details)))
     else
       render :action => :edit
