@@ -27,27 +27,33 @@ $.fn.clearForm = function() {
 };
 
 $(window).load(function() {
+    if ($('#wrapper').attr('rel').length > 1) var user_attributes = $('#wrapper').attr('rel').split(',');
     $.licemerov = {
         version: '1.0',
         jcrop_params: {onChange: refreshAvatarPreview, onSelect: updateCrop, minSize: [100, 100], aspectRation:1},
         jcrop_api: null
     };
-    if(typeof $.Jcrop == 'function') $.licemerov['jcrop_api'] = $.Jcrop('#cropbox', $.licemerov.jcrop_params);
+    if(typeof $.Jcrop == 'function')
+        $.licemerov['jcrop_api'] = $.Jcrop('#cropbox', $.licemerov.jcrop_params);
+    if(typeof user_attributes != 'undefined') {
+        $.licemerov.user_attributes = {login: user_attributes[0], sex: user_attributes[1]};
+    }
 });
 
 $(document).ready(function() {
 
 
     $('a.inactive').live('click', function() {return false});
+
     $('div.parent .body, div.parent ul.responses').corner();
     $('#parent_form, #response_form, #edit_avatar').clearForm();
 
     $('form#parent_form, form#response_form').keyup(function() {
         var submit = this.elements[this.elements.length - 1];
         (this.elements[2].value.length >= 2) ? submit.disabled = '' : submit.disabled = 'disabled'; // elemets[2] is a textarea
-    }).
-            bind("ajax:loading", function() {toggleLoader(this)}). // TODO: Wait for 'remotipart' release for new rails.js and change 'loading' to 'beforeSend'
-            bind("ajax:complete", function() {toggleLoader(this)});
+    });
+//            .bind("ajax:beforeSend", function() {toggleLoader(this)}). // TODO: Wait for JangoSteve's pull request merged into jquery-ujs
+//            bind("ajax:complete", function() {toggleLoader(this)});
 
 
     $('form#edit_avatar').submit(function() {
@@ -57,12 +63,14 @@ $(document).ready(function() {
         ($(this).find(':file').val().length > 0) ? submit.enable() : submit.disable();
     });
 
-    $('a#delete-friend, a#add-friend, a.cancel-deletion').
-            live("ajax:loading", function() { toggleLoader(this)}).
+    $('a#delete-friend, a#add-friend').
+            live("ajax:beforeSend", function() { toggleLoader(this)}).
             live("ajax:complete", function() {toggleLoader(this)});
-
-    // Show deletion item, hide self
-    $('a.cancel-deletion').live("ajax:complete", function() {$(this).prev().show().next().remove();});
+    
+//    $('a#delete-friend').live("ajax:complete", function(evt, data, status, xhr) {
+//        var $this = $(this); alert(xhr.responseText);
+//        ($this.parents('div.friend').length)? $this.parents('div.friend').remove() : $this.remove();
+//    });
 
     $('.reply').live('click', function() {
         var form = $('#response_form');
@@ -95,6 +103,10 @@ $(document).ready(function() {
             $cancel.parents('form').find(':submit').attr('disabled', 'disabled');
     });
 
+    $('a.confirm, a.cancel, a.blacklist').live('click', function() {
+        $(this).parents('div.options').html('').append($loader);
+    }).bind('ajax:complete', function() { $('#loader').remove(); });
+
 });
 
 function toggleLoader(elem) {
@@ -102,7 +114,7 @@ function toggleLoader(elem) {
     if (elem.tagName.toLowerCase() == 'a') {
         if ($elem.is(':visible'))
             $elem.before($loader).hide();
-         else
+        else
             $('#loader').remove();
     }
     else if (elem.tagName.toLowerCase() == 'form') {

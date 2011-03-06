@@ -19,7 +19,7 @@ gem 'remotipart', :git => 'git://github.com/formasfunction/remotipart.git'
 
 # For internalization sake
 gem 'unicode'
-# rails g jquery:install
+# rails g jquery:install.
 gem 'jquery-rails'
 
 

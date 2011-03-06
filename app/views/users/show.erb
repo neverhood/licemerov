@@ -2,21 +2,20 @@
     <%= render :partial => 'shared/users/header' %>
 <% end %>
 
-<% if User.pending_friends_of(current_user).count.to_i > 0 && profile_owner? %>
-    <%= link_to pending_friends_path(current_user) do %>
+<% if User.pending_friends_of(@user).count.to_i > 0 && profile_owner? %>
+    <%= link_to friends_path(current_user, :section => 'pending') do %>
         <span><%= t(:friends) %>(<strong><%= User.pending_friends_of(current_user).count %></strong>)</span>
     <% end %>
 <% else %>
-    <%= link_to t(:friends), user_friends_path(@user) %>
+    <%= link_to t(:friends), friends_path(@user) %>
 <% end %>
 
 
-<% unless profile_owner? %>
+<% if !profile_owner? && current_user %>
     <% if current_user.friendship_with(@user) %>
-        <% @friendship = current_user.friendship_with(@user) %>
-        <%= render :partial => 'friendships/actions/destroy' %>
+        <%= destroy(current_user.friendship_with(@user)) %>
     <% elsif current_user.friendship_with(@user, :approved => :all).nil? %>
-        <%= render :partial => 'friendships/actions/add' %>
+        <%= add %>
     <% end %>
 <% end %>
 

@@ -1,4 +1,5 @@
-<%= form_for @entry, :remote => true, :html => {:id => :parent_form, :multipart => true} do |f| %>
+<%= form_for @entry, :html => {:id => :parent_form, :multipart => true} do |f| %>
+ <%# TODO: add 'remote => true' once JangoSteve's pull request will be merged to jquery-ujs %>
     <%= f.text_area :body, :cols => 50, :rows => 5 %> <br />
     <%= f.label(t :image) %> <%= f.file_field :image %>
     <strong class='cancel-upload'>X</strong> <br />

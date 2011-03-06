@@ -26,8 +26,7 @@ Licemerov::Application.routes.draw do
     post :cancel, :on => :member
     post :cancel_deletion, :on => :member
   end
-  get '/:user_profile/friends' => 'friendships#show', :as => :user_friends
-  get '/:user_profile/pending_friends' => 'friendships#show_pending', :as => :pending_friends
+  get '/:user_profile/friends' => 'friendships#show', :as => :friends
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

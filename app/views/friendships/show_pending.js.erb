@@ -1,5 +1,6 @@
-var friends_html = '<%= escape_javascript(render :partial => 'friendships/friends/friends') %>';
+
+var friends_html = '<%= escape_javascript(render :partial => 'friendships/friends/friends_with_options') %>';
 
 
-        $('div#friends').html('').html(friends_html);
-    $('a#friends, a#pending-friends').toggleClass('inactive');
+        $('div#friends').html(friends_html);
+        $('a#friends, a#pending-friends').toggleClass('inactive');

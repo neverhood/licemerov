@@ -2,15 +2,15 @@
 
 <%= form_for @session do |f| %>
     <div class="row">
-      <%= f.label :login %>: <%= f.text_field :login %>
+      <%= f.label t(:user_login) %>: <%= f.text_field :login %>
     </div>
     <div class="row">
-      <%= f.label :password %>: <%= f.password_field :password %>
+      <%= f.label t(:password) %>: <%= f.password_field :password %>
     </div>
     <div class="row">
-      <%= f.label :remember_me %> <%= f.check_box :remember_me %>
+      <%= f.label t(:remember_me) %> <%= f.check_box :remember_me %>
     </div>
     <div class="submit">
-      <%= f.submit %>
+      <%= f.submit t(:login), :disable_with => t(:please_wait) %>
     </div>
 <% end %>

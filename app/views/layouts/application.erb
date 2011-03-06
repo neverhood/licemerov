@@ -10,7 +10,7 @@
 </head>
 <body>
 <%= render :partial => 'shared/header' %>
-<div id="wrapper" rel="<%= @user ? @user.id : nil %>">
+<div id="wrapper" rel="<%= @user ? "#{@user.login},#{@user.gender}" : nil %>">
   <% if flash[:notice] %>
       <div class="notice"><%= flash[:notice] %></div>
   <% end %>
