@@ -24,7 +24,6 @@ Licemerov::Application.routes.draw do
   # User relationship
   resources :friendships, :only => [:create, :update, :destroy] do #, :path => '/:user_profile/friendships' do
     post :cancel, :on => :member
-    post :cancel_deletion, :on => :member
   end
   get '/:user_profile/friends' => 'friendships#show', :as => :friends
 

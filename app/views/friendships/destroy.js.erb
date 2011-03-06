@@ -1,5 +1,11 @@
+// Delete friend using a link on his profile page
 if ($('#delete-friend').length) {
-    $('#delete-friend').before('<%= escape_javascript add %>').remove();
-} else {
-    $('div#friendship-<%= @friendship.id %>').remove();
+   $('#delete-friend').before('<%= escape_javascript add %>').remove(); alert('1');
+// Delete friend using link in 'pending friends' page
+} else if ( $('#' + id + '.friendship-invite').length ) {
+    $('#<%= @friendship.id %>.friendship-invite').remove();
+}
+ // Delete friend using link in '/friends' page
+else {
+   $('div#friendship-<%= @friendship.id %>').remove(); alert('3');
 }

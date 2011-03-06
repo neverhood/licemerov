@@ -13,10 +13,10 @@ end
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page, :details
+  helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page, :details, :friends_online
 
   before_filter :existent_user
-  before_filter :delete_friendships # Delete friendships that were marked as deleted
+
 
   private
 
@@ -28,6 +28,11 @@ class ApplicationController < ActionController::Base
   def current_user
     return @current_user if defined?(@current_user)
     @current_user = current_user_session && current_user_session.record
+  end
+
+  def friends_online
+    return @friends_online if defined?(@friends_online)
+    @friends_online = current_user && User.friends_of(current_user).find_all {|u| u.last_request_at >= 10.minutes.ago}
   end
 
   def details
@@ -90,10 +95,6 @@ class ApplicationController < ActionController::Base
     else
       false
     end
-  end
-
-  def delete_friendships
-    Friendship.where(:marked_as_deleted => true).all.each {|f| f.destroy}
   end
 
   alias :cu :current_user

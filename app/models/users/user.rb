@@ -34,8 +34,12 @@ class User < ActiveRecord::Base
           where users.id != #{user.id}") }
 
   scope :pending_friends_of, proc {|user|
-    joins(:friendships).where(['friendships.friend_id = ?', user.id]).where(['approved = ?', false])
+    joins(:friendships).where(['friendships.friend_id = ?', user.id]).where(['approved = ?', false]).
+        where(['canceled = ?', false])
   }
+
+  scope :blacklisted, proc {|user| joins('inner join friendships on users.id = friendships.user_id').
+      where(['friendships.friend_id = ?', user.id]).where(['friendships.canceled = ?', true])}
 
   after_create :create_details
 

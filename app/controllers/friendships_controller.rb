@@ -1,28 +1,36 @@
 class FriendshipsController < ApplicationController
 
   skip_before_filter :existent_user, :except => [:show, :show_pending]
-  skip_before_filter :delete_friendships, :except => [:show]
   before_filter :require_user
   before_filter :require_owner, :only => :show_pending
   before_filter :valid_friendship, :only => [:update, :destroy, :cancel]
 
-  respond_to :js, :html
+  SECTIONS = %w(show_pending blacklist online)
 
   def show # Show user friends
-    if profile_owner?
-      @friends = (params[:section] == 'pending') ? User.pending_friends_of(current_user) : User.friends_of(@user)
-    else
+    unless profile_owner?
       @friends = User.friends_of(@user)
+    else
+      @friends = case params[:section]
+                   when nil then User.friends_of(current_user)
+                   when 'pending' then User.pending_friends_of(current_user)
+                   when 'online' then friends_online
+                   when 'blacklist' then User.blacklisted(current_user)
+                 end
     end
-
-    render :template => (params[:section] == 'pending' && profile_owner?)?
-        'friendships/show_pending' : 'friendships/show'
-
+#    if profile_owner?
+#      @friends = (params[:section] == 'pending') ? User.pending_friends_of(current_user) : User.friends_of(@user)
+#    else
+#      @friends = User.friends_of(@user)
+#    end
+#    render :template => (params[:section] == 'pending' && profile_owner?)?
+#        'friendships/show_pending' : 'friendships/show'
+    render :template => 'friendships/' + (params[:section] || 'show')
   end
 
   def create # Invite friend
     @friendship = current_user.friendships.build(:friend_id => params[:friend_id])
-    if User.where(:id => params[:friend_id]).first && @friendship.save
+    if @friendship.save
       render :layout => false
     else
       render :nothing => true
@@ -48,19 +56,20 @@ class FriendshipsController < ApplicationController
   end
 
   def cancel # cancel permanently (add to black list)
-    @friendship = Friendship.find params[:id]
-    if @friendship
-      @friendship.canceled, @friendship.approved = true, false
-      @friendship.save
-    end
-    respond_to do |format|
-      format.js { render :layout => false }
+    @friendship.canceled, @friendship.approved = true, false
+    if @friendship.changed? && @friendship.save
+      respond_to do |format|
+        format.html { redirect_to :back }
+        format.js { render :nothing => true }
+      end
+    else
+      render :nothing => true
     end
   end
 
   private
 
-  def valid_friendship
+  def valid_friendship # Friendship exists and belongs to current_user
     @friendship = Friendship.find params[:id]
     unless @friendship && (@friendship.user_id == current_user.id || @friendship.friend_id == current_user.id)
       render :nothing => true

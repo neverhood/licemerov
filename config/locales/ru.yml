@@ -48,6 +48,7 @@ ru:
   friendship_canceled: Приглашение отменено
   confirm_friend_delete: 'Вы действительно хотите удалить %{name} из друзей?'
   confirm_blacklisting: 'Вы действительно хотите добавить %{name} в черный список?'
+  cancel_friendship: Отменить приглашение?
   cancel_deletion: Отменить
   # Notices
   welcome: Добро Пожаловать

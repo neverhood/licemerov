@@ -103,9 +103,9 @@ $(document).ready(function() {
             $cancel.parents('form').find(':submit').attr('disabled', 'disabled');
     });
 
-    $('a.confirm, a.cancel, a.blacklist').live('click', function() {
-        $(this).parents('div.options').html('').append($loader);
-    }).bind('ajax:complete', function() { $('#loader').remove(); });
+    $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
+        $(this).parents('div.options').hide().after($loader);
+    }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
 
 });
 
