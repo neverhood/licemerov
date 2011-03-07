@@ -1,6 +1,9 @@
 <% if profile_owner? %>
-    <%= show(:inactive) %>
-    <%= show_pending(nil) %>
+  <% section = params[:section] %>
+  <%= show(:inactive => (section == 'show')) %>
+  <%= show_pending(:inactive => (section == 'pending')) %>
+  <%= show_online(:inactive => (section == 'online')) %>
+  <%= show_blacklist(:inactive => (section == 'blacklist')) %>
 <% end %>
 
 <div id="friends">

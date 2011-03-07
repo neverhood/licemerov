@@ -4,28 +4,24 @@ class FriendshipsController < ApplicationController
   before_filter :require_user
   before_filter :require_owner, :only => :show_pending
   before_filter :valid_friendship, :only => [:update, :destroy, :cancel]
+  before_filter :valid_section, :only => :show
 
-  SECTIONS = %w(show_pending blacklist online)
+  SECTIONS = %w(pending blacklist online)
 
   def show # Show user friends
     unless profile_owner?
       @friends = User.friends_of(@user)
     else
       @friends = case params[:section]
-                   when nil then User.friends_of(current_user)
+                   when 'show' then User.friends_of(current_user)
                    when 'pending' then User.pending_friends_of(current_user)
                    when 'online' then friends_online
                    when 'blacklist' then User.blacklisted(current_user)
                  end
     end
-#    if profile_owner?
-#      @friends = (params[:section] == 'pending') ? User.pending_friends_of(current_user) : User.friends_of(@user)
-#    else
-#      @friends = User.friends_of(@user)
-#    end
-#    render :template => (params[:section] == 'pending' && profile_owner?)?
-#        'friendships/show_pending' : 'friendships/show'
-    render :template => 'friendships/' + (params[:section] || 'show')
+    respond_to do |format|
+      format.html
+    end
   end
 
   def create # Invite friend
@@ -33,7 +29,7 @@ class FriendshipsController < ApplicationController
     if @friendship.save
       render :layout => false
     else
-      render :nothing => true
+      render guilty_response # check application_controller
     end
   end
 
@@ -72,8 +68,12 @@ class FriendshipsController < ApplicationController
   def valid_friendship # Friendship exists and belongs to current_user
     @friendship = Friendship.find params[:id]
     unless @friendship && (@friendship.user_id == current_user.id || @friendship.friend_id == current_user.id)
-      render :nothing => true
+      render guilty_response
     end
+  end
+
+  def valid_section
+    params[:section] = 'show' unless SECTIONS.include?(params[:section]) 
   end
 
   def friend_id(friendship)

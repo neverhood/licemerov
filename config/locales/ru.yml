@@ -44,6 +44,8 @@ ru:
   delete_friend: 'Удалить из друзей'
   friends: Друзья
   pending_friends: Новые Друзья
+  friends_online: Друзья Онлайн
+  blacklist: Черный Список
   friendship_approved: Приглашение принято 
   friendship_canceled: Приглашение отменено
   confirm_friend_delete: 'Вы действительно хотите удалить %{name} из друзей?'

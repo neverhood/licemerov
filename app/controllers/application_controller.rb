@@ -13,7 +13,8 @@ end
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page, :details, :friends_online
+  helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page, :details, :friends_online,
+    :guilty_response
 
   before_filter :existent_user
 
@@ -77,11 +78,10 @@ class ApplicationController < ActionController::Base
   end
 
   def existent_user
-    unless ((params[:user_profile].length > 2) && (params[:user_profile].length < 16))
-      redirect_to root_path
-    else
-      @user = User.where(:login => params[:user_profile]).first
-      redirect_to(root_path, :alert => "User #{params[:user_profile]} not found") unless @user
+    return @user if defined?(@user)
+    if (2..16).include?(params[:user_profile] && params[:user_profile].length)
+      user = User.where(:login => params[:user_profile]).first 
+      @user = user unless user.nil?
     end
   end
 
@@ -95,6 +95,10 @@ class ApplicationController < ActionController::Base
     else
       false
     end
+  end
+
+  def guilty_response
+    {:text => 'The server understood the request, but is refusing to serve it', :status => 403}
   end
 
   alias :cu :current_user

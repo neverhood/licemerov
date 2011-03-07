@@ -1,18 +1,30 @@
 module FriendshipsHelper
 
-  def show(html_class)
+  def show(options = {:inactive => false})
+    html_class = (options[:inactive] == true) ? :inactive : nil
     link_to t(:friends), friends_path(current_user), :id => 'friends', :class => html_class
   end
 
   def show_pending(html_class)
-    if User.pending_friends_of(current_user).count > 0
+    pending_friends_count = User.pending_friends_of(current_user).count
+    if pending_friends_count > 0
       link_to friends_path(current_user, :section => 'pending'),
               :class => html_class, :id => 'pending-friends' do
-        "<span>#{t(:pending_friends)}(<strong>#{User.pending_friends_of(current_user).count.to_s}</strong>)</span>".html_safe
+        "<span>#{t(:pending_friends)}(<strong>#{pending_friends_count.to_s}</strong>)</span>".html_safe
       end
     else
       nil
     end
+  end
+
+  def show_online(options = {:inactive => true})
+    html_class = (options[:inactive] === true) ? :inactive : nil
+    link_to t(:friends_online), friends_path(current_user, :section => 'online'), :class => html_class
+  end
+
+  def show_blacklist(options = {:inactive => true})
+    html_class = (options[:inactive] == true) ? :inactive : nil
+    link_to t(:blacklist), friends_path(current_user, :section => 'blacklist'), :class => html_class
   end
 
   def destroy(friendship)
