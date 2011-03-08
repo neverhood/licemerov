@@ -34,6 +34,6 @@
       <%= f.label(t :avatar) %> <%= f.file_field :avatar %>
       <strong class="cancel-upload" rel="disable">X</strong>
     </div>
-    <%= f.submit(t(:renew_avatar), :disabled => true) %>
+    <%= f.submit(t(:renew_avatar), :disabled => true, :disable_with => t(:please_wait)) %>
 <% end %>
 

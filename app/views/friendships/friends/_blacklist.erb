@@ -1,0 +1,19 @@
+
+<div id="blacklist">
+  <% @friends.each do |friend| %>
+      <% friendship = current_user.friendship_with(friend, :approved => false).first %>
+
+      <div class="blacklisted-user" id="<%= friendship.id %>" >
+        <div class="user">
+          <strong><%= friend.login %></strong>
+        </div>
+
+        <div class="options">
+          <%= link_to t(:add_friend), friendship_path(friendship), :remote => true, :method => :put, :class => :confirm,
+                      :confirm => t(:really_add_friend)%>
+          <%= link_to t(:remove_from_blacklist), friendship_path(friendship), :remote => true,
+                      :method => :delete, :class => :cancel, :confirm => t(:really_delete_from_blacklist) %>
+        </div>
+      </div>
+  <% end %>
+</div>

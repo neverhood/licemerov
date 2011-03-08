@@ -1,3 +1,18 @@
-<% @friends.each do |friend| %>
-   <%= friend.login %> <br />
-<% end %>
+
+<div id="friends">
+  <% @friends.each do |friend| %>
+      <% friendship = current_user.friendship_with(friend).first %>
+
+      <div class="friend" id="<%= friendship.id %>" >
+        <div class="user">
+          <strong><%= friend.login %></strong>
+        </div>
+
+        <div class="options">
+          <%= link_to 'SEND MESSAGE' %>
+          <%= link_to t(:delete_friend), friendship_path(friendship), :remote => true,
+                      :method => :delete, :class => :cancel, :confirm => t(:confirm_friend_delete) %>
+        </div>
+      </div>
+  <% end %>
+</div>

@@ -52,6 +52,9 @@ ru:
   confirm_blacklisting: 'Вы действительно хотите добавить %{name} в черный список?'
   cancel_friendship: Отменить приглашение?
   cancel_deletion: Отменить
+  remove_from_blacklist: Убрать из черного списка
+  really_delete_from_blacklist: Действительно убрать пользователя из черного списка?
+  really_add_friend: Действительно добавить в друзья?
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'

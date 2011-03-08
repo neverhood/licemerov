@@ -53,12 +53,9 @@ class User < ActiveRecord::Base
 
   def friendship_with(user, options = {:approved => true})
     friendship = Friendship.where(['(user_id = ? AND friend_id = ?) OR (friend_id = ? AND user_id = ?)',
-                                   self.id, user.id, self.id, user.id]).where(['canceled = ?', false])
-    if options[:approved] != :all
-      friendship = friendship.where(['approved = ?', options[:approved]]).first
-    else
-      friendship = friendship.first
-    end
+                                   self.id, user.id, self.id, user.id]) #.where(['canceled = ?', false])
+    friendship = friendship.where(['approved = ?', options[:approved]]) if options[:approved] != :all
+    friendship
   end
 
   def gender

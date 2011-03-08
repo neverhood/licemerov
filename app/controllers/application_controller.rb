@@ -79,10 +79,8 @@ class ApplicationController < ActionController::Base
 
   def existent_user
     return @user if defined?(@user)
-    if (2..16).include?(params[:user_profile] && params[:user_profile].length)
-      user = User.where(:login => params[:user_profile]).first 
-      @user = user unless user.nil?
-    end
+    @user = User.where(:login => params[:user_profile]).first
+    redirect_to root_path unless @user
   end
 
   def home_page

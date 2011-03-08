@@ -31,7 +31,8 @@ $(window).load(function() {
     $.licemerov = {
         version: '1.0',
         jcrop_params: {onChange: refreshAvatarPreview, onSelect: updateCrop, minSize: [100, 100], aspectRation:1},
-        jcrop_api: null
+        jcrop_api: null,
+        loader: "<img class='loader' src='/images/loader.gif' />"
     };
     if(typeof $.Jcrop == 'function')
         $.licemerov['jcrop_api'] = $.Jcrop('#cropbox', $.licemerov.jcrop_params);
@@ -56,9 +57,7 @@ $(document).ready(function() {
 //            bind("ajax:complete", function() {toggleLoader(this)});
 
 
-    $('form#edit_avatar').submit(function() {
-        toggleLoader(this);
-    }).change(function() {
+    $('form#edit_avatar').change(function() {
         var submit = $(this).find(':submit');
         ($(this).find(':file').val().length > 0) ? submit.enable() : submit.disable();
     });

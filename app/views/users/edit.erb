@@ -31,7 +31,7 @@
     <div class="row">
       <%= f.label(t :birth_date) %> <%= f.date_select :birth_date, {:start_year => 1950, :end_year => Time.now.year - 5} %>
     </div>
-    <%= f.submit :value => t(:update) %>
+    <%= f.submit :value => t(:update), :disable_with => t(:please_wait) %>
 
 <% end %>
 

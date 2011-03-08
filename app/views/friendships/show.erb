@@ -1,11 +1,25 @@
 <% if profile_owner? %>
-  <% section = params[:section] %>
-  <%= show(:inactive => (section == 'show')) %>
-  <%= show_pending(:inactive => (section == 'pending')) %>
-  <%= show_online(:inactive => (section == 'online')) %>
-  <%= show_blacklist(:inactive => (section == 'blacklist')) %>
+    <% section = params[:section] %>
+    <%= show(:inactive => (section == 'show')) %>
+    <%= show_pending(:inactive => (section == 'pending')) %>
+    <%= show_online(:inactive => (section == 'online')) %>
+    <%= show_blacklist(:inactive => (section == 'blacklist')) %>
 <% end %>
 
-<div id="friends">
-  <%= render :partial => 'friendships/friends/friends' %>
-</div>
+<% if profile_owner? %>
+    <div id="friends">
+      <% section ||= params[:section] %>
+      <% if section == 'show' || section == 'online' %>
+          <%= render :partial => 'friendships/friends/friends', :locals => {:owner => true} %>
+      <% elsif section == 'pending' %>
+          <%= render :partial => 'friendships/friends/invites' %>
+      <% elsif section == 'blacklist' %>
+          <%= render :partial => 'friendships/friends/blacklist' %>
+      <% end %>
+    </div>
+<% else %>
+    <div id="friends">
+      <%= render :partial => 'friendships/friends/friends', :locals => {:owner => false} %>
+    </div>
+<% end  %>
+

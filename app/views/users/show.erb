@@ -17,9 +17,9 @@
 
 
 <% if !profile_owner? && current_user %>
-    <% if current_user.friendship_with(@user) %>
+    <% if current_user.friendship_with(@user).first %>
         <%= destroy(current_user.friendship_with(@user)) %>
-    <% elsif current_user.friendship_with(@user, :approved => :all).nil? %>
+    <% elsif current_user.friendship_with(@user, :approved => :all).first.nil? %>
         <%= add %>
     <% end %>
 <% end %>
