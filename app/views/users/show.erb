@@ -6,7 +6,7 @@
   <% pending_friends_count = User.pending_friends_of(current_user).count.to_i %>
   <% if pending_friends_count > 0 %>
     <%= link_to friends_path(current_user, :section => 'pending') do %>
-       <span><%= t(:friends) %>(<strong><%= pending_friends_amount %></strong>)</span>
+       <span><%= t(:friends) %>(<strong><%= pending_friends_count %></strong>)</span>
     <% end %>
   <% else %>
     <%= link_to t(:friends), friends_path(current_user) %>

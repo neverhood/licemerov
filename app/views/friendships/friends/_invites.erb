@@ -1,5 +1,5 @@
 <% @friends.each do |friend| %>
-    <% friendship = current_user.friendship_with(friend, :approved => false) %>
+    <% friendship = current_user.friendship_with(friend, :approved => false).first %>
 
     <div class="friendship-invite" id="<%= friendship.id %>" >
       <div class="user">

@@ -8,6 +8,8 @@ class FriendshipsController < ApplicationController
 
   SECTIONS = %w(pending blacklist online)
 
+  layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
+
   def show # Show user friends
     unless profile_owner?
       @friends = User.friends_of(@user)
@@ -27,7 +29,7 @@ class FriendshipsController < ApplicationController
   def create # Invite friend
     @friendship = current_user.friendships.build(:friend_id => params[:friend_id])
     if @friendship.save
-      render :layout => false
+      render :json => t(:invite_sent)
     else
       render guilty_response # check application_controller
     end
@@ -35,10 +37,10 @@ class FriendshipsController < ApplicationController
 
   def update # Confirm  friendship
     @friendship.approved, @friendship.canceled = true, false
-    respond_to do |format|
-      @friendship.changed? && @friendship.save
-      format.js { render :layout => false }
-      format.html { redirect_to :back }
+    if @friendship.changed? && @friendship.save
+      render :json => t(:friendship_approved) 
+    else
+      render guilty_response
     end
   end
 

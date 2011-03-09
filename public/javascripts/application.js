@@ -65,11 +65,10 @@ $(document).ready(function() {
     $('a#delete-friend, a#add-friend').
             live("ajax:beforeSend", function() { toggleLoader(this)}).
             live("ajax:complete", function() {toggleLoader(this)});
+    $('a#add-friend').live("ajax:complete", function(evt, xhr, status) {
+        $(this).after('<div class="notice">' + xhr.responseText + '</div>');
+    });
     
-//    $('a#delete-friend').live("ajax:complete", function(evt, data, status, xhr) {
-//        var $this = $(this); alert(xhr.responseText);
-//        ($this.parents('div.friend').length)? $this.parents('div.friend').remove() : $this.remove();
-//    });
 
     $('.reply').live('click', function() {
         var form = $('#response_form');
@@ -105,6 +104,10 @@ $(document).ready(function() {
     $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
         $(this).parents('div.options').hide().after($loader);
     }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
+
+    $('a.confirm').live('ajax:complete', function(evt, xhr, status) {
+        $(this).parents('.options').html('<div class="notice">' + xhr.responseText + '</div>').show();
+    });
 
 });
 
