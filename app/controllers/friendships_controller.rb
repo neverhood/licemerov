@@ -2,7 +2,6 @@ class FriendshipsController < ApplicationController
 
   skip_before_filter :existent_user, :except => [:show, :show_pending]
   before_filter :require_user
-  before_filter :require_owner, :only => :show_pending
   before_filter :valid_friendship, :only => [:update, :destroy, :cancel]
   before_filter :valid_section, :only => :show
 
