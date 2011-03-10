@@ -43,7 +43,7 @@ ru:
   cancel_friend: Отменить приглашение
   delete_friend: 'Удалить из друзей'
   friends: Друзья
-  pending_friends: Новые Друзья
+  pending_friends: Заявки в друзья 
   friends_online: Друзья Онлайн
   blacklist: Черный Список
   friendship_approved: Приглашение принято 
@@ -53,6 +53,8 @@ ru:
   cancel_friendship: Отменить приглашение?
   cancel_deletion: Отменить
   remove_from_blacklist: Убрать из черного списка
+  added_to_blacklist: Перенесен в черный список
+  removed_from_blacklist: Удален из черного списка
   invite_sent: Приглашение отправлено
   really_delete_from_blacklist: Действительно убрать пользователя из черного списка?
   really_add_friend: Действительно добавить в друзья?

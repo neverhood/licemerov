@@ -29,26 +29,28 @@ class FriendshipsController < ApplicationController
   def create # Invite friend
     @friendship = current_user.friendships.build(:friend_id => params[:friend_id])
     if @friendship.save
-      render :json => t(:invite_sent)
+      render :json => { :message => t(:invite_sent), :html_class => :notice }
     else
-      render guilty_response # check application_controller
+      render :nothing => true # probably request submitted by mistake 
     end
   end
 
   def update # Confirm  friendship
     @friendship.approved, @friendship.canceled = true, false
     if @friendship.changed? && @friendship.save
-      render :json => t(:friendship_approved) 
+      render :json => { :message => t(:friendship_approved), :html_class => :notice }
     else
-      render guilty_response
+      render :nothing => true
     end
   end
 
   def destroy # delete/cancel friendship
     @friendship.destroy
+    # As this action skips 'existent user' filter, we must know the profile owners id to show 
+    # an 'add to friends' link
     @user = User.where(:id => friend_id(@friendship)).first
     respond_to do |format|
-      format.js {render :layout => false}
+      format.js # render js.erb for this action
       format.html { redirect_to :back }
     end
   end
@@ -58,7 +60,7 @@ class FriendshipsController < ApplicationController
     if @friendship.changed? && @friendship.save
       respond_to do |format|
         format.html { redirect_to :back }
-        format.js { render :nothing => true }
+        format.js { render :json => {:message => t(:added_to_blacklist), :html_class => :warn } }
       end
     else
       render :nothing => true

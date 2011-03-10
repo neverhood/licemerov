@@ -1,11 +1,15 @@
+var id = '<%= @friendship.id %>';
 // Delete friend using a link on his profile page
 if ($('#delete-friend').length) {
-   $('#delete-friend').before('<%= escape_javascript add %>').remove(); alert('1');
+   $('#delete-friend').before('<%= escape_javascript add %>').remove(); 
 // Delete friend using link in 'pending friends' page
-} else if ( $('#' + id + '.friendship-invite').length ) {
+} else if ( $('#<%= @friendship.id %>' + '.friendship-invite').length ) {
     $('#<%= @friendship.id %>.friendship-invite').remove();
+} else if ( $('.blacklisted-user#<%= @friendship.id %>').length ) {
+  $('#<%= @friendship.id %> .options').html('<%= t(:removed_from_blacklist) %>').
+    addClass('notice').show().next().remove();
 }
  // Delete friend using link in '/friends' page
 else {
-   $('div#friendship-<%= @friendship.id %>').remove(); alert('3');
+   $('div.friend#<%= @friendship.id %>').remove(); 
 }

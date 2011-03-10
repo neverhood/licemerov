@@ -66,7 +66,8 @@ $(document).ready(function() {
             live("ajax:beforeSend", function() { toggleLoader(this)}).
             live("ajax:complete", function() {toggleLoader(this)});
     $('a#add-friend').live("ajax:complete", function(evt, xhr, status) {
-        $(this).after('<div class="notice">' + xhr.responseText + '</div>');
+        var params = $.parseJSON(xhr.responseText);
+        $(this).after('<div class="' + params.html_class + '">' + params.message + '</div>');
     });
     
 
@@ -105,8 +106,10 @@ $(document).ready(function() {
         $(this).parents('div.options').hide().after($loader);
     }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
 
-    $('a.confirm').live('ajax:complete', function(evt, xhr, status) {
-        $(this).parents('.options').html('<div class="notice">' + xhr.responseText + '</div>').show();
+    $('a.confirm, a.blacklist').live('ajax:complete', function(evt, xhr, status) {
+        var params = $.parseJSON(xhr.responseText);
+        $(this).parents('div.options').html('<div class="' +
+          params.html_class + '">' + params.message + '</div>').show();
     });
 
 });
