@@ -6,6 +6,7 @@ class CreateMessages < ActiveRecord::Migration
       t.string :user_login, :nil => false, :default => ''
       t.integer :user_sex, :nil => false, :default => 0
       t.boolean :read, :nil => false, :default => false
+      t.text :body, :nil => false, :default => ''
       t.string :subject
       t.marked_as_deleted, :nil => false, :default => false
 
