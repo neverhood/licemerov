@@ -147,7 +147,6 @@ function appendErrors(errors, form) { // Render object errors
 
 //  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
 
-
 function releaseJcrop() {
     $.licemerov.jcrop_api.release();
     $('#release_jcrop').hide().parent('form').find(':submit').attr('disabled', 'disabled').

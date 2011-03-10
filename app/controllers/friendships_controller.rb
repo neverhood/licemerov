@@ -29,7 +29,10 @@ class FriendshipsController < ApplicationController
   def create # Invite friend
     @friendship = current_user.friendships.build(:friend_id => params[:friend_id])
     if @friendship.save
-      render :json => { :message => t(:invite_sent), :html_class => :notice }
+      respond_to do |format|
+        format.js { render :json => { :message => t(:invite_sent), :html_class => :notice } }
+        format.html { redirect_to :back, :notice => t(:invite_sent) }
+      end
     else
       render :nothing => true # probably request submitted by mistake 
     end
