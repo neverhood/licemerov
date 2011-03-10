@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  receiver_id: 1
+  user_login: MyString
+  user_sex: 1
+  read: false
+  subject: MyString
+
+two:
+  user_id: 1
+  receiver_id: 1
+  user_login: MyString
+  user_sex: 1
+  read: false
+  subject: MyString
