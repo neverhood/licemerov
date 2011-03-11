@@ -59,7 +59,7 @@ $(document).ready(function() {
 
     $('form#edit_avatar').change(function() {
         var submit = $(this).find(':submit');
-        ($(this).find(':file').val().length > 0) ? submit.enable() : submit.disable();
+        ($(this).find(':file').val().length > 0) ? $(submit).enable() : $(submit).disable();
     });
 
     $('a#delete-friend, a#add-friend').
@@ -82,7 +82,7 @@ $(document).ready(function() {
         $('#parent_form').clearForm();
     });
 
-    $('img.regular, img.enlarged').live('click', function() {  // Enlarge image on click. It`s WEB 2.0, motherfucker
+    $('img.regular, img.enlarged').live('click', function() {  // Enlarge image
         var type = this.className, opposite_type = type == 'regular' ? 'enlarged' : 'regular';
         $(this).addClass(opposite_type).removeClass(type).
                 css({height:toggleSize($(this), 'height'), width:toggleSize($(this), 'width')}).

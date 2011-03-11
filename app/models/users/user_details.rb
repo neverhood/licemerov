@@ -8,6 +8,9 @@ end
 
 class UserDetails < ActiveRecord::Base
 
+  attr_accessible :first_name, :last_name, :birth_date, :country, :city, :avatar, 
+     :phone, :website, :crop_x, :crop_y, :crop_w, :crop_h
+
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   belongs_to :user
   has_attached_file :avatar,

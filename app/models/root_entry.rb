@@ -1,14 +1,10 @@
-#class ExistingValidator < ActiveModel::EachValidator
-#  # You can`t register with restricted login!!!
-#  def validate_each(record, attribute, value)
-#    record.errors[attribute] << ": Using #{attribute} '#{value}' is forbidden, sorry" unless
-#        !User::RESTRICTED_LOGINS.index(value) #.find {|login| value =~ /#{login}/}
-#  end
-#end
 
 class RootEntry < ActiveRecord::Base
 
   validates :body, :presence => true, :length => {:minimum => 2, :maximum => 150}
+
+  attr_accessible :mood, :body, :parent_id, :image 
+    
 
   has_attached_file :image,
                     #:path => Settings.services.assets.path,
