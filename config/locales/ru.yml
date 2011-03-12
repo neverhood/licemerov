@@ -60,6 +60,7 @@ ru:
   really_add_friend: Действительно добавить в друзья?
   # Messages
   messages: Сообщения
+  send_message: Отправить Сообщение
   message_created: Сообщение отправлено
   incoming_messages: Входящие
   sent_messages: Исходящие

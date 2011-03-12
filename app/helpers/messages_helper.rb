@@ -10,4 +10,8 @@ module MessagesHelper
     link_to t(:sent_messages), messages_path(current_user, :section => 'sent'), :class => html_class
   end
 
+  def send_message
+
+  end
+
 end

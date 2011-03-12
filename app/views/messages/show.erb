@@ -2,6 +2,7 @@
 
 <%= incoming(:inactive => (params[:section] == 'inbox') ) %>
 <%= sent(:inactive => (params[:section] == 'sent') ) %>
+<%# send_message %>
 
 <% if params[:section] == 'inbox' %>
     <div id="incoming-messages">
@@ -12,3 +13,4 @@
       <%= render :partial => 'sent_messages' %>
     </div>
 <% end %>
+
