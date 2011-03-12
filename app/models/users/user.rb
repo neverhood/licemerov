@@ -12,13 +12,42 @@ class User < ActiveRecord::Base
     login.parameterize
   end
 
-  attr_accessible :login, :email, :sex, :password, :password_confirmation
+  attr_accessible :login, :email, :sex, :password, :password_confirmation, :avatar, :crop_x, :crop_y, :crop_w, :crop_h
+  attr_accessor :crop_x, :crop_y, :crop_h, :crop_w
+
+  # AVATAR section
+  has_attached_file :avatar,
+                    #:path => Settings.services.assets.path,
+                    #:url => Settings.services.assets.url,
+                    :default_style => :thumb,
+                    #:default_url =>
+                    #    Settings.services.assets.defaults_path,
+                    #:whiny_thumbnails => true,
+                    :styles => {
+                        :thumb => {:geometry => "110x110>", :format => :jpg, :processors => [:cropper]},
+                        :small => {:geometry => "200x200>", :format => :jpg, :processors => [:cropper]},
+                        :large => ['600x600>', :jpg]
+                    }
+  after_post_process :save_avatar_dimensions
+
+  validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'],
+                                    :unless => Proc.new  { |model| model.avatar }
+  validates_attachment_size :avatar, :less_than => 1.megabytes, :unless => Proc.new { |model| model.avatar }
+
+  before_save :randomize_file_name, :if => :uploading_avatar?
+  after_update :reprocess_avatar, :if => :cropping?
+
+  validate :avatar_geometry
+
+  scope :wtf, proc {|user| select('login, ')}
+
+  # AVATAR section END
 
   validates :email, :presence => true, :uniqueness => true, :length => {:maximum => 25, :minimum => 5}
   validates :login, :presence => true, :uniqueness => true, :length => {:maximum => 15, :minimum => 3}, :not_restricted => true
 
   delegate :first_name, :first_name=, :last_name, :last_name=, :city, :city=, :country, :country=,
-           :avatar, :avatar=, :phone, :phone=, :birth_date, :birth_date=, :website, :website=, :age, :to => :user_details
+           :phone, :phone=, :birth_date, :birth_date=, :website, :website=, :age, :to => :user_details
 
   has_one :user_details # e.g -> Name, gender etc
 
@@ -72,11 +101,42 @@ class User < ActiveRecord::Base
     self.user_details
   end
 
+  def cropping?
+    ![crop_x, crop_y, crop_w, crop_h].find {|a| !a.is_a? Fixnum }.nil?
+  end
+
 
   private
 
   def create_details
     self.create_user_details
+  end
+
+  def uploading_avatar?
+    avatar_file_name_changed?
+  end
+
+  def randomize_file_name
+    extension = File.extname(avatar_file_name).downcase
+    self.avatar.instance_write(:file_name, "#{ActiveSupport::SecureRandom.hex(16)}#{extension}")
+  end
+
+  def reprocess_avatar
+    avatar.reprocess!
+  end
+
+  def save_avatar_dimensions # See lib/attachment.rb for details
+    if avatar.geometry.width > 100 && avatar.geometry.height > 100
+      self.avatar_dimensions = {:original => {:width => avatar.geometry.width, :height => avatar.geometry.height},
+                                :large => {:width => avatar.geometry(:large).width, :height => avatar.geometry(:large).height}}.to_s
+    end
+  end
+
+  def avatar_geometry
+    if self.avatar_file_name_changed?
+      self.errors.add(:avatar,
+                      'is too small( should be at least 100x100 px image)') if (avatar.geometry.height < 100 || avatar.geometry.width < 100)
+    end
   end
 
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110310154528) do
+ActiveRecord::Schema.define(:version => 20110312203919) do
 
   create_table "friendships", :force => true do |t|
     t.integer  "user_id",           :default => 0
@@ -60,10 +60,6 @@ ActiveRecord::Schema.define(:version => 20110310154528) do
     t.datetime "updated_at"
     t.string   "country"
     t.string   "city"
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
     t.string   "phone"
     t.string   "website"
     t.string   "avatar_dimensions"
@@ -87,6 +83,11 @@ ActiveRecord::Schema.define(:version => 20110310154528) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sex",                 :default => 1
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.string   "avatar_dimensions"
   end
 
 end

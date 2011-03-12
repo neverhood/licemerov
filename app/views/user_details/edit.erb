@@ -6,17 +6,17 @@
 <% end %>
 
 
-<%= form_for @details, :html => {:method => :put, :multipart => true, :id => :edit_avatar} do |f| %>
-    <% if @details.avatar.exists? %>
+<%= form_for current_user, :html => {:method => :put, :multipart => true, :id => :edit_avatar} do |f| %>
+    <% if current_user.avatar.exists? %>
 
         <table>
           <tr>
             <td>
-              <%= image_tag @details.avatar.url(:large), 'data-geometry' => @details.avatar.dimensions(:large).to_s,
-                      'data-ratio' => @details.avatar.ratio(:original, :large), :id => :cropbox %>
+              <%= image_tag current_user.avatar.url(:large), 'data-geometry' => current_user.avatar.dimensions(:large).to_s,
+                      'data-ratio' => current_user.avatar.ratio(:original, :large), :id => :cropbox %>
             </td>
             <td>
-              &emsp;<%= image_tag(@details.avatar.url(:small), :id => 'current-avatar') %>
+              &emsp;<%= image_tag(current_user.avatar.url(:small), :id => 'current-avatar') %>
             </td>
           </tr>
         </table>
@@ -24,7 +24,7 @@
         <input type="button" value="<%= t(:release) %>" id="release_jcrop">
         <h4>Preview</h4>
         <div id='avatar-preview'>
-          <%= image_tag @details.avatar.url(:large), :id => :preview  %>
+          <%= image_tag current_user.avatar.url(:large), :id => :preview  %>
         </div>
         <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
             <%= f.hidden_field attribute, :id => attribute %>

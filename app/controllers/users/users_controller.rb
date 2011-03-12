@@ -13,9 +13,12 @@ class UsersController < ApplicationController
   end
 
   def update
-    if current_user.details.update_attributes(params[:user])
-      redirect_to(edit_user_profile_path(current_user),
-                  :notice => t(:succesfully_updated, :updated => t(:user_details)))
+    if params[:user][:avatar]
+      [:crop_x, :crop_y, :crop_w, :crop_h].each {|a| params[:user][a] = nil}
+    end
+    if current_user.update_attributes(params[:user])
+      redirect_to(edit_avatar_path(current_user),
+                  :notice => t(:succesfully_updated, :updated => t(:avatar)))
     else
       render :action => :edit
     end

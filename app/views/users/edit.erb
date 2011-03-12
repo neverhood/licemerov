@@ -4,7 +4,7 @@
 
 <%= render :partial => 'shared/errors', :locals => {:target => @details} %>
 
-<%= form_for current_user, :html => {:method => :put} do |f| %>
+<%= form_for @details, :html => {:method => :put} do |f| %>
 
     <div class="row">
       <%= f.label(t :first_name) %>: <%= f.text_field :first_name, :value => @details.first_name  %>
