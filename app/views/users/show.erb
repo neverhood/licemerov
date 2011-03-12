@@ -11,6 +11,7 @@
   <% else %>
     <%= link_to t(:friends), friends_path(current_user) %>
   <% end %>
+    <%= link_to t(:messages), messages_path(current_user) %>
 <% else %>
   <%= link_to t(:friends), friends_path(@user) %>
 <% end %>

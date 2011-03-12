@@ -58,6 +58,13 @@ ru:
   invite_sent: Приглашение отправлено
   really_delete_from_blacklist: Действительно убрать пользователя из черного списка?
   really_add_friend: Действительно добавить в друзья?
+  # Messages
+  messages: Сообщения
+  message_created: Сообщение отправлено
+  incoming_messages: Входящие
+  sent_messages: Исходящие
+  subject: Тема
+  whom_to: Кому
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'

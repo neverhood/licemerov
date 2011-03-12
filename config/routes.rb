@@ -29,7 +29,7 @@ Licemerov::Application.routes.draw do
 
   # Messages 
   resources :messages, :only => [:create, :update, :destroy] 
-  get '/:user_profile/messages' => 'messages#show'
+  get '/:user_profile/messages' => 'messages#show', :as => :messages
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

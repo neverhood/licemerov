@@ -8,7 +8,7 @@ class CreateMessages < ActiveRecord::Migration
       t.boolean :read, :nil => false, :default => false
       t.text :body, :nil => false, :default => ''
       t.string :subject
-      t.marked_as_deleted, :nil => false, :default => false
+      t.boolean :marked_as_deleted, :nil => false, :default => false
 
       t.timestamps
     end

@@ -1,0 +1,7 @@
+<% @messages.each do |message| %>
+    <div><%= t(:subject) %>: <%= message.subject %></div>
+    <div><%= t(:whom_to) %>: <%= message.receiver.login %></div>
+    <div>
+      <%= truncate message.body %>
+    </div>
+<% end %>
