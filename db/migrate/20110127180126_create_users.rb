@@ -9,6 +9,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :persistence_token, :null => false, :default => ''
       t.string :single_access_token, :null => false, :default => ''
       t.string :perishable_token, :null => false, :default => ''
+      t.integer :sex, :null => false, :default => 1
 
       # MAGIC Columns
 

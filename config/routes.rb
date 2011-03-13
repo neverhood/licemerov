@@ -12,8 +12,8 @@ Licemerov::Application.routes.draw do
 
   # User profile route
   get '/:user_profile' => 'users#show', :as => :user_profile #, :constraints => {:user_profile => /.{3,15}/}
-  get '/:user_profile/edit' => 'users#edit', :as => :edit_user_profile
-  get '/:user_profile/avatar/edit' => 'user_details#edit', :as => :edit_avatar
+  get '/:user_profile/edit' => 'user_details#edit', :as => :edit_user_profile
+  get '/:user_profile/avatar/edit' => 'users#edit', :as => :edit_avatar
 
   # User routes
   resources :users, :only => [:create, :update]
