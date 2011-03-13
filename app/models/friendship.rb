@@ -2,7 +2,7 @@ class ExistentUserValidator < ActiveModel::EachValidator
   # Check if user exists
   def validate_each(record, attribute, value)
     record.errors[attribute] << "wrong #{attribute}" unless
-        User.where(['id = ?', value.to_i]).count > 0 
+        User.where(['id = ?', value.to_i]).count > 0
   end
 end
 
@@ -23,7 +23,14 @@ class Friendship < ActiveRecord::Base
   # Look for existent friendship before creating one
   scope :unique_combination, proc {|user_id, friend_id|
     where(['(user_id = ? OR user_id = ?) AND (friend_id = ? OR friend_id = ?)',
-                                   user_id, friend_id, user_id, friend_id]) } 
+           user_id, friend_id, user_id, friend_id]) }
+
+  # joining query, check User model
+  scope :friendships_of, proc {|user|
+    select('friend_id, user_id').
+        where(['((user_id = ?) or (friend_id = ?))', user.id, user.id]).
+        where(['approved = ?', true]).where(['canceled = ?', false])
+  }
 
   private
 

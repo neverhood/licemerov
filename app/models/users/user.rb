@@ -60,12 +60,12 @@ class User < ActiveRecord::Base
 
   # Make one db request instead of two ( for both direct and inverse friendships )
   # you must show it some love even though it's ugly
+
   scope :friends_of, proc {|user|
-    joins("inner join (select f.user_id, f.friend_id from friendships f
-              where ((f.user_id = #{user.id}) or (f.friend_id = #{user.id}))
-              AND f.approved = 't' AND f.canceled = 'f') f
-          on users.id = f.friend_id or users.id = f.user_id
-          where users.id != #{user.id}") }
+    joins(' INNER JOIN (' + Friendship.friendships_of(user).to_sql + ') f 
+      ON users.id = f.friend_id OR users.id = f.user_id').
+        where(['users.id != ?', user.id])
+  }
 
   scope :pending_friends_of, proc {|user|
     joins(:friendships).where(['friendships.friend_id = ?', user.id]).where(['approved = ?', false]).
