@@ -27,35 +27,32 @@ $.fn.clearForm = function() {
 };
 
 $(window).load(function() {
-    if ($('#wrapper').attr('rel').length > 1) var user_attributes = $('#wrapper').attr('rel').split(',');
+
+});
+
+$(document).ready(function() {
+   if ($('#wrapper').attr('data-user').length > 1) var user_attributes = $('#wrapper').attr('data-user').split(',');
     $.licemerov = {
         version: '1.0',
         jcrop_params: {onChange: refreshAvatarPreview, onSelect: updateCrop, minSize: [100, 100], aspectRation:1},
         jcrop_api: null,
-        loader: "<img class='loader' src='/images/loader.gif' />"
+        loader: "<img class='loader' src='/images/loader.gif' />",
+        user: {}
     };
+
     if(typeof $.Jcrop == 'function')
         $.licemerov['jcrop_api'] = $.Jcrop('#cropbox', $.licemerov.jcrop_params);
     if(typeof user_attributes != 'undefined') {
-        $.licemerov.user_attributes = {login: user_attributes[0], sex: user_attributes[1]};
+        $.licemerov.user.attributes = {login: user_attributes[0], sex: user_attributes[1]};
+        if (typeof user_attributes[2] != 'undefined')
+            $.licemerov.user.attributes.avatar_url = user_attributes[2];
     }
+    if ($('#friends-json').length)
+        $.licemerov.user.friends = $.parseJSON( $('#friends-json').text() );
 });
 
+
 $(document).ready(function() {
-    var AVAILABLE_LOGINS = [];
-
-    if ($('#friends-json').length) {
-        var json = $('#friends-json').text();
-        var lolo = $.parseJSON(json);
-        var available_logins = [];
-        $.each(lolo, function(index) {
-           available_logins.push(lolo[index].login);
-        });
-        alert(available_logins[0]);
-        AVAILABLE_LOGINS = available_logins;
-    }
-
-    $('#please').autocomplete({source: AVAILABLE_LOGINS});
 
     $('a.inactive').live('click', function() {return false});
 
@@ -64,7 +61,7 @@ $(document).ready(function() {
 
     $('form#parent_form, form#response_form').keyup(function() {
         var submit = this.elements[this.elements.length - 1];
-        (this.elements[2].value.length >= 2) ? submit.disabled = '' : submit.disabled = 'disabled'; // elemets[2] is a textarea
+        (this.elements[2].value.length >= 2) ? submit.disabled = '' : submit.disabled = 'disabled'; // elements[2] is a textarea
     });
 //            .bind("ajax:beforeSend", function() {toggleLoader(this)}). // TODO: Wait for JangoSteve's pull request merged into jquery-ujs
 //            bind("ajax:complete", function() {toggleLoader(this)});
@@ -78,11 +75,11 @@ $(document).ready(function() {
     $('a#delete-friend, a#add-friend').
             live("ajax:beforeSend", function() { toggleLoader(this)}).
             live("ajax:complete", function() {toggleLoader(this)});
-    $('a#add-friend').live("ajax:complete", function(evt, xhr, status) {
+    $('a#add-friend').live("ajax:complete", function(evt, xhr) {
         var params = $.parseJSON(xhr.responseText);
         $(this).after('<div class="' + params.html_class + '">' + params.message + '</div>');
     });
-    
+
 
     $('.reply').live('click', function() {
         var form = $('#response_form');
@@ -119,10 +116,10 @@ $(document).ready(function() {
         $(this).parents('div.options').hide().after($loader);
     }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
 
-    $('a.confirm, a.blacklist').live('ajax:complete', function(evt, xhr, status) {
+    $('a.confirm, a.blacklist').live('ajax:complete', function(evt, xhr) {
         var params = $.parseJSON(xhr.responseText);
         $(this).parents('div.options').html('<div class="' +
-          params.html_class + '">' + params.message + '</div>').show();
+                params.html_class + '">' + params.message + '</div>').show();
     });
 
 });

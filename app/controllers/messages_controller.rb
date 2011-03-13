@@ -5,12 +5,24 @@ class MessagesController < ApplicationController
   before_filter :require_owner
   before_filter :valid_section, :only => :show
   before_filter :valid_message, :only => [:update, :destroy]
+  skip_before_filter :existent_user, :only => [:new, :create, :update, :destroy]
+  skip_before_filter :require_owner, :only => :new
+
+  def new
+    if current_user
+      term = params[:term]
+      users = User.friends_of(current_user).where(['users.login LIKE ?', "%#{term}%"])
+      render :json => users.map {|u| {:value => u.login, :id => u.login}}
+    else
+      render :json => 'Please, stop being so adopted'
+    end
+  end
 
   def show
     @message = Message.new
     @messages = case params[:section]
-                when 'inbox' then current_user.incoming_messages
-                when 'sent' then current_user.messages
+                  when 'inbox' then current_user.incoming_messages
+                  when 'sent' then current_user.messages
                 end
   end
 

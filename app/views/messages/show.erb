@@ -1,3 +1,9 @@
+<% content_for(:head) do %>
+    <%= stylesheet_link_tag "jquery.css" %>
+    <%= javascript_include_tag "jquery-ui.js" %>
+    <%= javascript_include_tag "messages" %>
+<% end %>
+
 <h1> <%= (params[:section] == 'inbox') ? t(:incoming_messages) : t(:sent_messages) %> </h1>
 
 <%= incoming(:inactive => (params[:section] == 'inbox') ) %>
@@ -14,3 +20,13 @@
     </div>
 <% end %>
 
+<div id='friends-json'>
+  <%= User.friends_of(current_user).map {|u|
+      {:avatar => u.avatar.url(:small), :value => u.login} }.to_json
+  %>
+</div>
+
+
+
+<input type="text" id="please" />
+<input type="text" id="please-avatar" />

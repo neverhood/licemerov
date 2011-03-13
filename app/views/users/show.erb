@@ -1,23 +1,19 @@
 <% if profile_owner? %>
-<% content_for(:head) do %>
-    <%= stylesheet_link_tag "jquery.css" %>
-    <%= javascript_include_tag "jquery-ui.js" %>
-<% end %>
     <%= render :partial => 'shared/users/header' %>
 <% end %>
 
 <% if profile_owner? %>
-  <% pending_friends_count = User.pending_friends_of(current_user).count.to_i %>
-  <% if pending_friends_count > 0 %>
-    <%= link_to friends_path(current_user, :section => 'pending') do %>
-       <span><%= t(:friends) %>(<strong><%= pending_friends_count %></strong>)</span>
+    <% pending_friends_count = User.pending_friends_of(current_user).count.to_i %>
+    <% if pending_friends_count > 0 %>
+        <%= link_to friends_path(current_user, :section => 'pending') do %>
+            <span><%= t(:friends) %>(<strong><%= pending_friends_count %></strong>)</span>
+        <% end %>
+    <% else %>
+        <%= link_to t(:friends), friends_path(current_user) %>
     <% end %>
-  <% else %>
-    <%= link_to t(:friends), friends_path(current_user) %>
-  <% end %>
     <%= link_to t(:messages), messages_path(current_user) %>
 <% else %>
-  <%= link_to t(:friends), friends_path(@user) %>
+    <%= link_to t(:friends), friends_path(@user) %>
 <% end %>
 
 
@@ -29,9 +25,5 @@
     <% end %>
 <% end %>
 
-<div id='friends-json'>
-  <%= User.friends_of(current_user).map {|u| {:login => u.login, :avatar => u.avatar.url } }.to_json %>
-</div>
 
-<input type="text" id="please" />
 

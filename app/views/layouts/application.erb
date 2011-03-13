@@ -10,7 +10,14 @@
 </head>
 <body>
 <%= render :partial => 'shared/header' %>
-<div id="wrapper" rel="<%= @user ? "#{@user.login},#{@user.gender}" : nil %>">
+<% if @user && @user.avatar.exists? %>
+    <% user_attrs = "#{@user.login},#{@user.gender},#{@user.avatar.url(:small)}" %>
+<% elsif @user && !@user.avatar.exists? %>
+    <% user_attrs = "#{@user.login},#{@user.gender}" %>
+<% else %>
+    <% user_attrs = nil %>
+<% end %>
+<div id="wrapper" data-user="<%= user_attrs %>">
   <% if flash[:notice] %>
       <div class="notice"><%= flash[:notice] %></div>
   <% end %>

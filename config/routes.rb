@@ -28,7 +28,7 @@ Licemerov::Application.routes.draw do
   get '/:user_profile/friends' => 'friendships#show', :as => :friends
 
   # Messages 
-  resources :messages, :only => [:create, :update, :destroy] 
+  resources :messages, :only => [:create, :update, :destroy, :new]
   get '/:user_profile/messages' => 'messages#show', :as => :messages
 
   # The priority is based upon order of creation:
