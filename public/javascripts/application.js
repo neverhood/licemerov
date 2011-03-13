@@ -42,7 +42,20 @@ $(window).load(function() {
 });
 
 $(document).ready(function() {
+    var AVAILABLE_LOGINS = [];
 
+    if ($('#friends-json').length) {
+        var json = $('#friends-json').text();
+        var lolo = $.parseJSON(json);
+        var available_logins = [];
+        $.each(lolo, function(index) {
+           available_logins.push(lolo[index].login);
+        });
+        alert(available_logins[0]);
+        AVAILABLE_LOGINS = available_logins;
+    }
+
+    $('#please').autocomplete({source: AVAILABLE_LOGINS});
 
     $('a.inactive').live('click', function() {return false});
 

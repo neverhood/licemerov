@@ -1,4 +1,8 @@
 <% if profile_owner? %>
+<% content_for(:head) do %>
+    <%= stylesheet_link_tag "jquery.css" %>
+    <%= javascript_include_tag "jquery-ui.js" %>
+<% end %>
     <%= render :partial => 'shared/users/header' %>
 <% end %>
 
@@ -28,4 +32,6 @@
 <div id='friends-json'>
   <%= User.friends_of(current_user).map {|u| {:login => u.login, :avatar => u.avatar.url } }.to_json %>
 </div>
+
+<input type="text" id="please" />
 
