@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110312203919) do
+ActiveRecord::Schema.define(:version => 20110312203859) do
 
   create_table "friendships", :force => true do |t|
     t.integer  "user_id",           :default => 0
@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(:version => 20110312203919) do
     t.string   "city"
     t.string   "phone"
     t.string   "website"
-    t.string   "avatar_dimensions"
   end
 
   create_table "users", :force => true do |t|
