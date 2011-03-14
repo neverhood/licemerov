@@ -1,8 +1,12 @@
-<%= form_for @message, :remote => true, :html => {:id => 'new-message'} do |f| %>
+<div id="new-message-form" class="">
+  <%= form_for @message, :remote => true, :html => {:id => 'new-message'} do |f| %>
 
-    <%= f.label :recipient %> <%= f.text_field :recipient %>
+      <%= f.label :recipient %> <%= f.text_field :recipient %> <br />
 
-    <%= f.label :subject %> <%= f.text_field :subject %>
-    <%= f.label :body %> <%= f.text_area :body %> <br>
+      <%= f.label :subject %> <%= f.text_field :subject %> <br/>
 
-<% end %>
+      <%= f.label :body %> <%= f.text_area :body %>
+      <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>
+
+  <% end %>
+</div>

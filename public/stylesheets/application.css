@@ -9,6 +9,26 @@ div.warn {color:yellow;}
 
 /***************** Shared *****************/
 a.inactive {color:gray; text-decoration:none; cursor:default;}
+.hidden { display:none; }
+#opaco {
+    background-color: #000000; left: 0;
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";/* IE8 */
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity = 70); /* IE5+ */
+    filter: alpha(opacity=70);/* IE4- */
+    moz-opacity: 0; /* Mozilla */
+    -khtml-opacity: 0; /* Safari */
+    opacity: 0;  /* general CSS3 */
+    position: absolute; top: 0; width: 100%; z-index: 10;
+}
+#popup textarea {
+    display: block;
+    width: auto;
+    margin-bottom: 10px;
+}
+
+#popup {
+    background-color: #FFFFFF; position: fixed; left:50%; top:50%; min-width: 300px; z-index: 11;
+}
 /**** Bases ****/
 /* body {background: url(/images/background.png)} */
 body {background: white;color:black;}

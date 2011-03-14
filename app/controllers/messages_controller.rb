@@ -9,10 +9,13 @@ class MessagesController < ApplicationController
   skip_before_filter :existent_user, :only => [:new, :create, :update, :destroy]
 
 
+  # User to autocomplete users login when sending a new message
+  #
+
   def new
       term = params[:term]
       users = User.friends_of(current_user).where(['users.login LIKE ?', "%#{term}%"])
-      render :json => users.map {|u| {:value => u.login, :id => u.login}}
+      render :json => users.map {|u| {:value => u.login, :id => u.login, :avatar => u.avatar.url(:small)} }
   end
 
   def show

@@ -2,18 +2,20 @@
 // if user has less then 100 friends then div#friends-json is populated with friends data which is then used for auto completion
 // if user has more then 100 friends then request is sent to server and awaits for json in response
 
+
+
 $(document).ready(function() {
     if ( $('#friends-json').length ) {
-        $('#please').autocomplete({
+        $('#message_recipient').autocomplete({
             minLength: 1,
             source: $.licemerov.user.friends,
             focus: function(event, ui) {
-                $('#please').val(ui.item.value);
+                $('#message_recipient').val(ui.item.value);
                 return false;
             },
             select: function( event, ui) {
-                $('#please').val(ui.item.value);
-                $('#please-avatar').val(ui.item.avatar);
+                $('#message_recipient').val(ui.item.value);
+                // $('#please-avatar').val(ui.item.avatar);
                 return false
             }
         }).
@@ -25,7 +27,7 @@ $(document).ready(function() {
     } else {
         var cache = {},
                 lastXhr;
-        $( "#please" ).autocomplete({
+        $( "#message_recipient" ).autocomplete({
             minLength: 2,
             source: function( request, response ) {
                 var term = request.term;

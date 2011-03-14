@@ -8,7 +8,7 @@ end
 
 class Message < ActiveRecord::Base
 
-  attr_accessible :recipient
+  attr_accessor :recipient
 
   belongs_to :user
   belongs_to :receiver, :class_name => 'User', :foreign_key => 'receiver_id'

@@ -25,13 +25,43 @@ $.fn.clearForm = function() {
             this.selectedIndex = -1;
     });
 };
+$.fn.alignCenter = function() {
+    var marginLeft =  - $(this).width()/2 + 'px',
+            marginTop =  - $(this).height()/2 + 'px';
+    return $(this).css({'margin-left':marginLeft, 'margin-top':marginTop});
+};
+
 
 $(window).load(function() {
 
 });
 
+function togglePopup() {
+    var $popUp = $('#popup'),
+            $opaco = $('#opaco');
+
+    if ($popUp.hasClass('hidden'))  {
+
+        if($.browser.msie) {
+            $opaco.height($(document).height()).toggleClass('hidden');
+        } else {
+            $opaco.height($(document).height()).toggleClass('hidden').fadeTo('slow', 0.7);
+        }
+        $popUp
+                .alignCenter()
+                .toggleClass('hidden');
+    } else {
+        $opaco.toggleClass('hidden').removeAttr('style');
+        $popUp.toggleClass('hidden');
+        if ($popUp.find('form')) {
+            $popUp.find('form').clearForm();
+        }
+    }
+}
+
+
 $(document).ready(function() {
-   if ($('#wrapper').attr('data-user').length > 1) var user_attributes = $('#wrapper').attr('data-user').split(',');
+    if ($('#wrapper').attr('data-user').length > 1) var user_attributes = $('#wrapper').attr('data-user').split(',');
     $.licemerov = {
         version: '1.0',
         jcrop_params: {onChange: refreshAvatarPreview, onSelect: updateCrop, minSize: [100, 100], aspectRation:1},
@@ -53,6 +83,11 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
+
+    $('a#new-message, #close-popup').click(function(event) {
+        event.preventDefault();
+        togglePopup();
+    });
 
     $('a.inactive').live('click', function() {return false});
 
@@ -180,9 +215,10 @@ function updateCrop(coords) {
 }
 
 function refreshAvatarPreview(coords) {
-    var rx = 200/coords.w, ry = 200/coords.h;
-    var geometry = $('#cropbox').attr('data-geometry').split('x');
-    var height = parseInt(geometry[1]), width = parseInt(geometry[0]);
+    var rx = 200/coords.w, ry = 200/coords.h,
+            geometry = $('#cropbox').attr('data-geometry').split('x'),
+            height = parseInt(geometry[1]), width = parseInt(geometry[0]);
+
     $('#preview').css({width: Math.round(rx * width) + 'px', height: Math.round(ry * height) + 'px',
         marginLeft: '-' + Math.round(rx * coords.x) + 'px',
         marginTop: '-' + Math.round(ry * coords.y) + 'px'});

@@ -8,7 +8,7 @@
 
 <%= incoming(:inactive => (params[:section] == 'inbox') ) %>
 <%= sent(:inactive => (params[:section] == 'sent') ) %>
-<%# send_message %>
+<%= link_to 'new message', nil, :id => 'new-message' %>
 
 <% if params[:section] == 'inbox' %>
     <div id="incoming-messages">
@@ -20,7 +20,7 @@
     </div>
 <% end %>
 
-<div id='friends-json'>
+<div id='friends-json' class="hidden">
   <%= User.friends_of(current_user).map {|u|
       {:avatar => u.avatar.url(:small), :value => u.login} }.to_json
   %>
@@ -28,5 +28,11 @@
 
 
 
-<input type="text" id="please" />
-<input type="text" id="please-avatar" />
+<div id="opaco" class="hidden" ></div>
+
+<div id="popup" class="hidden">
+  <%= render :partial => 'new_message' %>
+  <div>
+    <input type="button" value="close" id="close-popup">
+  </div>
+</div>
