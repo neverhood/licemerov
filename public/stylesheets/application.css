@@ -25,7 +25,7 @@ a.inactive {color:gray; text-decoration:none; cursor:default;}
     width: auto;
     margin-bottom: 10px;
 }
-
+.clear-both { clear:both }
 
 #popup {
     background-color: #FFFFFF; position: fixed; left:50%; top:50%; min-width: 300px; z-index: 11;
