@@ -2,17 +2,11 @@
 // if user has less then 100 friends then div#friends-json is populated with friends data which is then used for auto completion
 // if user has more then 100 friends then request is sent to server and awaits for json in response
 
-var eql = function(elem1, elem2) {
-    if (elem1.length === elem2.length && elem1.length === $(elem1).filter(elem2).length) {
-        return true
-    } else { return false };
-};
 
 function buildElem(value) {
     return $('<div class="token" id="' + value + '"><span class="v">'
         + value + '</span><span class="remove-token">X</span></div>');
 }
-
 
 $(document).ready(function() {
 
@@ -22,19 +16,27 @@ $(document).ready(function() {
 
 
     if ( $('#friends-json').length ) {
+        var tempToken = $('<div class="token"></div>')
+                            .appendTo('body');
+        var minWidth = parseInt($(tempToken).css('min-width'));
+        tempToken.remove();
+                            
         var inputBox = $('#message_recipient'),
                 container = inputBox.parent(),
                 containerRightPos = function() {
                     return (container.offset().left + container.width());
                 },
                 origWidth = inputBox.width(),
-                minWidth = 50,
+                marginCoeficient = inputBox
+                                      .clone(true)
+                                      .hide()
+                                      .appendTo('body').outerWidth(true) - origWidth - 1,
                 calcOffset = function() {
                     var items = container.children('.token'),
                             lastItem = $(items[items.length - 1]),
                             lastItemWidth = lastItem[0]?
-                                    (lastItem.offset().left + lastItem.outerWidth(true)) : (inputBox.offset().left + 5);
-                    return ( containerRightPos() - lastItemWidth )
+                                    (lastItem.offset().left + lastItem.outerWidth(true)) : (inputBox.offset().left + marginCoeficient);
+                    return ( containerRightPos() - lastItemWidth - marginCoeficient ) 
                 },
                 removeToken = function(token) {
                     token.remove();

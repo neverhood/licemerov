@@ -75,8 +75,8 @@ input#release_jcrop {display:none;}
 
 /* MESSAGES */
 .recipients-container { width: 346px; }
-#message_recipient {display: block; border:none; width:340px; float:left;}
-.token {float:left; background: black; color:white; margin: 5px;}
+#message_recipient {display: block; border:none; height:25px; padding-top:5px; width:340px; float:left; padding-left:5px;}
+.token {float:left; background: black; color:white; margin: 5px 3px 5px 2px; min-width:40px;}
 /* MESSAGES END */
 
 /***************** Profiles END ***************/
