@@ -1,7 +1,9 @@
 <div id="new-message-form" class="">
   <%= form_for @message, :remote => true, :html => {:id => 'new-message'} do |f| %>
 
-      <%= f.label :recipient %> <%= f.text_field :recipient %> <br />
+    <div style="width:346px;">
+      <%= f.text_field :recipient, :style => "width:340px;" %>
+    </div>
 
       <%= f.label :subject %> <%= f.text_field :subject %> <br/>
 

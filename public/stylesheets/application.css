@@ -29,6 +29,7 @@ a.inactive {color:gray; text-decoration:none; cursor:default;}
 #popup {
     background-color: #FFFFFF; position: fixed; left:50%; top:50%; min-width: 300px; z-index: 11;
 }
+.token {background: black; color:white; margin-right: 5px;}
 /**** Bases ****/
 /* body {background: url(/images/background.png)} */
 body {background: white;color:black;}
