@@ -122,6 +122,7 @@ class User < ActiveRecord::Base
   end
 
   def reprocess_avatar
+    self.touch(:avatar_updated_at)
     avatar.reprocess!
   end
 

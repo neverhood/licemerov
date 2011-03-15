@@ -33,7 +33,9 @@ $.fn.alignCenter = function() {
 
 
 $(window).load(function() {
-
+    if((typeof $.Jcrop == 'function') && $('#cropbox').length)
+          $.jcrop_api = $.Jcrop('#cropbox', {onChange: refreshAvatarPreview, onSelect: updateCrop,
+            minSize: [100, 100], aspectRation:1});
 });
 
 function togglePopup() {
@@ -64,14 +66,10 @@ $(document).ready(function() {
     if ($('#wrapper').attr('data-user').length > 1) var user_attributes = $('#wrapper').attr('data-user').split(',');
     $.licemerov = {
         version: '1.0',
-        jcrop_params: {onChange: refreshAvatarPreview, onSelect: updateCrop, minSize: [100, 100], aspectRation:1},
-        jcrop_api: null,
+        jcrop_api: $.jcrop_api,
         loader: "<img class='loader' src='/images/loader.gif' />",
         user: {}
     };
-
-    if(typeof $.Jcrop == 'function')
-        $.licemerov['jcrop_api'] = $.Jcrop('#cropbox', $.licemerov.jcrop_params);
     if(typeof user_attributes != 'undefined') {
         $.licemerov.user.attributes = {login: user_attributes[0], sex: user_attributes[1]};
         if (typeof user_attributes[2] != 'undefined')

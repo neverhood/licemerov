@@ -9,7 +9,8 @@ var eql = function(elem1, elem2) {
 };
 
 function buildElem(value) {
-    return $('<div class="token"><span class="v">' + value + '</span><span class="remove-token">X</span></div>');
+    return $('<div class="token" id="' + value + '"><span class="v">'
+        + value + '</span><span class="remove-token">X</span></div>');
 }
 
 
@@ -32,7 +33,7 @@ $(document).ready(function() {
                     var items = container.children('.token'),
                             lastItem = $(items[items.length - 1]),
                             lastItemWidth = lastItem[0]?
-                                    (lastItem.offset().left + lastItem.outerWidth(true)) : inputBox.offset().left;
+                                    (lastItem.offset().left + lastItem.outerWidth(true)) : (inputBox.offset().left + 5);
                     return ( containerRightPos() - lastItemWidth )
                 },
                 removeToken = function(token) {
@@ -61,18 +62,17 @@ $(document).ready(function() {
                         .appendTo('body'),
                         elemWidth = elem.outerWidth(true),
                         currentOffset = calcOffset();
-
                 if (currentOffset > elemWidth) {
                     if ( (currentOffset - elemWidth) > minWidth ) {
                         inputBox.before( elem.show() )
-                                .width( currentOffset - elemWidth ); alert(currentOffset - elemWidth)
+                                .width( currentOffset - elemWidth ); 
                     } else {
                         inputBox.before( elem.show() )
-                                .width( origWidth ); alert('e');
+                                .width( origWidth ); 
                     }
                 } else {
                     inputBox.before( elem.show() )
-                            .width( calcOffset() ); alert('ss')
+                            .width( calcOffset() ); 
                 }
                 return false
             }
