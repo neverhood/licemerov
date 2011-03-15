@@ -3,57 +3,77 @@
 // if user has more then 100 friends then request is sent to server and awaits for json in response
 
 var eql = function(elem1, elem2) {
-  if (elem1.length === elem2.length && elem1.length === $(elem1).filter(elem2).length) {
-    return true
-  } else { return false };
+    if (elem1.length === elem2.length && elem1.length === $(elem1).filter(elem2).length) {
+        return true
+    } else { return false };
 };
 
 function buildElem(value) {
-  return $('<span class="token">' + value +
-      '<strong class="remove-token">X </strong></span>' )
+    return $('<div class="token"><span class="v">' + value + '</span><span class="remove-token">X</span></div>');
 }
 
 
 $(document).ready(function() {
 
     $('.remove-token').live('click', function() {
-      var f = $('#message_recipient');
-      var newWidth = f.width() + $(this).parent().outerWidth(true) + 10;
-      if (newWidth > 340) newWidth = 340;
-      f.width(newWidth);
-      $(this).parent().remove();
+        removeToken($(this).parents('.token'));
     });
 
+
     if ( $('#friends-json').length ) {
-        $('#message_recipient').autocomplete({
+        var inputBox = $('#message_recipient'),
+                container = inputBox.parent(),
+                containerRightPos = function() {
+                    return (container.offset().left + container.width());
+                },
+                origWidth = inputBox.width(),
+                minWidth = 50,
+                calcOffset = function() {
+                    var items = container.children('.token'),
+                            lastItem = $(items[items.length - 1]),
+                            lastItemWidth = lastItem[0]?
+                                    (lastItem.offset().left + lastItem.outerWidth(true)) : inputBox.offset().left;
+                    return ( containerRightPos() - lastItemWidth )
+                },
+                removeToken = function(token) {
+                    token.remove();
+                    var currentOffset = calcOffset();
+
+                    if ( currentOffset < minWidth ) {
+                        inputBox.width(origWidth);
+                    } else {
+                        inputBox.width(currentOffset);
+                    }
+                };
+
+        inputBox.autocomplete({
             minLength: 1,
             source: $.licemerov.user.friends,
             focus: function(event, ui) {
-           //     $('#message_recipient').val(ui.item.value);
+                //     $('#message_recipient').val(ui.item.value);
                 return false;
             },
             select: function( event, ui) {
                 //$('#message_recipient').val(ui.item.value);
                 // $('#please-avatar').val(ui.item.avatar);
-                var elem = buildElem(ui.item.value).hide();
-                var textbox = $('#message_recipient');
-                $('body').append(elem);
-                var newWidth = ( textbox.width() - elem.outerWidth(true) - 5 );
-                if (newWidth > 35) {
-                  textbox.css({width:newWidth + 'px'});
-                  textbox.before(elem.show());
-                } else {
-                  if ( elem.width() < 35 ) {
-                    textbox.before(elem.show());
-                    textbox.css({width:'335px'});
-                  } else {
-                    textbox.css({width:'335px'});
-                    newWidth = ( textbox.width() - elem.outerWidth(true) - 5);
-                    textbox.css({width:newWidth + 'px'});
-                    textbox.before(elem.show());
-                  }
-                }
+                var elem = buildElem(ui.item.value)
+                        .hide()
+                        .appendTo('body'),
+                        elemWidth = elem.outerWidth(true),
+                        currentOffset = calcOffset();
 
+                if (currentOffset > elemWidth) {
+                    if ( (currentOffset - elemWidth) > minWidth ) {
+                        inputBox.before( elem.show() )
+                                .width( currentOffset - elemWidth ); alert(currentOffset - elemWidth)
+                    } else {
+                        inputBox.before( elem.show() )
+                                .width( origWidth ); alert('e');
+                    }
+                } else {
+                    inputBox.before( elem.show() )
+                            .width( calcOffset() ); alert('ss')
+                }
                 return false
             }
         }).

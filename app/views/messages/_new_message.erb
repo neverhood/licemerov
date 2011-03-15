@@ -1,11 +1,14 @@
 <div id="new-message-form" class="">
   <%= form_for @message, :remote => true, :html => {:id => 'new-message'} do |f| %>
 
-    <div style="width:346px;">
-      <%= f.text_field :recipient, :style => "width:340px;" %>
+    <div class='recipients-container'>
+      <%= f.text_field :recipient %>
     </div>
 
-      <%= f.label :subject %> <%= f.text_field :subject %> <br/>
+      <div style="clear:both;">
+        <%= f.label :subject %> <%= f.text_field :subject %> <br/>
+      </div>
+
 
       <%= f.label :body %> <%= f.text_area :body %>
       <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>

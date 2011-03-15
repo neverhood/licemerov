@@ -26,10 +26,11 @@ a.inactive {color:gray; text-decoration:none; cursor:default;}
     margin-bottom: 10px;
 }
 
+
 #popup {
     background-color: #FFFFFF; position: fixed; left:50%; top:50%; min-width: 300px; z-index: 11;
 }
-.token {background: black; color:white; margin-right: 5px;}
+
 /**** Bases ****/
 /* body {background: url(/images/background.png)} */
 body {background: white;color:black;}
@@ -71,4 +72,11 @@ strong.cancel-upload { display: none; cursor:pointer; color:red; }
 /***************** Profiles *****************/
 div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
 input#release_jcrop {display:none;}
+
+/* MESSAGES */
+.recipients-container { width: 346px; }
+#message_recipient {display: block; border:none; width:340px; float:left;}
+.token {float:left; background: black; color:white; margin: 5px;}
+/* MESSAGES END */
+
 /***************** Profiles END ***************/
