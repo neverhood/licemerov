@@ -31,10 +31,6 @@ class ApplicationController < ActionController::Base
     @current_user = current_user_session && current_user_session.record
   end
 
-  def friends_online
-    return @friends_online if defined?(@friends_online)
-    @friends_online = current_user && User.friends_of(current_user).find_all {|u| u.last_request_at >= 10.minutes.ago}
-  end
 
   def details
     return @details if defined?(@details)

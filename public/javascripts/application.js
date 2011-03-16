@@ -1,6 +1,19 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
-var $loader = "<img id='loader' src='/images/loader.gif' />";
+
+Image.prototype.toggleSize = function() {
+  var type = this.className, 
+      oppositeType = type == 'regular' ? 'enlarged' : 'regular',
+      height = this.height + (type == 'enlarged'? -100 : 100),
+      width = this.width + (type == 'enlarged'? -100 : 100),
+      src = this.src.replace(type, oppositeType);
+
+  this.width = width;
+  this.height = height;
+  this.src = src;
+  this.className = oppositeType;
+  return $(this);
+}
 
 $.fn.clearForm = function() {
     return this.each(function() {
@@ -25,6 +38,7 @@ $.fn.clearForm = function() {
             this.selectedIndex = -1;
     });
 };
+
 $.fn.alignCenter = function() {
     var marginLeft =  - $(this).width()/2 + 'px',
             marginTop =  - $(this).height()/2 + 'px';
@@ -36,11 +50,6 @@ $(window).load(function() {
     if((typeof $.Jcrop == 'function') && $('#cropbox').length)
            $.licemerov.jcrop_api = $.Jcrop('#cropbox', {onChange: refreshAvatarPreview, onSelect: updateCrop,
             minSize: [100, 100], aspectRation:1});
-});
-
-$('#cropbox').load(function() {
-    $.jcrop_api = $.Jcrop('#cropbox', {onChange: refreshAvatarPreview, onSelect: updateCrop,
-      minSize: [100, 100], aspectRation:1});
 });
 
 function togglePopup() { //TODO: REFACTORING
@@ -71,7 +80,7 @@ $(document).ready(function() {
     if ($('#wrapper').attr('data-user').length > 1) var user_attributes = $('#wrapper').attr('data-user').split(',');
     $.licemerov = {
         version: '1.0',
-        loader: "<img class='loader' src='/images/loader.gif' />",
+        loader: $("<img class='loader' src='/images/loader.gif' />"),
         user: {}
     };
     if(typeof user_attributes != 'undefined') {
@@ -97,26 +106,21 @@ $(document).ready(function() {
     $('#parent_form, #response_form, #edit_avatar').clearForm();
 
     $('form#parent_form, form#response_form').keyup(function() {
-        var submit = this.elements[this.elements.length - 1];
-        (this.elements[2].value.length >= 2) ? submit.disabled = '' : submit.disabled = 'disabled'; // elements[2] is a textarea
+        $(this.elements[this.elements.length - 1])
+            .attr('disabled', (this.elements[2].value.length < 2)); //elements[2] is a textarea
     });
 //            .bind("ajax:beforeSend", function() {toggleLoader(this)}). // TODO: Wait for JangoSteve's pull request merged into jquery-ujs
 //            bind("ajax:complete", function() {toggleLoader(this)});
 
-
-    $('form#edit_avatar').change(function() {
-        var submit = $(this).find(':submit');
-        if ( $(this).find(':file').val().length > 0 ) {
-          $(submit).attr('disabled', false);
-          alert('p');
-        } else { 
-          $(submit).attr('disabled', true)
-        }
+    $('form#edit_avatar :file').change(function() {
+        $('form#edit_avatar :submit')
+              .attr('disabled', this.value.length == 0);
     });
 
     $('a#delete-friend, a#add-friend').
-            live("ajax:beforeSend", function() { toggleLoader(this)}).
-            live("ajax:complete", function() { toggleLoader(this)});
+            live("ajax:beforeSend", function() { $(this).toggleLoader() } ).
+            live("ajax:complete",  function() { $(this).toggleLoader() } );
+
     $('a#add-friend').live("ajax:complete", function(evt, xhr) {
         var params = $.parseJSON(xhr.responseText);
         $(this).after('<div class="' + params.html_class + '">' + params.message + '</div>');
@@ -134,13 +138,8 @@ $(document).ready(function() {
         $('#parent_form').clearForm();
     });
 
-    // TODO: please refactor this ugliness
     $('img.regular, img.enlarged').live('click', function() {  // Enlarge image
-        var type = this.className, opposite_type = type == 'regular' ? 'enlarged' : 'regular';
-        $(this).addClass(opposite_type)
-                .removeClass(type)
-                .css({height:toggleSize($(this), 'height'), width:toggleSize($(this), 'width')})
-                .attr('src', this.src.replace(type, opposite_type));
+        this.toggleSize();
     });
 
     $('form :file').change(function() {
@@ -152,10 +151,9 @@ $(document).ready(function() {
         var $cancel = $(this).hide();
         var $field = $cancel.prev();
         $field.replaceWith($field.clone(true)).val('');
-        if ($cancel.attr('rel') == 'disable')
-            $cancel.parents('form')
-                    .find(':submit')
-                    .attr('disabled', 'disabled');
+        $cancel.parents('form')
+                  .find(':submit')
+                  .attr('disabled', ($cancel.attr('rel') == 'disable'));
     });
 
     $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
@@ -170,29 +168,26 @@ $(document).ready(function() {
 
 });
 
-function toggleLoader(elem) {
-    var $elem = $(elem);
-    if (elem.tagName.toLowerCase() == 'a') {
-        if ($elem.is(':visible'))
-            $elem.before($loader).hide();
-        else
-            $('#loader').remove();
-    }
-    else if (elem.tagName.toLowerCase() == 'form') {
-        var submit = $elem.find(':submit');
-        if (submit.is(':visible'))
-            submit.hide().parent('form').append($loader);
-        else {
-            submit.show().next().remove(); // Show submit button and hide next element, which is #loader
-            if ($elem.children('input[name*="parent_id"]').length && !($(elem).children('.field_with_errors').length))
-                $elem.hide();
-        }
-    }
+$.fn.toggleLoader = function() {
+  return this.each(function() {
+      var $this = $(this),
+          loader = $.licemerov.loader;
 
-}
-
-function toggleSize(img, attr) {
-    return(parseInt(img.css(attr)) + (img.attr('class') == 'enlarged' ? 100 : -100) + 'px');
+      if (this.tagName.toLowerCase() == 'a') {
+        $this.is(':visible')? $this.before(loader).hide() :
+          loader.remove(); 
+      } else if ( this.tagName.toLowerCase() == 'form' ) {
+          var submit = $this.find(':submit');
+          if (submit.is(':visible')) {
+            submit.hide;
+            $this.append(loader);
+          } else {
+            submit.show().next().remove();
+            if (this.id == 'response_form' && $this.find('.field_with_errors').length == 0)
+              $this.hide();
+          }
+      }
+  });
 }
 
 function appendErrors(errors, form) { // Render object errors
@@ -200,6 +195,7 @@ function appendErrors(errors, form) { // Render object errors
         form.prepend("<div class='field_with_errors'>" + errors[index] + "</div>");
     });
 }
+
 
 //  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
 

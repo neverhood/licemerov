@@ -16,7 +16,8 @@ class FriendshipsController < ApplicationController
       @friends = case params[:section]
                    when 'show' then User.friends_of(current_user)
                    when 'pending' then User.pending_friends_of(current_user)
-                   when 'online' then friends_online
+                   when 'online' then User.friends_of(current_user).
+                     where(['last_request_at >= ?', 10.minutes.ago]) 
                    when 'blacklist' then User.blacklisted(current_user)
                  end
     end
@@ -47,7 +48,7 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy # delete/cancel friendship
-    @friendship.destroy
+    #@friendship.destroy
     # As this action skips 'existent user' filter, we must know the profile owners id to show 
     # an 'add to friends' link
     @user = User.where(:id => friend_id(@friendship)).first
