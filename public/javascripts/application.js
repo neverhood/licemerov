@@ -34,11 +34,16 @@ $.fn.alignCenter = function() {
 
 $(window).load(function() {
     if((typeof $.Jcrop == 'function') && $('#cropbox').length)
-          $.jcrop_api = $.Jcrop('#cropbox', {onChange: refreshAvatarPreview, onSelect: updateCrop,
+           $.licemerov.jcrop_api = $.Jcrop('#cropbox', {onChange: refreshAvatarPreview, onSelect: updateCrop,
             minSize: [100, 100], aspectRation:1});
 });
 
-function togglePopup() {
+$('#cropbox').load(function() {
+    $.jcrop_api = $.Jcrop('#cropbox', {onChange: refreshAvatarPreview, onSelect: updateCrop,
+      minSize: [100, 100], aspectRation:1});
+});
+
+function togglePopup() { //TODO: REFACTORING
     var $popUp = $('#popup'),
             $opaco = $('#opaco');
 
@@ -66,7 +71,6 @@ $(document).ready(function() {
     if ($('#wrapper').attr('data-user').length > 1) var user_attributes = $('#wrapper').attr('data-user').split(',');
     $.licemerov = {
         version: '1.0',
-        jcrop_api: $.jcrop_api,
         loader: "<img class='loader' src='/images/loader.gif' />",
         user: {}
     };
@@ -82,14 +86,14 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 
-    $('a#new-message, #close-popup').click(function(event) {
+    $('a#new-message, #close-popup').click(function(event) { //TODO: Refactoring
         event.preventDefault();
         togglePopup();
+        $('#message_recipient').focus();
     });
 
-    $('a.inactive').live('click', function() {return false});
+    $('a.inactive').live('click', function() { return false });
 
-    $('div.parent .body, div.parent ul.responses').corner();
     $('#parent_form, #response_form, #edit_avatar').clearForm();
 
     $('form#parent_form, form#response_form').keyup(function() {
@@ -102,12 +106,17 @@ $(document).ready(function() {
 
     $('form#edit_avatar').change(function() {
         var submit = $(this).find(':submit');
-        ($(this).find(':file').val().length > 0) ? $(submit).enable() : $(submit).disable();
+        if ( $(this).find(':file').val().length > 0 ) {
+          $(submit).attr('disabled', false);
+          alert('p');
+        } else { 
+          $(submit).attr('disabled', true)
+        }
     });
 
     $('a#delete-friend, a#add-friend').
             live("ajax:beforeSend", function() { toggleLoader(this)}).
-            live("ajax:complete", function() {toggleLoader(this)});
+            live("ajax:complete", function() { toggleLoader(this)});
     $('a#add-friend').live("ajax:complete", function(evt, xhr) {
         var params = $.parseJSON(xhr.responseText);
         $(this).after('<div class="' + params.html_class + '">' + params.message + '</div>');
@@ -125,11 +134,13 @@ $(document).ready(function() {
         $('#parent_form').clearForm();
     });
 
+    // TODO: please refactor this ugliness
     $('img.regular, img.enlarged').live('click', function() {  // Enlarge image
         var type = this.className, opposite_type = type == 'regular' ? 'enlarged' : 'regular';
-        $(this).addClass(opposite_type).removeClass(type).
-                css({height:toggleSize($(this), 'height'), width:toggleSize($(this), 'width')}).
-                attr('src', this.src.replace(type, opposite_type));
+        $(this).addClass(opposite_type)
+                .removeClass(type)
+                .css({height:toggleSize($(this), 'height'), width:toggleSize($(this), 'width')})
+                .attr('src', this.src.replace(type, opposite_type));
     });
 
     $('form :file').change(function() {
@@ -142,7 +153,9 @@ $(document).ready(function() {
         var $field = $cancel.prev();
         $field.replaceWith($field.clone(true)).val('');
         if ($cancel.attr('rel') == 'disable')
-            $cancel.parents('form').find(':submit').attr('disabled', 'disabled');
+            $cancel.parents('form')
+                    .find(':submit')
+                    .attr('disabled', 'disabled');
     });
 
     $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {

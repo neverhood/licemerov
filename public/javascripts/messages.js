@@ -30,7 +30,7 @@ $(document).ready(function() {
                 marginCoeficient = inputBox
                                       .clone(true)
                                       .hide()
-                                      .appendTo('body').outerWidth(true) - origWidth - 1,
+                                      .appendTo('body').outerWidth(true) - origWidth - 1, // No idea why, but IE begs for this 1 px badly
                 calcOffset = function() {
                     var items = container.children('.token'),
                             lastItem = $(items[items.length - 1]),
