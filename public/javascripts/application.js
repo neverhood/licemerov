@@ -153,7 +153,7 @@ $(document).ready(function() {
         $field.replaceWith($field.clone(true)).val('');
         $cancel.parents('form')
                   .find(':submit')
-                  .attr('disabled', ($cancel.attr('rel') == 'disable'));
+                  .attr('disabled', ($cancel.attr('rel') != 'disable'));
     });
 
     $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
