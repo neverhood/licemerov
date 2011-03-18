@@ -16,8 +16,7 @@ class FriendshipsController < ApplicationController
       @friends = case params[:section]
                    when 'show' then User.friends_of(current_user)
                    when 'pending' then User.pending_friends_of(current_user)
-                   when 'online' then User.friends_of(current_user).
-                     where(['last_request_at >= ?', 10.minutes.ago]) 
+                   when 'online' then User.friends_of(current_user).online
                    when 'blacklist' then User.blacklisted(current_user)
                  end
     end

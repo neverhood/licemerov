@@ -24,8 +24,8 @@ class User < ActiveRecord::Base
                     #    Settings.services.assets.defaults_path,
                     #:whiny_thumbnails => true,
                     :styles => {
-                        :thumb => {:geometry => "110x110>", :format => :jpg, :processors => [:cropper]},
-                        :small => {:geometry => "200x200>", :format => :jpg, :processors => [:cropper]},
+                        :small => {:geometry => "250x200>", :format => :jpg, :processors => [:cropper]},
+                        :thumb => {:geometry => "100x100!", :format => :jpg, :processors => [:cropper]},
                         :large => ['600x600>', :jpg]
                     }
   after_post_process :save_avatar_dimensions
@@ -74,6 +74,8 @@ class User < ActiveRecord::Base
 
   scope :blacklisted, proc {|user| joins('inner join friendships on users.id = friendships.user_id').
       where(['friendships.friend_id = ?', user.id]).where(['friendships.canceled = ?', true])}
+
+  scope :online, where(['last_request_at >= ?', 10.minutes.ago])
 
   after_create :create_details
 

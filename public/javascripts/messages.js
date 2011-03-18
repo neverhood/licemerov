@@ -64,6 +64,7 @@ $(document).ready(function() {
                         .appendTo('body'),
                         elemWidth = elem.outerWidth(true),
                         currentOffset = calcOffset();
+                        $('#avatar').html('<img src="' + ui.item.avatar + '" />');
                 if (currentOffset > elemWidth) {
                     if ( (currentOffset - elemWidth) > minWidth ) {
                         inputBox.before( elem.show() )
