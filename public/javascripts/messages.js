@@ -24,19 +24,19 @@ $(document).ready(function() {
         var inputBox = $('#message_recipient'),
                 container = inputBox.parent(),
                 containerRightPos = function() {
-                    return (container.offset().left + container.width());
+                    return (container.offset().left + container.width() - parseInt(container.css('padding')));
                 },
                 origWidth = inputBox.width(),
-                marginCoeficient = inputBox
+                marginCoeficient = inputBox 
                                       .clone(true)
                                       .hide()
-                                      .appendTo('body').outerWidth(true) - origWidth - 1, // No idea why, but IE begs for this 1 px badly
+                                      .appendTo('body').outerWidth(true) - origWidth, 
                 calcOffset = function() {
                     var items = container.children('.token'),
                             lastItem = $(items[items.length - 1]),
                             lastItemWidth = lastItem[0]?
-                                    (lastItem.offset().left + lastItem.outerWidth(true)) : (inputBox.offset().left + marginCoeficient);
-                    return ( containerRightPos() - lastItemWidth - marginCoeficient ) 
+                                    (lastItem.offset().left + lastItem.width() - parseInt(lastItem.css('padding'))) : (inputBox.offset().left + marginCoeficient);
+                    return ( containerRightPos() - lastItemWidth - marginCoeficient );
                 },
                 removeToken = function(token) {
                     token.remove();
@@ -65,10 +65,10 @@ $(document).ready(function() {
                         elemWidth = elem.outerWidth(true),
                         currentOffset = calcOffset();
                         $('#avatar').html('<img src="' + ui.item.avatar + '" />');
-                if (currentOffset > elemWidth) {
+                if (currentOffset >= elemWidth) {
                     if ( (currentOffset - elemWidth) > minWidth ) {
                         inputBox.before( elem.show() )
-                                .width( currentOffset - elemWidth ); 
+                                .width( currentOffset - elemWidth );  
                     } else {
                         inputBox.before( elem.show() )
                                 .width( origWidth ); 

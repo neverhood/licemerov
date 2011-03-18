@@ -66,6 +66,7 @@ ru:
   sent_messages: Исходящие
   subject: Тема
   whom_to: Кому
+  recipient: Получатель
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'

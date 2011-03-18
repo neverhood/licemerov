@@ -74,9 +74,10 @@ div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
 input#release_jcrop {display:none;}
 
 /* MESSAGES */
-.recipients-container { width: 346px; }
-#message_recipient {display: block; border:none; height:25px; padding-top:5px; width:340px; float:left; padding-left:5px;}
-.token {float:left; background: black; color:white; margin: 5px 3px 5px 2px; min-width:40px;}
+#message_subject { padding: 2px;}
+.recipients-container { width: 270px; padding:2px; }
+#message_recipient {display: block; border:none;  width:250px; float:left; padding-left:5px;}
+.token {float:left; background: black; color:white; margin: 2px 3px 0 2px; min-width:40px;}
 /* MESSAGES END */
 
 /***************** Profiles END ***************/
