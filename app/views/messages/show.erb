@@ -22,7 +22,8 @@
 
 <div id='friends-json' class="hidden">
   <%= User.friends_of(current_user).map {|u|
-      {:avatar => u.avatar.url(:thumb), :value => u.login} }.to_json
+    { :avatar => u.avatar.url(:thumb), :value => u.login }  
+  }.to_json
   %>
 </div>
 

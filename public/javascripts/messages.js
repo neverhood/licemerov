@@ -3,87 +3,171 @@
 // if user has more then 100 friends then request is sent to server and awaits for json in response
 
 
-function buildElem(value) {
-    return $('<div class="token" id="' + value + '"><span class="v">'
-        + value + '</span><span class="remove-token">X</span></div>');
+function buildElem(item) {
+    return $('<div class="token" id="' + item.value + '"><span class="v">'
+            + item.value + '</span><span class="remove-token">&emsp;</span></div>')
+            .data('avatarUrl', item.avatar )
+            .data('value', item.value);
+}
+
+function existentToken(value) {
+    var existent = false;
+    $.each($('.token'), function() {
+        if ( $(this).data('value') == value )
+            existent = true;
+    });
+    return existent;
+}
+
+function appendAvatar(avatar_url) {
+    $('#avatar').html('<img src="' + avatar_url + '" />');
 }
 
 $(document).ready(function() {
 
-    $('.remove-token').live('click', function() {
-        removeToken($(this).parents('.token'));
+
+
+    $('.token').live({
+       click: function() {
+           var $this = $(this);
+           if (! $this.hasClass('token-focused'))
+                focusToken($this);
+       },
+        mouseenter: function() {
+            if ( $(this).data('avatarUrl') )
+                appendAvatar($(this).data('avatarUrl'));
+        },
+        mouseleave: function() {
+            var tokens = $('.token'),
+                focusedToken = $('.token-focused')[0];
+            if (focusedToken) {
+                appendAvatar( $( focusedToken ).data('avatarUrl') )
+            } else {
+                appendAvatar( $( tokens[0] ).data('avatarUrl') );
+            }
+        }
+    });
+
+    $('.remove-token').live('click', function(event) {
+        event.stopPropagation();
+        removeToken($(this).parent());
+    });
+
+    $('#message_recipient').keydown(function(event) {
+        var keyCode = (event.keyCode ? event.keyCode : event.which),
+                tokens = $('.token'),
+                lastToken = tokens[tokens.length - 1];
+        if (keyCode == 8 && this.value.length == 0 && (typeof lastToken != 'undefined')) {
+            lastToken = $(lastToken);
+            if (lastToken.hasClass('token-focused')) {
+                removeToken(lastToken);
+            } else {
+                focusToken(lastToken);
+            }
+        }
     });
 
 
     if ( $('#friends-json').length ) {
         var tempToken = $('<div class="token"></div>')
-                            .appendTo('body');
+                .appendTo('body');
         var minWidth = parseInt($(tempToken).css('min-width'));
         tempToken.remove();
-                            
+
         var inputBox = $('#message_recipient'),
                 container = inputBox.parent(),
                 containerRightPos = function() {
-                    return (container.offset().left + container.width() - parseInt(container.css('padding')));
+                    return (container.offset().left + container.width());
                 },
                 origWidth = inputBox.width(),
-                marginCoeficient = inputBox 
-                                      .clone(true)
-                                      .hide()
-                                      .appendTo('body').outerWidth(true) - origWidth, 
+                margin = inputBox
+                        .clone(true)
+                        .hide()
+                        .appendTo('body').outerWidth() - origWidth,
                 calcOffset = function() {
                     var items = container.children('.token'),
                             lastItem = $(items[items.length - 1]),
-                            lastItemWidth = lastItem[0]?
-                                    (lastItem.offset().left + lastItem.width() - parseInt(lastItem.css('padding'))) : (inputBox.offset().left + marginCoeficient);
-                    return ( containerRightPos() - lastItemWidth - marginCoeficient );
+                            lastItemRightPos = lastItem[0]?
+                                    (lastItem.offset().left + lastItem.width()) : (inputBox.offset().left + margin);
+                    return ( containerRightPos() - lastItemRightPos  );
                 },
                 removeToken = function(token) {
                     token.remove();
-                    var currentOffset = calcOffset();
+                    var tokens = $('.token');
 
+                    if (tokens.length == 0) {
+                       appendAvatar('/avatars/thumb/missing.png');
+                    }                                      
+                    else
+                        appendAvatar($(tokens[0]).data('avatarUrl'));
+
+                    //token.remove();
+                    var currentOffset = calcOffset();
                     if ( currentOffset < minWidth ) {
                         inputBox.width(origWidth);
                     } else {
-                        inputBox.width(currentOffset);
+                        inputBox.width(currentOffset - margin);
                     }
+                },
+                focusToken = function(token) {
+                    $('.token-focused').removeClass('token-focused');
+                    appendAvatar(token.data('avatarUrl'));
+                    token.addClass('token-focused');
                 };
 
         inputBox.autocomplete({
             minLength: 1,
             source: $.licemerov.user.friends,
             focus: function(event, ui) {
-                //     $('#message_recipient').val(ui.item.value);
+                appendAvatar(ui.item.avatar);
                 return false;
             },
+
             select: function( event, ui) {
-                //$('#message_recipient').val(ui.item.value);
-                // $('#please-avatar').val(ui.item.avatar);
-                var elem = buildElem(ui.item.value)
+                var tokens = $('.token');
+
+                $('.token-focused').removeClass('token-focused');
+
+                $('.selector').autocomplete('option', 'source', {});
+
+                alert($('#message_recipient').autocomplete('option', 'source'));
+
+                if ( existentToken(ui.item.value) || tokens.length == 15 )
+                    return false;
+
+
+                var elem = buildElem(ui.item)
                         .hide()
                         .appendTo('body'),
                         elemWidth = elem.outerWidth(true),
                         currentOffset = calcOffset();
-                        $('#avatar').html('<img src="' + ui.item.avatar + '" />');
-                if (currentOffset >= elemWidth) {
+
+                tokens.push(elem[0]);
+
+                appendAvatar( $(tokens[0]).data('avatarUrl') );
+
+                if ((currentOffset) >= elemWidth) {
                     if ( (currentOffset - elemWidth) > minWidth ) {
                         inputBox.before( elem.show() )
-                                .width( currentOffset - elemWidth );  
+                                .width( currentOffset - elemWidth - margin  );
                     } else {
                         inputBox.before( elem.show() )
-                                .width( origWidth ); 
+                                .width( origWidth );
                     }
                 } else {
                     inputBox.before( elem.show() )
-                            .width( calcOffset() ); 
+                            .width( calcOffset() - margin );
                 }
+                inputBox.val('');
                 return false
             }
         }).
                 data('autocomplete')._renderItem = function( ul, item ) {
-            return $('<li></li>').data('item.autocomplete', item).
-                    append('<a>' + item.value + '</a>').
-                    appendTo(ul);
+
+                return $('<li></li>').data('item.autocomplete', item).
+                        append('<a>' + item.value + '</a>').
+                        appendTo(ul);
+
         };
     } else {
         var cache = {},

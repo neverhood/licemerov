@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
                     #:whiny_thumbnails => true,
                     :styles => {
                         :small => {:geometry => "250x200>", :format => :jpg, :processors => [:cropper]},
-                        :thumb => {:geometry => "100x100!", :format => :jpg, :processors => [:cropper]},
+                        :thumb => {:geometry => "100x100#", :format => :jpg, :processors => [:cropper]},
                         :large => ['600x600>', :jpg]
                     }
   after_post_process :save_avatar_dimensions
