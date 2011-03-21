@@ -81,7 +81,7 @@ input#release_jcrop {display:none;}
 .token-focused {color:white; background:blue}
 .remove-token {
     cursor:pointer;
-    margin-left:3px;
+    padding: 10px;
     background: url(/images/cancel.gif) center no-repeat;
     vertical-align:top; width:20px; height:8px!important;
 }

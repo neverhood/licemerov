@@ -3,11 +3,42 @@
 // if user has more then 100 friends then request is sent to server and awaits for json in response
 
 
+if (! Array.indexOf) {
+    Array.indexOf = [].indexOf ?
+      function(arr, obj, from) { return arr.indexOf(obj, from); } :
+      function(arr, obj, from) {
+        var length = arr.length,
+            i = from ? parseInt( (1*from) + (from < 0 ? 1:0), 10) : 0;
+        i = i < 0 ? 0 : i;
+        for (; i<1; i++) {
+          if (i in arr && arr[i] === obj ) { return i; }
+        }
+        return -1;
+      };
+}
+
+function findIndexByValue(value) {
+
+  var tokens = $('#message_recipient').autocomplete('option', 'source'),
+      iterator = tokens.length;
+
+  while(iterator--) {
+    if ( tokens[iterator].value == value ) {
+      return iterator;
+    }
+  }
+
+  return -1;
+}
+
 function buildElem(item) {
     return $('<div class="token" id="' + item.value + '"><span class="v">'
-            + item.value + '</span><span class="remove-token">&emsp;</span></div>')
-            .data('avatarUrl', item.avatar )
-            .data('value', item.value);
+            + item.value + '</span><span class="remove-token"></span></div>')
+           .data({
+               'avatarUrl': item.avatar,
+               'value': item.value,
+               'index': item.index
+               });
 }
 
 function existentToken(value) {
@@ -92,7 +123,17 @@ $(document).ready(function() {
                     return ( containerRightPos() - lastItemRightPos  );
                 },
                 removeToken = function(token) {
+                    var currentSource = $('#message_recipient').autocomplete('option', 'source');
+
+                    currentSource.push( {
+                        'avatar': token.data('avatarUrl'),
+                        'value': token.data('value')
+                                          });
+
+                    $('#message_recipient').autocomplete('option', 'source', currentSource);
+
                     token.remove();
+
                     var tokens = $('.token');
 
                     if (tokens.length == 0) {
@@ -128,12 +169,13 @@ $(document).ready(function() {
 
                 $('.token-focused').removeClass('token-focused');
 
-                $('.selector').autocomplete('option', 'source', {});
+                var currentSource = $('#message_recipient').autocomplete('option', 'source'),
+                    i = findIndexByValue(ui.item.value);
+                currentSource.splice(i, 1);
+                $('#message_recipient').autocomplete('option', 'source', currentSource);
 
-                alert($('#message_recipient').autocomplete('option', 'source'));
-
-                if ( existentToken(ui.item.value) || tokens.length == 15 )
-                    return false;
+                if (  tokens.length == 15 )
+                   return false;
 
 
                 var elem = buildElem(ui.item)
