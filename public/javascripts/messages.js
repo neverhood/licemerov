@@ -2,6 +2,14 @@
 // if user has less then 100 friends then div#friends-json is populated with friends data which is then used for auto completion
 // if user has more then 100 friends then request is sent to server and awaits for json in response
 
+Array.prototype.inArray = function(value) {
+  var length = this.length;
+  while(length--) {
+    if (this[length] == value)
+      return true;
+  }
+  return false;
+}
 
 function buildElem(item) {
     return $('<div class="token" id="' + item.value + '"><span class="v">'
@@ -21,6 +29,8 @@ function appendAvatar(avatar_url) {
 
 
 $(document).ready(function() {
+
+    var autocompleteType = $.licemerov.user.friends.length > 0 ? 'remote' : 'remote';
 
 
 
@@ -89,10 +99,11 @@ $(document).ready(function() {
             removeToken = function(token) {
                 var currentSource = $('#message_recipient').autocomplete('option', 'source');
 
-                currentSource.push( {
-                    'avatar': token.data('avatarUrl'),
-                    'value': token.data('value')
-                });
+                if (autocompleteType == 'local') {
+                  currentSource.push( {
+                      'avatar': token.data('avatarUrl'),
+                      'value': token.data('value') } );
+                }
 
                 $('#message_recipient').autocomplete('option', 'source', currentSource);
 
@@ -136,10 +147,13 @@ $(document).ready(function() {
 
         $('.token-focused').removeClass('token-focused');
 
-        var currentSource = $('#message_recipient').autocomplete('option', 'source'),
-                i = findIndexByValue(ui.item.value);
-        currentSource.splice(i, 1);
-        $('#message_recipient').autocomplete('option', 'source', currentSource);
+        if ( autocompleteType == 'local'  ) {
+          alert(autocompleteType);
+          var currentSource = $('#message_recipient').autocomplete('option', 'source'),
+              i = findIndexByValue(ui.item.value);
+          currentSource.splice(i, 1);
+          $('#message_recipient').autocomplete('option', 'source', currentSource);
+        } 
 
         if (  tokens.length >= 15 )
             return false;
@@ -191,18 +205,37 @@ $(document).ready(function() {
         };
     } else {
         var cache = {},
+            tokens = [],
+            collectTokens = function() {
+              tokens = [],
+              $.each($('.token'), function() {
+                 tokens.push($(this).data('value'))    
+              });
+              return tokens;
+            },
                 lastXhr;
         $( "#message_recipient" ).autocomplete({
             minLength: 2,
             source: function( request, response ) {
-                var term = request.term;
+                var term = request.term,
+                    data = [];
                 if ( term in cache ) {
-                    response( cache[term] );
+                    var tokens = collectTokens();
+                    $.each(cache[term], function(i) {
+                      if (!tokens.inArray(cache[term][i].value))
+                          data.push(cache[term][i]);
+                    });
+                    response( data );
                     return;
                 }
                 lastXhr = $.getJSON( "/messages/new", request, function( data, status, xhr ) {
                     cache[ term ] = data;
                     if ( xhr === lastXhr ) {
+                        var tokens = collectTokens();
+                        $.each(data, function(i) {
+                          if ( tokens.inArray(data[i].value) )
+                            data.splice(i, 1);
+                        });
                         response( data );
                     }
                 });

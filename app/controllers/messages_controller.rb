@@ -15,7 +15,7 @@ class MessagesController < ApplicationController
   def new
       term = params[:term]
       users = User.friends_of(current_user).where(['users.login LIKE ?', "%#{term}%"])
-      render :json => users.map {|u| {:value => u.login, :id => u.login, :avatar => u.avatar.url(:small)} }
+      render :json => users.map {|u| {:value => u.login, :id => u.login, :avatar => u.avatar.url(:thumb)} }
   end
 
   def show
