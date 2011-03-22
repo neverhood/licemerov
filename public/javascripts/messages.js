@@ -205,9 +205,8 @@ $(document).ready(function() {
         };
     } else {
         var cache = {},
-            tokens = [],
             collectTokens = function() {
-              tokens = [],
+              var tokens = [];
               $.each($('.token'), function() {
                  tokens.push($(this).data('value'))    
               });
@@ -232,11 +231,12 @@ $(document).ready(function() {
                     cache[ term ] = data;
                     if ( xhr === lastXhr ) {
                         var tokens = collectTokens();
+                        var newData = [];
                         $.each(data, function(i) {
-                          if ( tokens.inArray(data[i].value) )
-                            data.splice(i, 1);
+                          if (! tokens.inArray(data[i].value) )
+                            newData.push(data[i]);
                         });
-                        response( data );
+                        response( newData );
                     }
                 });
             },
