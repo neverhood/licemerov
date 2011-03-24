@@ -30,7 +30,7 @@ function appendAvatar(avatar_url) {
 
 $(document).ready(function() {
 
-    var autocompleteType = $.licemerov.user.friends.length > 0 ? 'remote' : 'remote';
+    var autocompleteType = $.licemerov.user.friends.length > 0 ? 'local' : 'remote';
 
 
 
@@ -72,6 +72,8 @@ $(document).ready(function() {
                 focusToken(lastToken);
             }
         }
+    }).click(function() {
+      $(this).autocomplete('search', '');
     });
 
     var tempToken = $('<div class="token"></div>')
@@ -148,7 +150,6 @@ $(document).ready(function() {
         $('.token-focused').removeClass('token-focused');
 
         if ( autocompleteType == 'local'  ) {
-          alert(autocompleteType);
           var currentSource = $('#message_recipient').autocomplete('option', 'source'),
               i = findIndexByValue(ui.item.value);
           currentSource.splice(i, 1);
@@ -185,9 +186,9 @@ $(document).ready(function() {
         return false
     };
 
-    if ($.licemerov.user.friends.length < 0) {
+    if (autocompleteType == 'local') {
         inputBox.autocomplete({
-            minLength: 1,
+            minLength: 2,
             source: $.licemerov.user.friends,
             focus: function(event, ui) {
                 appendAvatar(ui.item.avatar);
@@ -199,8 +200,10 @@ $(document).ready(function() {
                 data('autocomplete')._renderItem = function( ul, item ) {
 
             return $('<li></li>').data('item.autocomplete', item).
-                    append('<a>' + item.value + '</a>').
-                    appendTo(ul);
+                    append('<table><tr><td><img src="' + item.avatar + '" /></td>' + '<td style="vertical-align:middle">' + item.value + '</td>')
+                    //append('<img src="' + item.avatar + '" />').
+                    //append('<a>' + item.value + '</a>').
+                    .appendTo(ul);
 
         };
     } else {
