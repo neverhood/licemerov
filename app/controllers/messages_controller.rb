@@ -13,9 +13,15 @@ class MessagesController < ApplicationController
   #
 
   def new
-      term = params[:term]
+      term = params[:term] # todo: validate 
       users = User.friends_of(current_user).where(['users.login LIKE ?', "%#{term}%"])
-      render :json => users.map {|u| {:value => u.login, :id => u.login, :avatar => u.avatar.url(:thumb)} }
+      render :json => users.map { |u|
+        {
+            :value => u.login,
+            :name => u.name,
+            :avatar => u.avatar.url(:thumb)
+        }
+      }
   end
 
   def show

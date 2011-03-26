@@ -88,3 +88,5 @@ input#release_jcrop {display:none;}
 /* MESSAGES END */
 
 /***************** Profiles END ***************/
+.ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}
+.wtf { border-bottom : 1px dashed black;}

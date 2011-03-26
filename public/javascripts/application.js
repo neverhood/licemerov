@@ -1,18 +1,19 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
-Image.prototype.toggleSize = function() {
-  var type = this.className, 
-      oppositeType = type == 'regular' ? 'enlarged' : 'regular',
-      height = this.height + (type == 'enlarged'? -100 : 100),
-      width = this.width + (type == 'enlarged'? -100 : 100),
-      src = this.src.replace(type, oppositeType);
 
-  this.width = width;
-  this.height = height;
-  this.src = src;
-  this.className = oppositeType;
-  return $(this);
+function toggleImageSize(img) {
+    var type = img.className,
+        oppositeType = type == 'regular' ? 'enlarged' : 'regular',
+        height = img.height + (type == 'enlarged'? -100 : 100),
+        width = img.width + (type == 'enlarged'? -100 : 100),
+        src = img.src.replace(type, oppositeType);
+
+    img.width = (width);
+    img.height = (height);
+    img.src = src;
+    img.className = oppositeType;
+    return false;
 }
 
 $.fn.clearForm = function() {
@@ -66,6 +67,7 @@ function togglePopup() { //TODO: REFACTORING
         $popUp
                 .alignCenter()
                 .toggleClass('hidden');
+        $('#message_body').focus();
     } else {
         $opaco.toggleClass('hidden').removeAttr('style');
         $popUp.toggleClass('hidden');
@@ -138,7 +140,7 @@ $(document).ready(function() {
     });
 
     $('img.regular, img.enlarged').live('click', function() {  // Enlarge image
-        this.toggleSize();
+        toggleImageSize(this);
     });
 
     $('form :file').change(function() {
@@ -156,7 +158,7 @@ $(document).ready(function() {
     });
 
     $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
-        $(this).parents('div.options').hide().after($loader);
+        $(this).parents('div.options').hide().after($.licemerov.loader);
     }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
 
     $('a.confirm, a.blacklist').live('ajax:complete', function(evt, xhr) {
@@ -178,7 +180,7 @@ $.fn.toggleLoader = function() {
       } else if ( this.tagName.toLowerCase() == 'form' ) {
           var submit = $this.find(':submit');
           if (submit.is(':visible')) {
-            submit.hide;
+            submit.hide();
             $this.append(loader);
           } else {
             submit.show().next().remove();
@@ -187,7 +189,7 @@ $.fn.toggleLoader = function() {
           }
       }
   });
-}
+};
 
 function appendErrors(errors, form) { // Render object errors
     $.each(errors, function(index) {

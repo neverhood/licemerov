@@ -9,7 +9,7 @@ Array.prototype.inArray = function(value) {
       return true;
   }
   return false;
-}
+};
 
 function buildElem(item) {
     return $('<div class="token" id="' + item.value + '"><span class="v">'
@@ -17,6 +17,7 @@ function buildElem(item) {
             .data({
                       'avatarUrl': item.avatar,
                       'value': item.value,
+                      'name': item.name,
                       'index': item.index
                   });
 }
@@ -104,6 +105,7 @@ $(document).ready(function() {
                 if (autocompleteType == 'local') {
                   currentSource.push( {
                       'avatar': token.data('avatarUrl'),
+                      'name': token.data('name'),
                       'value': token.data('value') } );
                 }
 
@@ -199,10 +201,8 @@ $(document).ready(function() {
         }).
                 data('autocomplete')._renderItem = function( ul, item ) {
 
-            return $('<li></li>').data('item.autocomplete', item).
-                    append('<table><tr><td><img src="' + item.avatar + '" /></td>' + '<td style="vertical-align:middle">' + item.value + '</td>')
-                    //append('<img src="' + item.avatar + '" />').
-                    //append('<a>' + item.value + '</a>').
+            return $('<li></li>').data('item.autocomplete', item)
+                    .append('<a class="wtf">' + item.value + '<div>' + item.name + '</div>' + '</a>')
                     .appendTo(ul);
 
         };
@@ -243,176 +243,11 @@ $(document).ready(function() {
                     }
                 });
             },
-            select: autocompleteOnSelect
+            select: autocompleteOnSelect,
+            focus: function(event, ui) {
+                appendAvatar(ui.item.avatar);
+                return false;
+            }
         });
     }
-
-//} else {
-//    var cache = {},
-//            lastXhr;
-//    $( "#message_recipient" ).autocomplete({
-//        minLength: 2,
-//        source: function( request, response ) {
-//            var term = request.term;
-//            if ( term in cache ) {
-//                response( cache[term] );
-//                return;
-//            }
-//            lastXhr = $.getJSON( "/messages/new", request, function( data, status, xhr ) {
-//                cache[ term ] = data;
-//                if ( xhr === lastXhr ) {
-//                    response( data );
-//                }
-//            });
-//        }
-//    });
-//    }
-
-
-
-//    if ( $('#friends-json').length ) {
-//        var tempToken = $('<div class="token"></div>')
-//                .appendTo('body');
-//        var minWidth = parseInt($(tempToken).css('min-width'));
-//        tempToken.remove();
-//
-//        var inputBox = $('#message_recipient'),
-//                container = inputBox.parent(),
-//                containerRightPos = function() {
-//                    return (container.offset().left + container.width());
-//                },
-//                origWidth = inputBox.width(),
-//                margin = inputBox
-//                        .clone(true)
-//                        .hide()
-//                        .appendTo('body').outerWidth() - origWidth,
-//                calcOffset = function() {
-//                    var items = container.children('.token'),
-//                            lastItem = $(items[items.length - 1]),
-//                            lastItemRightPos = lastItem[0]?
-//                                    (lastItem.offset().left + lastItem.width()) : (inputBox.offset().left + margin);
-//                    return ( containerRightPos() - lastItemRightPos  );
-//                },
-//                removeToken = function(token) {
-//                    var currentSource = $('#message_recipient').autocomplete('option', 'source');
-//
-//                    currentSource.push( {
-//                        'avatar': token.data('avatarUrl'),
-//                        'value': token.data('value')
-//                    });
-//
-//                    $('#message_recipient').autocomplete('option', 'source', currentSource);
-//
-//                    token.remove();
-//
-//                    var tokens = $('.token');
-//
-//                    if (tokens.length == 0) {
-//                        appendAvatar('/avatars/thumb/missing.png');
-//                    }
-//                    else
-//                        appendAvatar($(tokens[0]).data('avatarUrl'));
-//
-//                    var currentOffset = calcOffset();
-//                    if ( currentOffset < minWidth ) {
-//                        inputBox.width(origWidth);
-//                    } else {
-//                        inputBox.width(currentOffset - margin);
-//                    }
-//                },
-//                findIndexByValue = function(value) {
-//                    var tokens = $('#message_recipient').autocomplete('option', 'source'),
-//                            iterator = tokens.length;
-//
-//                    while(iterator--) {
-//                        if ( tokens[iterator].value == value ) {
-//                            return iterator;
-//                        }
-//                    }
-//
-//                    return -1;
-//                },
-//                focusToken = function(token) {
-//                    $('.token-focused').removeClass('token-focused');
-//                    appendAvatar(token.data('avatarUrl'));
-//                    token.addClass('token-focused');
-//                };
-//
-//        var autocompleteOnSelect = function( event, ui) {
-//            var tokens = $('.token');
-//
-//            $('.token-focused').removeClass('token-focused');
-//
-//            var currentSource = $('#message_recipient').autocomplete('option', 'source'),
-//                    i = findIndexByValue(ui.item.value);
-//            currentSource.splice(i, 1);
-//            $('#message_recipient').autocomplete('option', 'source', currentSource);
-//
-//            if (  tokens.length >= 15 )
-//                return false;
-//
-//
-//            var elem = buildElem(ui.item)
-//                    .hide()
-//                    .appendTo('body'),
-//                    elemWidth = elem.outerWidth(true),
-//                    currentOffset = calcOffset();
-//
-//            tokens.push(elem[0]);
-//
-//            appendAvatar( $(tokens[0]).data('avatarUrl') );
-//
-//            if ((currentOffset) >= elemWidth) {
-//                if ( (currentOffset - elemWidth) > minWidth ) {
-//                    inputBox.before( elem.show() )
-//                            .width( currentOffset - elemWidth - margin  );
-//                } else {
-//                    inputBox.before( elem.show() )
-//                            .width( origWidth );
-//                }
-//            } else {
-//                inputBox.before( elem.show() )
-//                        .width( calcOffset() - margin );
-//            }
-//            inputBox.val('');
-//            return false
-//        };
-//
-//        inputBox.autocomplete({
-//            minLength: 1,
-//            source: $.licemerov.user.friends,
-//            focus: function(event, ui) {
-//                appendAvatar(ui.item.avatar);
-//                return false;
-//            },
-//
-//            select: autocompleteOnSelect
-//        }).
-//                data('autocomplete')._renderItem = function( ul, item ) {
-//
-//            return $('<li></li>').data('item.autocomplete', item).
-//                    append('<a>' + item.value + '</a>').
-//                    appendTo(ul);
-//
-//        };
-//    } else {
-//        var cache = {},
-//                lastXhr;
-//        $( "#message_recipient" ).autocomplete({
-//            minLength: 2,
-//            source: function( request, response ) {
-//                var term = request.term;
-//                if ( term in cache ) {
-//                    response( cache[term] );
-//                    return;
-//                }
-//                lastXhr = $.getJSON( "/messages/new", request, function( data, status, xhr ) {
-//                    cache[ term ] = data;
-//                    if ( xhr === lastXhr ) {
-//                        response( data );
-//                    }
-//                });
-//            }
-//        });
-//    }
 });

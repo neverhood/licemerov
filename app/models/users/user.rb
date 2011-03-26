@@ -98,6 +98,14 @@ class User < ActiveRecord::Base
     self.sex == 0 ? 'female' : 'male'
   end
 
+  def name
+    if first_name
+      first_name + (last_name ? (' ' + last_name) : '')
+    else
+      ''
+    end
+  end
+
   # Alias to relation
   def details
     self.user_details
