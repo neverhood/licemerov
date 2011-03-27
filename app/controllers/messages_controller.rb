@@ -18,6 +18,7 @@ class MessagesController < ApplicationController
       render :json => users.map { |u|
         {
             :value => u.login,
+            :id => u.id,
             :name => u.name,
             :avatar => u.avatar.url(:thumb)
         }
@@ -33,15 +34,27 @@ class MessagesController < ApplicationController
   end
 
   def create
-    @message = current_user.messages.build(params[:message])
-    @message.user_login, @message.user_sex = current_user.login, current_user.sex
+    @recipients = params[:message][:recipient].split(',')
+    @recipients = [] unless (1..15).include? @recipients.size
+
+    @messages = @recipients.map { |recipient|
+      current_user.messages.build( :body => params[:message][:body],
+                                   :subject => params[:message][:subject],
+                                   :receiver_id => recipient.to_i )
+    }
+
+    @success = true
+
+    @messages.each do |message|
+      @success = false unless message.save
+    end
+
     respond_to do |format|
-      if @message.save
+      if @success
         format.js { render :json => {:message => t(:message_created), :html_class => :notice } }
         format.html { redirect_to :back, :notice => t(:message_created) }
       else
-        format.js { render :json => @message.errors, :status => :unprocessable_entity  }
-        redirect_to :back, :flash => { :errors => @message.errors } # TODO: before filter to show errors in all possible places
+        render guilty_response
       end
     end
   end

@@ -2,29 +2,29 @@
   <%= form_for @message, :remote => true, :html => {:id => 'new-message'} do |f| %>
 
 
-    <table>
-      <tr>
-        <td style="padding:50px 30px;">
-          <div style="width:100px; height:100px; border:1px solid black;" id="avatar">
-          </div>
-        </td>
-        <td style="vertical-align:middle;padding-right:15px;">
-          <h3><%= t(:recipient)%></h3>
+      <table>
+        <tr>
+          <td style="padding:50px 30px;">
+            <div style="width:100px; height:100px; border:1px solid black;" id="avatar">
+            </div>
+          </td>
+          <td style="vertical-align:middle;padding-right:15px;">
+            <h3><%= t(:recipient)%></h3>
             <div style="border: 1px solid gray; float:left;" class='recipients-container' >
               <input type="text" id="users-select">
-              <%= f.hidden_field :recipient %>
+              <%= f.hidden_field :recipient  %>
             </div>
             <div style='clear:both'>
               <h3> <%= t(:subject) %> </h3>
               <%= f.text_field :subject, :size => 40 %>
             </div>
-        </td>
-      </tr>
-    </table>
-    <div style='margin-left:30px'>
-      <%= f.label :body %> <%= f.text_area :body, :rows => 8, :cols => 50 %>
-     <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>
-   </div>
+          </td>
+        </tr>
+      </table>
+      <div style='margin-left:30px'>
+        <%= f.text_area :body, :rows => 8, :cols => 50 %>
+        <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>
+      </div>
 
 
 

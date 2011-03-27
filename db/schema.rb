@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110327113929) do
+ActiveRecord::Schema.define(:version => 20110327162120) do
 
   create_table "friendships", :force => true do |t|
     t.integer  "user_id",           :default => 0
@@ -25,8 +25,6 @@ ActiveRecord::Schema.define(:version => 20110327113929) do
   create_table "messages", :force => true do |t|
     t.integer  "user_id",           :default => 0
     t.integer  "receiver_id",       :default => 0
-    t.string   "user_login",        :default => ""
-    t.integer  "user_sex",          :default => 0
     t.boolean  "read",              :default => false
     t.text     "body",              :default => ""
     t.string   "subject"

@@ -10,6 +10,7 @@ function buildElem(item) {
                       'avatarUrl': item.avatar,
                       'value': item.value,
                       'name': item.name,
+                      'id': item.id,
                       'index': item.index
                   });
 }
@@ -72,11 +73,11 @@ $(document).ready(function() {
        this.value = '';
     });
 
-    $('form#new-message').bind('ajax:beforeSend', function() {
+    $('form#new-message').bind('submit', function() {
        var input = $(this).find('#message_recipient'),
            tokens = [];
         $.each($('.token'), function() {
-           tokens.push( $(this).data('value') )
+           tokens.push( $(this).data('id') )
         });
         input.val( tokens.join(',') );
         alert( input.val() );
@@ -110,7 +111,8 @@ $(document).ready(function() {
                   currentSource.push( {
                       'avatar': token.data('avatarUrl'),
                       'name': token.data('name'),
-                      'value': token.data('value') } );
+                      'value': token.data('value'),
+                      'id': token.data('id')} );
                 }
 
                 inputField.autocomplete('option', 'source', currentSource);

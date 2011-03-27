@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
     login.parameterize
   end
 
+
   attr_accessible :login, :email, :sex, :password, :password_confirmation, :avatar, :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :crop_x, :crop_y, :crop_h, :crop_w
 
