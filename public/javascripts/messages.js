@@ -2,14 +2,6 @@
 // if user has less then 100 friends then div#friends-json is populated with friends data which is then used for auto completion
 // if user has more then 100 friends then request is sent to server and awaits for json in response
 
-Array.prototype.inArray = function(value) {
-  var length = this.length;
-  while(length--) {
-    if (this[length] == value)
-      return true;
-  }
-  return false;
-};
 
 function buildElem(item) {
     return $('<div class="token" id="' + item.value + '"><span class="v">'
@@ -31,7 +23,8 @@ function appendAvatar(avatar_url) {
 
 $(document).ready(function() {
 
-    var autocompleteType = $.licemerov.user.friends.length > 0 ? 'local' : 'remote';
+    var autocompleteType = $.licemerov.user.friends.length > 0 ? 'local' : 'remote',
+        inputField = $('#users-select');
 
 
 
@@ -61,7 +54,7 @@ $(document).ready(function() {
         removeToken($(this).parent());
     });
 
-    $('#message_recipient').keydown(function(event) {
+    inputField.keydown(function(event) {
         var keyCode = (event.keyCode ? event.keyCode : event.which),
                 tokens = $('.token'),
                 lastToken = tokens[tokens.length - 1];
@@ -75,6 +68,18 @@ $(document).ready(function() {
         }
     }).click(function() {
       $(this).autocomplete('search', '');
+    }).blur(function() {
+       this.value = '';
+    });
+
+    $('form#new-message').bind('ajax:beforeSend', function() {
+       var input = $(this).find('#message_recipient'),
+           tokens = [];
+        $.each($('.token'), function() {
+           tokens.push( $(this).data('value') )
+        });
+        input.val( tokens.join(',') );
+        alert( input.val() );
     });
 
     var tempToken = $('<div class="token"></div>')
@@ -82,13 +87,12 @@ $(document).ready(function() {
     var minWidth = parseInt($(tempToken).css('min-width'));
     tempToken.remove();
 
-    var inputBox = $('#message_recipient'),
-            container = inputBox.parent(),
+    var     container = inputField.parent(),
             containerRightPos = function() {
                 return (container.offset().left + container.width());
             },
-            origWidth = inputBox.width(),
-            margin = inputBox
+            origWidth = inputField.width(),
+            margin = inputField
                     .clone(true)
                     .hide()
                     .appendTo('body').outerWidth() - origWidth,
@@ -96,11 +100,11 @@ $(document).ready(function() {
                 var items = container.children('.token'),
                         lastItem = $(items[items.length - 1]),
                         lastItemRightPos = lastItem[0]?
-                                (lastItem.offset().left + lastItem.width()) : (inputBox.offset().left + margin);
+                                (lastItem.offset().left + lastItem.width()) : (inputField.offset().left + margin);
                 return ( containerRightPos() - lastItemRightPos  );
             },
             removeToken = function(token) {
-                var currentSource = $('#message_recipient').autocomplete('option', 'source');
+                var currentSource = inputField.autocomplete('option', 'source');
 
                 if (autocompleteType == 'local') {
                   currentSource.push( {
@@ -109,7 +113,7 @@ $(document).ready(function() {
                       'value': token.data('value') } );
                 }
 
-                $('#message_recipient').autocomplete('option', 'source', currentSource);
+                inputField.autocomplete('option', 'source', currentSource);
 
                 token.remove();
 
@@ -123,13 +127,13 @@ $(document).ready(function() {
 
                 var currentOffset = calcOffset();
                 if ( currentOffset < minWidth ) {
-                    inputBox.width(origWidth);
+                    inputField.width(origWidth);
                 } else {
-                    inputBox.width(currentOffset - margin);
+                    inputField.width(currentOffset - margin);
                 }
             },
             findIndexByValue = function(value) {
-                var tokens = $('#message_recipient').autocomplete('option', 'source'),
+                var tokens = inputField.autocomplete('option', 'source'),
                         iterator = tokens.length;
 
                 while(iterator--) {
@@ -152,10 +156,10 @@ $(document).ready(function() {
         $('.token-focused').removeClass('token-focused');
 
         if ( autocompleteType == 'local'  ) {
-          var currentSource = $('#message_recipient').autocomplete('option', 'source'),
+          var currentSource = inputField.autocomplete('option', 'source'),
               i = findIndexByValue(ui.item.value);
           currentSource.splice(i, 1);
-          $('#message_recipient').autocomplete('option', 'source', currentSource);
+          inputField.autocomplete('option', 'source', currentSource);
         } 
 
         if (  tokens.length >= 15 )
@@ -174,22 +178,22 @@ $(document).ready(function() {
 
         if ((currentOffset) >= elemWidth) {
             if ( (currentOffset - elemWidth) > minWidth ) {
-                inputBox.before( elem.show() )
+                inputField.before( elem.show() )
                         .width( currentOffset - elemWidth - margin  );
             } else {
-                inputBox.before( elem.show() )
+                inputField.before( elem.show() )
                         .width( origWidth );
             }
         } else {
-            inputBox.before( elem.show() )
+            inputField.before( elem.show() )
                     .width( calcOffset() - margin );
         }
-        inputBox.val('');
+        inputField.val('');
         return false
     };
 
     if (autocompleteType == 'local') {
-        inputBox.autocomplete({
+        inputField.autocomplete({
             minLength: 2,
             source: $.licemerov.user.friends,
             focus: function(event, ui) {
@@ -216,7 +220,7 @@ $(document).ready(function() {
               return tokens;
             },
                 lastXhr;
-        $( "#message_recipient" ).autocomplete({
+        inputField.autocomplete({
             minLength: 2,
             source: function( request, response ) {
                 var term = request.term,

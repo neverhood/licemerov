@@ -100,6 +100,7 @@ $(document).ready(function() {
     $('a#new-message, #close-popup').click(function(event) { //TODO: Refactoring
         event.preventDefault();
         togglePopup();
+        return false;
     });
 
     $('a.inactive').live('click', function() { return false });
