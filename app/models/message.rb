@@ -9,13 +9,13 @@ end
 class ExistentMessageValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     record.errors[attribute] << "wrong #{attribute}" unless
-        (Message.where(['id = ?', value.to_i]).count > 0) || value.nil?
+        value.nil? || (Message.where(['id = ?', value.to_i]).count > 0) 
   end
 end
 
 class Message < ActiveRecord::Base
 
-  attr_accessor :recipient
+  attr_accessor :recipients
   attr_accessible :parent_id, :receiver_id, :subject, :body, :recipient
 
   belongs_to :user

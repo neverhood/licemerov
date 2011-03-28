@@ -34,7 +34,8 @@ class MessagesController < ApplicationController
   end
 
   def create
-    @recipients = params[:message][:recipient].split(',')
+    @recipients = params[:message][:recipients].split(',').
+      find_all { |id| id =~ /^\d+$/ }
     @recipients = [] unless (1..15).include? @recipients.size
 
     @messages = @recipients.map { |recipient|
@@ -48,6 +49,7 @@ class MessagesController < ApplicationController
     @messages.each do |message|
       @success = false unless message.save
     end
+    logger.info @messages.first.errors
 
     respond_to do |format|
       if @success

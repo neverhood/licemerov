@@ -73,15 +73,21 @@ $(document).ready(function() {
        this.value = '';
     });
 
-    $('form#new-message').bind('submit', function() {
-       var input = $(this).find('#message_recipient'),
-           tokens = [];
-        $.each($('.token'), function() {
-           tokens.push( $(this).data('id') )
-        });
-        input.val( tokens.join(',') );
-        alert( input.val() );
-    });
+    //  IE refuses to obey 'submit' event ( stupid fuck )
+    
+    var handleMessageSubmit = function() {
+      var input = $('#message_recipients'),
+          tokens = [];
+      $.each($('.token'), function() {
+          tokens.push( $(this).data('id') )
+      });
+      input.val( tokens.join(',') ); 
+    }
+
+    if ( $.browser.msie ) 
+       $('#message_submit').click(handleMessageSubmit);
+    else
+      $('form#new-message').submit(handleMessageSubmit);
 
     var tempToken = $('<div class="token"></div>')
             .appendTo('body');
