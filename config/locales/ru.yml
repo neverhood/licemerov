@@ -67,6 +67,7 @@ ru:
   subject: Тема
   whom_to: Кому
   recipient: Получатель
+  new_message: Написать Сообщение
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'
@@ -92,3 +93,6 @@ ru:
           attributes:
             password:
               too_short: Слишком короткий пароль
+            login:
+              invalid: Пожалуйста, используйте латинские буквы цифры и (. _ -)
+

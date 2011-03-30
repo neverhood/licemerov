@@ -73,7 +73,7 @@ $(document).ready(function() {
        this.value = '';
     });
 
-    //  IE refuses to obey 'submit' event ( stupid fuck )
+    //  IE refuses to obey to 'submit' event ( stupid fuck )
     
     var handleMessageSubmit = function() {
       var input = $('#message_recipients'),
@@ -82,12 +82,23 @@ $(document).ready(function() {
           tokens.push( $(this).data('id') )
       });
       input.val( tokens.join(',') ); 
-    }
+    };
 
-    if ( $.browser.msie ) 
+    if ( $.browser.msie ) // I hate you!
        $('#message_submit').click(handleMessageSubmit);
     else
       $('form#new-message').submit(handleMessageSubmit);
+
+    $('form#new-message').bind('ajax:complete', function(evt, xhr) {
+        var params = $.parseJSON(xhr.responseText);
+        $('div.notice').text(params.message);
+        $(this).clearForm();
+        $('.token').remove();
+        inputField.width(origWidth)
+                .autocomplete('option', 'source', $.licemerov.user.friends )
+    });
+
+
 
     var tempToken = $('<div class="token"></div>')
             .appendTo('body');
@@ -217,13 +228,13 @@ $(document).ready(function() {
                     .append('<a class="wtf">' + item.value + '<div>' + item.name + '</div>' + '</a>')
                     .appendTo(ul);
 
-        };
+        }
     } else {
         var cache = {},
             collectTokens = function() {
               var tokens = [];
               $.each($('.token'), function() {
-                 tokens.push($(this).data('value'))    
+                 tokens.push($(this).data('value'))
               });
               return tokens;
             },
@@ -242,7 +253,7 @@ $(document).ready(function() {
                     response( data );
                     return;
                 }
-                lastXhr = $.getJSON( "/messages/new", request, function( data, status, xhr ) {
+                lastXhr = $.getJSON( "/new_message", request, function( data, status, xhr ) {
                     cache[ term ] = data;
                     if ( xhr === lastXhr ) {
                         var tokens = collectTokens();

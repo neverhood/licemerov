@@ -1,14 +1,11 @@
-<% content_for(:head) do %>
-    <%= stylesheet_link_tag "jquery.css" %>
-    <%= javascript_include_tag "jquery-ui.js" %>
-    <%= javascript_include_tag "messages" %>
-<% end %>
+
+
+<%= incoming( :inactive => (params[:section] == 'inbox') ) %>
+<%= sent( :inactive => (params[:section] == 'sent') ) %>
+<%= new( :inactive => (controller.action_name == 'new') ) %>
 
 <h1> <%= (params[:section] == 'inbox') ? t(:incoming_messages) : t(:sent_messages) %> </h1>
 
-<%= incoming(:inactive => (params[:section] == 'inbox') ) %>
-<%= sent(:inactive => (params[:section] == 'sent') ) %>
-<%= link_to 'new message', nil, :id => 'new-message' %>
 
 <% if params[:section] == 'inbox' %>
     <div id="incoming-messages">
@@ -20,20 +17,4 @@
     </div>
 <% end %>
 
-<div id='friends-json' class="hidden">
-  <% friends = User.friends_of(current_user) %>
 
-  <%= friends.map {|u|
-    { :avatar => u.avatar.url(:thumb), :value => u.login, :name => u.name, :id => u.id }
-  }.to_json
-  %>
-</div>
-
-<div id="opaco" class="hidden" ></div>
-
-<div id="popup" class="hidden">
-  <%= render :partial => 'new_message' %>
-  <div>
-    <input type="button" value="close" id="close-popup">
-  </div>
-</div>

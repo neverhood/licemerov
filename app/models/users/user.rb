@@ -8,6 +8,14 @@ end
 
 class User < ActiveRecord::Base
 
+  acts_as_authentic do |config|
+    config.login_field :login
+    config.validates_format_of_login_field_options(
+        :with => /\A\w[\w\.\-_]+$/, # Original regexp was too clumsy ( allowing spaces and nasty @ thinds )
+        :message => I18n.t('ru.activerecord.errors.models.user.attributes.login.invalid')
+    )
+  end
+
   def to_param
     login.parameterize
   end
@@ -35,12 +43,12 @@ class User < ActiveRecord::Base
                                     :unless => Proc.new  { |model| model.avatar }
   validates_attachment_size :avatar, :less_than => 1.megabytes, :unless => Proc.new { |model| model.avatar }
 
+  before_create :downcase_params
   before_save :randomize_file_name, :if => :uploading_avatar?
   after_update :reprocess_avatar, :if => :cropping?
 
   validate :avatar_geometry
 
-  scope :wtf, proc {|user| select('login, ')}
 
   # AVATAR section END
 
@@ -79,8 +87,6 @@ class User < ActiveRecord::Base
   scope :online, where(['last_request_at >= ?', 10.minutes.ago])
 
   after_create :create_details
-
-  acts_as_authentic { |config| config.login_field :login }
 
   # Array of restricted logins
   RESTRICTED_LOGINS = %w(main login user admin administrator index users photos attachments attachment
@@ -121,6 +127,11 @@ class User < ActiveRecord::Base
 
   def create_details
     self.create_user_details
+  end
+
+  def downcase_params
+    self.login.downcase!
+    self.email.downcase!
   end
 
   def uploading_avatar?

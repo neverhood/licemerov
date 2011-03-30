@@ -18,12 +18,11 @@
     <% user_attrs = nil %>
 <% end %>
 <div id="wrapper" data-user="<%= user_attrs %>">
-  <% if flash[:notice] %>
-      <div class="notice"><%= flash[:notice] %></div>
-  <% end %>
-  <% if flash[:alert] %>
-      <div class="alert"><%= flash[:alert] %></div>
-  <% end %>
+
+  <div class="notice"><%= flash[:notice] %></div>
+  <div class="alert"><%= flash[:alert] %></div>
+  <div class="warning"><%= flash[:warning] %></div>
+
   <%= yield %>
 </div>
 
