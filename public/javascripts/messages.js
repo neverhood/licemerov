@@ -253,7 +253,7 @@ $(document).ready(function() {
                     response( data );
                     return;
                 }
-                lastXhr = $.getJSON( "/new_message", request, function( data, status, xhr ) {
+                lastXhr = $.getJSON( $.licemerov.user.login + "/new_message", request, function( data, status, xhr ) {
                     cache[ term ] = data;
                     if ( xhr === lastXhr ) {
                         var tokens = collectTokens();
