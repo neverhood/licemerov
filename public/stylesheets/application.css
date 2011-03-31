@@ -26,6 +26,7 @@ a.inactive {color:gray; text-decoration:none; cursor:default;}
     margin-bottom: 10px;
 }
 .clear-both { clear:both }
+.float-left { float:left }
 
 #popup {
     background-color: #FFFFFF; position: fixed; left:50%; top:50%; min-width: 300px; z-index: 11;
@@ -74,8 +75,8 @@ div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
 input#release_jcrop {display:none;}
 
 /* MESSAGES */
-#message_subject { padding: 5px 7px; width:290px; border:1px solid gray;}
-.recipients-container { width: 300px; padding:2px; }
+input#message_subject { padding: 5px 7px; width:290px; border:1px solid gray;}
+div#recipients-container { width: 300px; padding:2px; }
 #users-select {display: block; border:none;  width:290px; float:left; padding-left:2px;}
 .token {float:left; background: gray; color:white; margin: 2px 3px 0 0; min-width:40px;}
 .token-focused {color:white; background:blue}
@@ -85,8 +86,13 @@ input#release_jcrop {display:none;}
     background: url(/images/cancel.gif) center no-repeat;
     vertical-align:top; width:20px; height:8px!important;
 }
+div#avatar { width:100px; height:100px; border:1px solid black; }
+td#avatar-row { padding:50px 30px 50px 0; }
+td#recipients-row { vertical-align:middle;padding-right:15px; }
+div#new-message-form-container { margin-left:30px; }
 /* MESSAGES END */
 
 /***************** Profiles END ***************/
 .ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}
+.thin-border { border: 1px solid gray; }
 .wtf { border-bottom : 1px dashed black;}

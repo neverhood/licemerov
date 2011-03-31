@@ -9,33 +9,33 @@
 
 <h1> <%= t(:new_message) %></h1>
 
-<div id="new-message-form" class="">
+<div id="new-message-form-container">
   <%= form_for @message, :remote => true, :html => {:id => 'new-message'} do |f| %>
 
 
       <table>
         <tr>
-          <td style="padding:50px 30px;">
-            <div style="width:100px; height:100px; border:1px solid black;" id="avatar">
+          <td id='avatar-row'>
+            <div id="avatar">
             </div>
           </td>
-          <td style="vertical-align:middle;padding-right:15px;">
+          <td id='recipients-row'>
             <h3><%= t(:recipient)%></h3>
-            <div style="border: 1px solid gray; float:left;" class='recipients-container' >
-              <input type="text" id="users-select">
+            <div id='recipients-container' class="thin-border float-left" >
+              <input type="text" id="users-select" />
               <%= f.hidden_field :recipients  %>
             </div>
-            <div style='clear:both'>
+            <div class='clear-both'>
               <h3> <%= t(:subject) %> </h3>
               <%= f.text_field :subject, :size => 40 %>
             </div>
           </td>
         </tr>
       </table>
-      <div style='margin-left:30px'>
+      <div>
         <%= f.text_area :body, :rows => 8, :cols => 50 %>
-        <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>
       </div>
+      <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>
 
 
 
