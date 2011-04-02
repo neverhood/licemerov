@@ -33,7 +33,7 @@ Licemerov::Application.routes.draw do
   end
   get '/:user_profile/messages' => 'messages#show', :as => :user_messages
   get '/:user_profile/new_message' => 'messages#new', :as => :new_message
-  put '/messages/:unwanted_messages' => 'messages#update', :as => :delete_messages
+  put '/update_messages/' => 'messages#update', :as => :update_messages
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

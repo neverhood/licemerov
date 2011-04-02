@@ -4,10 +4,10 @@
 
 function toggleImageSize(img) {
     var type = img.className,
-        oppositeType = type == 'regular' ? 'enlarged' : 'regular',
-        height = img.height + (type == 'enlarged'? -100 : 100),
-        width = img.width + (type == 'enlarged'? -100 : 100),
-        src = img.src.replace(type, oppositeType);
+            oppositeType = type == 'regular' ? 'enlarged' : 'regular',
+            height = img.height + (type == 'enlarged'? -100 : 100),
+            width = img.width + (type == 'enlarged'? -100 : 100),
+            src = img.src.replace(type, oppositeType);
 
     img.width = (width);
     img.height = (height);
@@ -49,7 +49,7 @@ $.fn.alignCenter = function() {
 
 $(window).load(function() {
     if((typeof $.Jcrop == 'function') && $('#cropbox').length)
-           $.licemerov.jcrop_api = $.Jcrop('#cropbox', {onChange: refreshAvatarPreview, onSelect: updateCrop,
+        $.licemerov.jcrop_api = $.Jcrop('#cropbox', {onChange: refreshAvatarPreview, onSelect: updateCrop,
             minSize: [100, 100], aspectRation:1});
 });
 
@@ -74,6 +74,18 @@ function togglePopup() { //TODO: REFACTORING
         if ($popUp.find('form')) {
             $popUp.find('form').clearForm();
         }
+    }
+}
+
+function changeMarkedMessagesCounter( count ) {
+    var counter = $('#marked-messages-counter').
+            html( count ),
+            container = $('#options'),
+            visible = counter.is(':visible');
+    if ( count == 0 )  {
+        container.hide();
+    } else {
+        if ( !visible ) container.show();
     }
 }
 
@@ -109,19 +121,56 @@ $(document).ready(function() {
 
     $('form#parent_form, form#response_form').keyup(function() {
         $(this.elements[this.elements.length - 1])
-            .attr('disabled', (this.elements[2].value.length < 2)); //elements[2] is a textarea
+                .attr('disabled', (this.elements[2].value.length < 2)); //elements[2] is a textarea
     });
 //            .bind("ajax:beforeSend", function() {toggleLoader(this)}). // TODO: Wait for JangoSteve's pull request merged into jquery-ujs
 //            bind("ajax:complete", function() {toggleLoader(this)});
 
     $('form#edit_avatar :file').change(function() {
         $('form#edit_avatar :submit')
-              .attr('disabled', this.value.length == 0);
+                .attr('disabled', this.value.length == 0);
     });
 
     $('a#delete-friend, a#add-friend').
             live("ajax:beforeSend", function() { $(this).toggleLoader() } ).
             live("ajax:complete",  function() { $(this).toggleLoader() } );
+
+    // Messages
+    $('td.delete-message a, .message-delete').live('ajax:beforeSend', function() {
+        $(this).toggleLoader();
+    });
+
+    $('td.mark-message input[type="checkbox"]').click(function() {
+        var checked = this.checked,
+                ids = [],
+                checkedMessages = $('td.mark-message input:checked'),
+                buttons = $('a.message-delete, a.message-mark_as_read');
+
+        $.each(checkedMessages, function() {
+           ids.push( this.id.replace('message-', '') );
+        });
+
+        $.each(buttons, function() {
+            var href = this.href.replace(/&messages=.*/, '');
+            this.href = href + '&messages=' + ids.join(',');
+        });
+
+        changeMarkedMessagesCounter( checkedMessages.length );
+    });
+
+//    $('a.message-delete, a.message-mark-as-read').click(function(event) {
+//        event.preventDefault();
+//        var checkedMessages = $('td.mark-message input:checked'),
+//            ids = [],
+//            href = this.href;
+//        $.each(checkedMessages, function() {
+//            ids.push( this.id.replace('message-', '') )
+//        });
+//        this.href = href + '&messages=' + ids.join(',');
+//        return false;
+//    });
+
+    // Messages end
 
     $('a#add-friend').live("ajax:complete", function(evt, xhr) {
         var params = $.parseJSON(xhr.responseText);
@@ -154,8 +203,8 @@ $(document).ready(function() {
         var $field = $cancel.prev();
         $field.replaceWith($field.clone(true)).val('');
         $cancel.parents('form')
-                  .find(':submit')
-                  .attr('disabled', ($cancel.attr('rel') != 'disable'));
+                .find(':submit')
+                .attr('disabled', ($cancel.attr('rel') != 'disable'));
     });
 
     $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
@@ -168,28 +217,30 @@ $(document).ready(function() {
                 params.html_class + '">' + params.message + '</div>').show();
     });
 
+
+
 });
 
 $.fn.toggleLoader = function() {
-  return this.each(function() {
-      var $this = $(this),
-          loader = $.licemerov.loader;
+    return this.each(function() {
+        var $this = $(this),
+                loader = $.licemerov.loader;
 
-      if (this.tagName.toLowerCase() == 'a') {
-        $this.is(':visible')? $this.before(loader).hide() :
-          loader.remove(); 
-      } else if ( this.tagName.toLowerCase() == 'form' ) {
-          var submit = $this.find(':submit');
-          if (submit.is(':visible')) {
-            submit.hide();
-            $this.append(loader);
-          } else {
-            submit.show().next().remove();
-            if (this.id == 'response_form' && $this.find('.field_with_errors').length == 0)
-              $this.hide();
-          }
-      }
-  });
+        if (this.tagName.toLowerCase() == 'a') {
+            $this.is(':visible')? $this.before(loader).hide() :
+                    loader.remove();
+        } else if ( this.tagName.toLowerCase() == 'form' ) {
+            var submit = $this.find(':submit');
+            if (submit.is(':visible')) {
+                submit.hide();
+                $this.append(loader);
+            } else {
+                submit.show().next().remove();
+                if (this.id == 'response_form' && $this.find('.field_with_errors').length == 0)
+                    $this.hide();
+            }
+        }
+    });
 };
 
 function appendErrors(errors, form) { // Render object errors

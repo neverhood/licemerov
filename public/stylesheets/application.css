@@ -96,6 +96,8 @@ div#new-message-form-container { margin-left:30px; }
 td.message-details { color:gray; font-size:12px; font-weight:bold; padding:5px; }
 td.message-body { padding:25px; width:300px;}
 table#messages td, table#messages, th {   }
+div#options { display:none; }
+div#options-placeholder { height: 50px; }
 /* MESSAGES END */
 
 /***************** Profiles END ***************/

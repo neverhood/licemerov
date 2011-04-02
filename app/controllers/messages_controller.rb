@@ -9,9 +9,9 @@ class MessagesController < ApplicationController
   before_filter :valid_section, :only => :show
   before_filter :valid_parent, :only => :create
   before_filter :valid_unwanted_message_ids, :only => :update
-  before_filter :valid_message, :only => :destroy
-  skip_before_filter :existent_user, :only => [:new, :create, :destroy]
-  skip_before_filter :delete_messages, :only => [:destroy, :update]
+  before_filter :valid_message, :only => [:destroy, :cancel_deletion]
+  skip_before_filter :existent_user, :only => [:new, :create, :destroy, :cancel_deletion, :update]
+  skip_before_filter :delete_messages, :only => [:destroy, :update, :cancel_deletion]
 
 
   # Used to autocomplete users login when sending a new message
@@ -69,22 +69,26 @@ class MessagesController < ApplicationController
 
   def update # used to mass update messages using checkboxes in view
 
+    render guilty_response unless ['delete', 'mark_as_read'].include? params[:update]
+
     @success = true
+    @attr = (params[:update] == 'delete') ? :marked_as_deleted= : :read=
+
     @messages.each do |message|
-      message.marked_as_deleted = true
+      message.send(@attr, true)
       @success = false unless message.save
     end
 
-
     respond_to do |format|
       if @success
-        format.js { render :json => { :message => t(:messages_deleted) } }
-        format.html { redirect_to :back, :notice => t(:messages_deleted) }
+        format.js {  } # render update.js.erb
+        format.html { redirect_to :back }
       else
-        format.js { render :json => t(:failed_to_delete_messages) }
-        format.html { redirect_to :back, :notice => t(:failed_to_delete_messages) }
+        format.js {  }
+        format.html { redirect_to :back }
       end
     end
+
   end
 
   def destroy
@@ -93,10 +97,10 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        format.json { render :json => { :message => t(:message_deleted), :status => 200 } }
+        format.js {  } # render destroy.js.erb
         format.html { redirect_to :back, :notice => t(:message_deleted) }
       else
-        format.json { render :json => { :status => 403 }}
+        format.js {  }
         format.html { redirect_to :back }
       end
     end
@@ -108,7 +112,7 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        format.json { render :json => { :message => t(:message_recovered), :status => 200 } }
+        format.js {  } # render cancel_deletion.js.erb
         format.html { redirect_to :back, :notice => t(:message_recovered)}
       end
     end
@@ -135,16 +139,15 @@ class MessagesController < ApplicationController
   end
 
   def valid_unwanted_message_ids
-    # params[:unwanted_messages] is a string of message id's that user wishes to delete ( using checkboxes in view )
+    # params[:messages] is a string of message id's that user wishes to delete ( using checkboxes in view )
     # we split it by comma, check each supposed id for validness ( should match /^\d+$/ regex[ ), join these back into
     # comma separated string and use it in sql IN statement. Then we check each record if it belongs to current user
     # ( which is the main reason why this before filter exists )
 
-    if params[:unwanted_messages]
+    if params[:messages]
       @messages = Message.where(['id IN (?)',
-                                 params[:unwanted_messages].split(',')
-                                 .find_all { |id| id =~ /^\d+$/ }
-                                 .join(',')
+                                 params[:messages].split(',')
+                                 .find_all { |id| id =~ /^\d+$/ }                                
                                 ])
       .find_all { |message| message.user_id == current_user.id || message.receiver_id == current_user.id }
 

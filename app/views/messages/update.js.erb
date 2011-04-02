@@ -1,0 +1,12 @@
+var action = '<%= params[:update] %>';
+
+        $.each($('td.mark-message input:checked'), function() {
+           this.checked = false; 
+        });
+
+        changeMarkedMessagesCounter( 0 );
+
+ <% @messages.each do |message| %>
+    $('tr#' + <%= message.id %> + ' .delete-message').
+            html('<%= escape_javascript(recover_message(message)) %>');
+ <% end %>

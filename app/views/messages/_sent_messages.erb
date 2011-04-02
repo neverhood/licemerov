@@ -1,10 +1,25 @@
 <table id='messages'>
 
+  <div id="options-placeholder">
+    <div id="options">
+
+      <span id="messages-marked"> <%= t(:messages_marked) %>:
+        <strong id="marked-messages-counter">0</strong>
+      </span>
+
+      <span>
+        <%= update_messages(:delete) %>
+      </span>
+
+    </div>
+
+
+  </div>
 
   <% @messages.each do |message| %>
       <% receiver = message.receiver %>
-      <tr>
-        <td class='middle-vertical-align'>
+      <tr id="<%= message.id %>">
+        <td class='middle-vertical-align mark-message'>
           <%= check_box_tag "message-#{message.id}" %>
         </td>
         <td>

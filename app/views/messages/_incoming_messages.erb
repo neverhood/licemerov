@@ -3,7 +3,7 @@
 
   <% @messages.each do |message| %>
       <% sender = message.user %>
-      <tr>
+      <tr id="<%= message.id %>">
         <td class='middle-vertical-align'>
           <%= check_box_tag "message-#{message.id}" %>
         </td>

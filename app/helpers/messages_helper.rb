@@ -20,6 +20,19 @@ module MessagesHelper
         join(' ').html_safe
   end
 
+  def recover_message(message)
+     link_to t(:cancel), cancel_deletion_message_path(message), :method => :post, :remote => true
+  end
+
+  def delete_message(message)
+     link_to t(:delete_message), message, :method => :delete, :remote => true
+  end
+
+  def update_messages(action)
+    link_to t(action), update_messages_path(:update => action),
+            :method => :put, :remote => true, :class => "message-#{action}"
+  end
+
 
   private
 

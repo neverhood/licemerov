@@ -21,8 +21,10 @@ ru:
   say: Сказать
   image: Картинка
   reply: Ответить
+  cancel: Отмена
   please_wait: Подождите...
   remember_me: Запомнить меня
+  delete: Удалить
 
   # HEADER
   main_page: На главную
@@ -60,6 +62,7 @@ ru:
   really_add_friend: Действительно добавить в друзья?
   # Messages
   messages: Сообщения
+  messages_marked: Сообщений Отмечено
   delete_message: Удалить
   message_deleted: Сообщение удалено
   message_recovered: Сообщение восстановлено
@@ -73,6 +76,7 @@ ru:
   whom_to: Кому
   recipient: Получатель
   new_message: Написать Сообщение
+  mark_as_read: Отметить как прочитанные
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'

@@ -1,0 +1,3 @@
+var messageId = '<%= @message.id %>';
+        $('tr#' + messageId + ' .delete-message')
+                .html(' <%= escape_javascript( recover_message(@message) ) %> '); 
