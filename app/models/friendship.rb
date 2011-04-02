@@ -15,7 +15,7 @@ class Friendship < ActiveRecord::Base
   belongs_to :user
   belongs_to :friend, :class_name => 'User'
 
-  validates :user_id, :presence => true, :numericality => true, :existent_user => true, :on => :create
+  validates :user_id, :presence => true, :numericality => true, :on => :create
   validates :friend_id, :presence => true, :numericality => true, :existent_user => true, :on => :create
 
   validate :uniq_combination, :on => :create

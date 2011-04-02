@@ -76,6 +76,7 @@ input#release_jcrop {display:none;}
 
 /* MESSAGES */
 input#message_subject { padding: 5px 7px; width:290px; border:1px solid gray;}
+
 div#recipients-container { width: 300px; padding:2px; }
 #users-select {display: block; border:none;  width:290px; float:left; padding-left:2px;}
 .token {float:left; background: gray; color:white; margin: 2px 3px 0 0; min-width:40px;}

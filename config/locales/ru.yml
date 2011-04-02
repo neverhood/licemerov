@@ -60,6 +60,8 @@ ru:
   really_add_friend: Действительно добавить в друзья?
   # Messages
   messages: Сообщения
+  deleted_successfully: Сообщения успешно удалены
+  failed_to_delete_message: Некоторые сообщения не удалось удалить, попробуйте еще раз
   send_message: Отправить Сообщение
   message_created: Сообщение отправлено
   incoming_messages: Входящие

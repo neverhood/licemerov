@@ -1,6 +1,6 @@
 class FriendshipsController < ApplicationController
 
-  skip_before_filter :existent_user, :except => [:show, :show_pending]
+  skip_before_filter :existent_user, :except => [:show]
   before_filter :require_user
   before_filter :valid_friendship, :only => [:update, :destroy, :cancel]
   before_filter :valid_section, :only => :show
@@ -47,7 +47,7 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy # delete/cancel friendship
-    #@friendship.destroy
+    @friendship.destroy
     # As this action skips 'existent user' filter, we must know the profile owners id to show 
     # an 'add to friends' link
     @user = User.where(:id => friend_id(@friendship)).first

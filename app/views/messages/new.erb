@@ -10,13 +10,14 @@
 <h1> <%= t(:new_message) %></h1>
 
 <div id="new-message-form-container">
-  <%= form_for @message, :remote => true, :html => {:id => 'new-message'} do |f| %>
+  <%= form_for @message, :html => {:id => 'new-message'} do |f| %>
 
 
       <table>
         <tr>
           <td id='avatar-row'>
             <div id="avatar">
+              <img src="/avatars/thumb/missing.png" alt="avatar" />
             </div>
           </td>
           <td id='recipients-row'>
@@ -35,7 +36,7 @@
       <div>
         <%= f.text_area :body, :rows => 8, :cols => 50 %>
       </div>
-      <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>
+      <%= f.submit t(:send_message), :disable_with => t(:please_wait), :disabled => true %>
 
 
 

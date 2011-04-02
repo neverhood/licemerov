@@ -25,7 +25,10 @@ function appendAvatar(avatar_url) {
 $(document).ready(function() {
 
     var autocompleteType = $.licemerov.user.friends.length > 0 ? 'local' : 'remote',
-        inputField = $('#users-select');
+            inputField = $('#users-select'),
+            submitButton = $('#message_submit'),
+            messageBody = $('#message_body'),
+            messageForm = $('form#new-message');
 
 
 
@@ -68,35 +71,43 @@ $(document).ready(function() {
             }
         }
     }).click(function() {
-      $(this).autocomplete('search', '');
+        $(this).autocomplete('search', '');
     }).blur(function() {
-       this.value = '';
+        this.value = '';
+    });
+
+    messageBody.keyup(function() {
+        submitButton.attr('disabled',
+                !( $('.token').length > 0 && this.value.length >= 2 ));
     });
 
     //  IE refuses to obey to 'submit' event ( stupid fuck )
-    
+
     var handleMessageSubmit = function() {
-      var input = $('#message_recipients'),
-          tokens = [];
-      $.each($('.token'), function() {
-          tokens.push( $(this).data('id') )
-      });
-      input.val( tokens.join(',') ); 
+        var input = $('#message_recipients'),
+                tokens = [];
+        $.each($('.token'), function() {
+            tokens.push( $(this).data('id') )
+        });
+        input.val( tokens.join(',') );
     };
 
     if ( $.browser.msie ) // I hate you!
-       $('#message_submit').click(handleMessageSubmit);
+        submitButton.click(handleMessageSubmit);
     else
-      $('form#new-message').submit(handleMessageSubmit);
+        messageForm.submit(handleMessageSubmit);
 
-    $('form#new-message').bind('ajax:complete', function(evt, xhr) {
-        var params = $.parseJSON(xhr.responseText);
-        $('div.notice').text(params.message);
-        $(this).clearForm();
-        $('.token').remove();
-        inputField.width(origWidth)
-                .autocomplete('option', 'source', $.licemerov.user.friends )
-    });
+//    messageForm.bind('ajax:complete', function(evt, xhr) {
+//        var params = $.parseJSON(xhr.responseText),
+//                $this = $(this);
+//        $('div.notice').text(params.message);
+//        setTimeout(function() { $this.clearForm()
+//                .find(':submit').attr('disabled', true) }, 5);
+//        $('.token').remove();
+//        appendAvatar('/avatars/thumb/missing.png');
+//        inputField.width(origWidth)
+//                .autocomplete('option', 'source', $.licemerov.user.friends )
+//    });
 
 
 
@@ -125,11 +136,11 @@ $(document).ready(function() {
                 var currentSource = inputField.autocomplete('option', 'source');
 
                 if (autocompleteType == 'local') {
-                  currentSource.push( {
-                      'avatar': token.data('avatarUrl'),
-                      'name': token.data('name'),
-                      'value': token.data('value'),
-                      'id': token.data('id')} );
+                    currentSource.push( {
+                        'avatar': token.data('avatarUrl'),
+                        'name': token.data('name'),
+                        'value': token.data('value'),
+                        'id': token.data('id')} );
                 }
 
                 inputField.autocomplete('option', 'source', currentSource);
@@ -175,11 +186,11 @@ $(document).ready(function() {
         $('.token-focused').removeClass('token-focused');
 
         if ( autocompleteType == 'local'  ) {
-          var currentSource = inputField.autocomplete('option', 'source'),
-              i = findIndexByValue(ui.item.value);
-          currentSource.splice(i, 1);
-          inputField.autocomplete('option', 'source', currentSource);
-        } 
+            var currentSource = inputField.autocomplete('option', 'source'),
+                    i = findIndexByValue(ui.item.value);
+            currentSource.splice(i, 1);
+            inputField.autocomplete('option', 'source', currentSource);
+        }
 
         if (  tokens.length >= 15 )
             return false;
@@ -208,6 +219,7 @@ $(document).ready(function() {
                     .width( calcOffset() - margin );
         }
         inputField.val('');
+        if ( messageBody.val().length >= 2 ) submitButton.attr('disabled', false);
         return false
     };
 
@@ -231,24 +243,24 @@ $(document).ready(function() {
         }
     } else {
         var cache = {},
-            collectTokens = function() {
-              var tokens = [];
-              $.each($('.token'), function() {
-                 tokens.push($(this).data('value'))
-              });
-              return tokens;
-            },
+                collectTokens = function() {
+                    var tokens = [];
+                    $.each($('.token'), function() {
+                        tokens.push($(this).data('value'))
+                    });
+                    return tokens;
+                },
                 lastXhr;
         inputField.autocomplete({
             minLength: 2,
             source: function( request, response ) {
                 var term = request.term,
-                    data = [];
+                        data = [];
                 if ( term in cache ) {
                     var tokens = collectTokens();
                     $.each(cache[term], function(i) {
-                      if (!tokens.inArray(cache[term][i].value))
-                          data.push(cache[term][i]);
+                        if (!tokens.inArray(cache[term][i].value))
+                            data.push(cache[term][i]);
                     });
                     response( data );
                     return;
@@ -259,8 +271,8 @@ $(document).ready(function() {
                         var tokens = collectTokens();
                         var newData = [];
                         $.each(data, function(i) {
-                          if (! tokens.inArray(data[i].value) )
-                            newData.push(data[i]);
+                            if (! tokens.inArray(data[i].value) )
+                                newData.push(data[i]);
                         });
                         response( newData );
                     }

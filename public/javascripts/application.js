@@ -28,8 +28,8 @@ $.fn.clearForm = function() {
             this.value = '';
             $(this).replaceWith($(this).clone(true));
         }
-        if (type == 'submit') {
-            if ((typeof $(this).attr('disabled')) != 'undefined') this.disabled = 'disabled';
+        if (type == 'submit'  ) {
+            $(this).attr('disabled', true);
         }
         if (type == 'text' || type == 'password' || tag == 'textarea') {
             this.value = '';  $('#' + this.id).val(''); }
