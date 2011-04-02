@@ -67,7 +67,7 @@ class MessagesController < ApplicationController
 
   def destroy
 
-    @messages.each {|message| @success = false if message.destroy }
+    @messages.each {|message| @success = false unless message.destroy }
 
     respond_to do |format|
       if @success
