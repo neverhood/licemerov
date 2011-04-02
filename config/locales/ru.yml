@@ -60,8 +60,11 @@ ru:
   really_add_friend: Действительно добавить в друзья?
   # Messages
   messages: Сообщения
-  deleted_successfully: Сообщения успешно удалены
-  failed_to_delete_message: Некоторые сообщения не удалось удалить, попробуйте еще раз
+  delete_message: Удалить
+  message_deleted: Сообщение удалено
+  message_recovered: Сообщение восстановлено
+  messages_deleted: Сообщения удалены
+  failed_to_delete_messages: Некоторые сообщения не удалось удалить, попробуйте еще раз
   send_message: Отправить Сообщение
   message_created: Сообщение отправлено
   incoming_messages: Входящие
@@ -79,15 +82,27 @@ ru:
 
   date:
     formats:
-      default: "%d/%M/%Y"
+      default: "%d %M %Y"
       long: "%e %B %Y"
       short: "%d/%M/%y"
     order:
       - :year
       - :month
       - :day
+    month_names: [~, января, февраля, марта, апреля, мая, июня, июля, августа, сентября, октября, ноября, декабря]
+    standalone_month_names: [~, Январь, Февраль, Март, Апрель, Май, Июнь, Июль, Август, Сентябрь, Октябрь, Ноябрь, Декабрь]
+    abbr_month_names: [~, янв., февр., марта, апр., мая, июня, июля, авг., сент., окт., нояб., дек.]
+    standalone_abbr_month_names: [~, янв., февр., март, апр., май, июнь, июль, авг., сент., окт., нояб., дек.]
 
-    month_names: [~, Январь, Февраль, Март, Апрель, Май, Июнь, Июль, Август, Сентябрь, Октябрь, Ноябрь, Декабрь]
+    day_names: [воскресенье, понедельник, вторник, среда, четверг, пятница, суббота]
+    standalone_day_names: [Воскресенье, Понедельник, Вторник, Среда, Четверг, Пятница, Суббота]
+    abbr_day_names: [Вс, Пн, Вт, Ср, Чт, Пт, Сб]
+
+  time:
+    formats:
+      default: "%d %B %Y в %H:%M"
+
+    
   activerecord:
     errors:
       models:

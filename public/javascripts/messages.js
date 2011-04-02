@@ -74,6 +74,8 @@ $(document).ready(function() {
         $(this).autocomplete('search', '');
     }).blur(function() {
         this.value = '';
+        if ( $('.token').length == 0 )
+          appendAvatar('/avatars/thumb/missing.png');
     });
 
     messageBody.keyup(function() {
@@ -96,19 +98,6 @@ $(document).ready(function() {
         submitButton.click(handleMessageSubmit);
     else
         messageForm.submit(handleMessageSubmit);
-
-//    messageForm.bind('ajax:complete', function(evt, xhr) {
-//        var params = $.parseJSON(xhr.responseText),
-//                $this = $(this);
-//        $('div.notice').text(params.message);
-//        setTimeout(function() { $this.clearForm()
-//                .find(':submit').attr('disabled', true) }, 5);
-//        $('.token').remove();
-//        appendAvatar('/avatars/thumb/missing.png');
-//        inputField.width(origWidth)
-//                .autocomplete('option', 'source', $.licemerov.user.friends )
-//    });
-
 
 
     var tempToken = $('<div class="token"></div>')
@@ -151,6 +140,7 @@ $(document).ready(function() {
 
                 if (tokens.length == 0) {
                     appendAvatar('/avatars/thumb/missing.png');
+                    submitButton.attr('disabled', true);
                 }
                 else
                     appendAvatar($(tokens[0]).data('avatarUrl'));

@@ -1,7 +1,27 @@
-<% @messages.each do |message| %>
-    <div><%= t(:subject) %>: <%= message.subject %></div>
-    <div><%= t(:whom_to) %>: <%= message.receiver.login %></div>
-    <div>
-      <%= truncate message.body %>
-    </div>
-<% end %>
+<table id='messages'>
+
+
+  <% @messages.each do |message| %>
+      <% receiver = message.receiver %>
+      <tr>
+        <td class='middle-vertical-align'>
+          <%= check_box_tag "message-#{message.id}" %>
+        </td>
+        <td>
+          <div><%= image_tag(receiver.avatar.url(:thumb)) %></div>
+        </td>
+        <td class="middle-vertical-align message-details">
+          <div><%= link_to receiver.login, user_profile_path(receiver) %></div>
+          <div><%= l message.created_at %></div>
+        </td>
+        <td class='middle-vertical-align message-body'>
+          <div> Subject: <%= message.subject %> </div>
+          <div> Body: <%= message.body %></div>
+        </td>
+        <td class="middle-vertical-align delete-message">
+          <%= link_to t(:delete_message), message, :method => :delete, :remote => true %>
+        </td>
+      </tr>
+  <% end %>
+
+</table>

@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
     :guilty_response
 
   before_filter :existent_user
+  before_filter :delete_messages
 
 
   private
@@ -77,6 +78,10 @@ class ApplicationController < ActionController::Base
     return @user if defined?(@user)
     @user = User.where(:login => params[:user_profile]).first
     redirect_to root_path unless @user
+  end
+
+  def delete_messages
+    Message.where(['marked_as_deleted = ?', true]).each {|message| message.destroy }
   end
 
   def home_page

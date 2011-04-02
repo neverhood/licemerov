@@ -1,0 +1,27 @@
+<table id='messages'>
+
+
+  <% @messages.each do |message| %>
+      <% sender = message.user %>
+      <tr>
+        <td class='middle-vertical-align'>
+          <%= check_box_tag "message-#{message.id}" %>
+        </td>
+        <td>
+          <div><%= image_tag(sender.avatar.url(:thumb)) %></div>
+        </td>
+        <td class="middle-vertical-align message-details">
+          <div><%= link_to sender.login, user_profile_path(sender) %></div>
+          <div><%= l message.created_at %></div>
+        </td>
+        <td class='middle-vertical-align message-body'>
+          <div> Subject: <%= message.subject %> </div>
+          <div> Body: <%= message.body %></div>
+        </td>
+        <td class="middle-vertical-align delete-message">
+          <%= link_to t(:delete_message), message, :method => :delete, :remote => true %>
+        </td>
+      </tr>
+  <% end %>
+
+</table>

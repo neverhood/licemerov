@@ -28,9 +28,12 @@ Licemerov::Application.routes.draw do
   get '/:user_profile/friends' => 'friendships#show', :as => :friends
 
   # Messages 
-  resources :messages, :only => [:create, :update, :destroy]
+  resources :messages, :only => [:create, :destroy] do
+    post :cancel_deletion, :on => :member
+  end
   get '/:user_profile/messages' => 'messages#show', :as => :user_messages
   get '/:user_profile/new_message' => 'messages#new', :as => :new_message
+  put '/messages/:unwanted_messages' => 'messages#update', :as => :delete_messages
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
