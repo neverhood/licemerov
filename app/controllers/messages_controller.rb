@@ -89,10 +89,9 @@ class MessagesController < ApplicationController
 
     # We only respond with translated urlText ( to not hardcode russian into js ), the link is then
     # crafted with $.licemerov.utils.linkTo(). Somewhat clumsy hence we should think of a better option
-    url_text = ( @messages.size == 1 ) ? t(:cancel) : t(:recover_messages)
 
     respond_to do |format|
-      format.json { render :json => { :url_text => url_text }, :status => 200 }
+      format.json { render :json => { :single => t(:cancel), :multiple => t(:recover_messages) }, :status => 200 }
       format.html { redirect_to :back }
     end
 

@@ -186,7 +186,7 @@ $(document).ready(function() {
                     column = $this.parent(),
 
                     url = $.licemerov.utils.linkTo({
-                        text: params.url_text,
+                        text: params.single,
                         href: '/messages/' + row.id + '/recover',
                         data: { remote: true, method: 'post' },
                         html: { className: 'recover-message' }
@@ -214,7 +214,7 @@ $(document).ready(function() {
 
             var params = $.parseJSON(xhr.responseText),
                 url = $.licemerov.utils.linkTo({
-                    text: params.url_text,
+                    text: params.multiple,
                     href: '/messages/all/recover',
                     data: { remote: true, method: 'post' },
                     html: { className: 'recover-messages' }
