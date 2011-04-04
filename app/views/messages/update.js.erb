@@ -5,7 +5,8 @@ var action = '<%= params[:update] %>';
         });
 
         changeMarkedMessagesCounter( 0 );
-        $('.message-delete').show();
+        $('.message-delete').show().prev().remove();
+        $('#marking-message-options').append(' <%= escape_javascript(recover_messages) %>');
 
  <% @messages.each do |message| %>
     $('tr#' + <%= message.id %> + ' .delete-message').

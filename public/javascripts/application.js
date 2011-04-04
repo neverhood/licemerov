@@ -89,13 +89,26 @@ function changeMarkedMessagesCounter( count ) {
     }
 }
 
+function updateMessageActionLinks( ids ) {
+    var buttons = $('a.delete-messages, a.read-messages');
+    $.each(buttons, function() {
+        var messages = ids.join(','),
+                href = '/messages/' + messages;
+        $(this).data('messages', messages).attr('href', href);
+    });
+}
+
 
 $(document).ready(function() {
     if ($('#wrapper').attr('data-user').length > 1) var user_attributes = $('#wrapper').attr('data-user').split(',');
     $.licemerov = {
         version: '1.0',
+        domain: window.location.origin,
+        location: window.location.href,
         loader: $("<img class='loader' src='/images/loader.gif' />"),
-        user: {}
+        user: {},
+        actions: {},
+        utils: {}
     };
     if(typeof user_attributes != 'undefined') {
         $.licemerov.user.attributes = {login: user_attributes[0], sex: user_attributes[1]};
@@ -104,6 +117,30 @@ $(document).ready(function() {
     }
     if ($('#friends-json').length)
         $.licemerov.user.friends = $.parseJSON( $('#friends-json').text() );
+
+
+    $.licemerov.utils.linkTo = function(options) {
+        if (typeof options.href == 'undefined') {
+            options.href = $.licemerov.location;
+        }
+        var $url = $('<a></a>').
+                attr( {href: options.href} ).text(options.text);
+        if ( typeof options.data != 'undefined' ) {
+            $.each( options.data, function(key, value) {
+                $url.attr('data-' + key, value);
+            });
+        }
+
+        if ( typeof options.html != 'undefined' ) {
+            $.each( options.html, function(key, value) {
+                eval('$url[0].' + key + ' = "' + value + '"'); // duh, ugly
+            });
+        }
+
+        return $url;
+
+    };
+
 });
 
 
@@ -136,39 +173,123 @@ $(document).ready(function() {
             live("ajax:complete",  function() { $(this).toggleLoader() } );
 
     // Messages
-    $('td.delete-message a, .message-delete').live('ajax:beforeSend', function() {
+    $('a.delete-message, a.delete-messages, a.recover-message, a.recover-messages')
+            .live('ajax:beforeSend', function() {
         $(this).toggleLoader();
     });
 
+    $('a.delete-message').bind('ajax:complete', function(event, xhr, status) {
+        if (status == 'success') {
+            var params = $.parseJSON(xhr.responseText),
+                    $this = $(this).toggleLoader(),
+                    row = $this.parents('tr')[0],
+                    column = $this.parent(),
+
+                    url = $.licemerov.utils.linkTo({
+                        text: params.url_text,
+                        href: '/messages/' + row.id + '/recover',
+                        data: { remote: true, method: 'post' },
+                        html: { className: 'recover-message' }
+                    }).bind('ajax:complete', function(event, xhr, status) {
+                        if (status == 'success') {
+                            $(this).toggleLoader().remove();
+                            column.find('.delete-message').show();
+                        }
+                    });
+
+            column.append(url);
+        }
+    });
+
+    $('a.delete-messages').bind('ajax:complete', function(event, xhr, status) {
+        if (status == 'success') {
+            var elements = [],
+                $this = $(this).toggleLoader().show();
+
+            $.each( $this.data('messages').split(','), function() {
+                var elem = $('tr#' + this).toggleClass('deleted-message');
+                elem.find('input[type="checkbox"]').attr('checked', false);
+                elements.push(elem);
+            });
+
+            var params = $.parseJSON(xhr.responseText),
+                url = $.licemerov.utils.linkTo({
+                    text: params.url_text,
+                    href: '/messages/all/recover',
+                    data: { remote: true, method: 'post' },
+                    html: { className: 'recover-messages' }
+                }).bind('ajax:complete', function(event, xhr, status) {
+                    if ( status == 'success' ) {
+                        $.each(elements, function() {
+                            this.toggleClass('deleted-message');
+                        });
+                        $(this).toggleLoader().remove();
+                    }
+                });
+
+            changeMarkedMessagesCounter( $('td.mark-message input:checked').length );
+            $.licemerov.user.messages_marked_filter = null;
+            $('#marking-message-options').append(url);
+
+        }
+    });
+
     $('td.mark-message input[type="checkbox"]').click(function() {
-        var checked = this.checked,
-                ids = [],
+        var  ids = [],
                 checkedMessages = $('td.mark-message input:checked'),
-                buttons = $('a.message-delete, a.message-mark_as_read');
+                buttons = $('a.delete-messages, a.read-messages');
 
         $.each(checkedMessages, function() {
-           ids.push( this.id.replace('message-', '') );
+            ids.push( this.id.replace('message-', '') );
         });
 
-        $.each(buttons, function() {
-            var href = this.href.replace(/&messages=.*/, '');
-            this.href = href + '&messages=' + ids.join(',');
-        });
+        updateMessageActionLinks(ids);
+
+        $.licemerov.user.messages_marked_filter = null;
 
         changeMarkedMessagesCounter( checkedMessages.length );
     });
 
-//    $('a.message-delete, a.message-mark-as-read').click(function(event) {
-//        event.preventDefault();
-//        var checkedMessages = $('td.mark-message input:checked'),
-//            ids = [],
-//            href = this.href;
-//        $.each(checkedMessages, function() {
-//            ids.push( this.id.replace('message-', '') )
-//        });
-//        this.href = href + '&messages=' + ids.join(',');
-//        return false;
-//    });
+    $('span#marking-message-options a').click(function(event) {
+        event.preventDefault();
+        var id = this.id.toLowerCase(),
+                ids = [],
+                markMessages = function( elements, check ) {
+                    $.each( elements, function() {
+                        this.checked = check;
+                        if ( check ) ids.push(this.id.replace('message-', ''))
+                    });
+                },
+                elements = [],
+                filter = $.licemerov.user.messages_marked_filter;
+
+        markMessages( $('td.mark-message input[type="checkbox"]:checked'), false ); // Unmark all messages first
+
+        if ( filter && filter == id ) { // User didn't check/uncheck anything and clicks filter again
+            // uncheck all messages
+            markMessages( $('td.mark-message input[type="checkbox"]:checked'), false );
+            updateMessageActionLinks( [0] );
+            $.licemerov.user.messages_marked_filter = null; // hence no filter is active
+        } else {
+            if ( id == 'mark-unread-messages' ) {
+                elements = $('tr.unread:not(.deleted-message) input[type="checkbox"]');
+            } else if ( id == 'mark-read-messages' ) {
+                elements = $('tr.read:not(.deleted-message) input[type="checkbox"]')
+            } else if ( id == 'mark-all-messages' ) {
+                elements = $('tr:not(.deleted-message) input[type="checkbox"]')
+            }
+
+            markMessages(elements, true);
+            updateMessageActionLinks( ids );
+            $.licemerov.user.messages_marked_filter = (elements.length > 0)? id : null;
+
+        }
+
+        changeMarkedMessagesCounter( elements.length );
+
+        return false;
+    });
+
 
     // Messages end
 

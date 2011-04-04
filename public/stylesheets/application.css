@@ -93,11 +93,16 @@ div#avatar { width:100px; height:100px; border:1px solid black; }
 td#avatar-row { padding:50px 30px 50px 0; }
 td#recipients-row { vertical-align:middle;padding-right:15px; }
 div#new-message-form-container { margin-left:30px; }
+
+tr.deleted-message { display:none; }
+
 td.message-details { color:gray; font-size:12px; font-weight:bold; padding:5px; }
 td.message-body { padding:25px; width:300px;}
 table#messages td, table#messages, th {   }
-div#options { display:none; }
+div#options { display:none; padding: 15px;  }
 div#options-placeholder { height: 50px; }
+a.recover-message { color:gray; text-decoration:none; font-size:12px; border-bottom: 1px dashed gray; }
+a.recover-messages { margin-left: 100px; color:gray; font-size:12px; }
 /* MESSAGES END */
 
 /***************** Profiles END ***************/

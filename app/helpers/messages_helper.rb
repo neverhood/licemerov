@@ -21,7 +21,8 @@ module MessagesHelper
   end
 
   def recover_message(message)
-     link_to t(:cancel), cancel_deletion_message_path(message), :method => :post, :remote => true
+     link_to t(:cancel), recover_message_path(message), :method => :post,
+             :remote => true, :class => 'recover-message'
   end
 
   def delete_message(message)
@@ -31,6 +32,11 @@ module MessagesHelper
   def update_messages(action)
     link_to t(action), update_messages_path(:update => action),
             :method => :put, :remote => true, :class => "message-#{action}"
+  end
+
+  def recover_messages
+    link_to t(:recover_messages), recover_message_path('all'),
+            :method => :post, :id => 'recover-deleted-messages', :remote => true
   end
 
 

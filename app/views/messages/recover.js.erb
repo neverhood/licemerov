@@ -1,0 +1,6 @@
+var massRecovery = ( '<%= params[:id] %>' == 'all' );
+        if (! massRecovery) {
+            var messageId = '<%= @message.id %>';
+            $('tr#' + messageId + ' .delete-message')
+                    .html(' <%= escape_javascript( delete_message(@message) ) %> ');
+        }

@@ -81,7 +81,9 @@ class ApplicationController < ActionController::Base
   end
 
   def delete_messages
-    Message.where(['marked_as_deleted = ?', true]).each {|message| message.destroy }
+    if current_user
+      current_user.messages.deleted.each {|message|  message.destroy  }
+    end
   end
 
   def home_page

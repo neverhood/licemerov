@@ -8,10 +8,9 @@ class MessagesController < ApplicationController
   before_filter :valid_term, :only => :new # Only hit database with trusted LIKE statement
   before_filter :valid_section, :only => :show
   before_filter :valid_parent, :only => :create
-  before_filter :valid_unwanted_message_ids, :only => :update
-  before_filter :valid_message, :only => [:destroy, :cancel_deletion]
-  skip_before_filter :existent_user, :only => [:new, :create, :destroy, :cancel_deletion, :update]
-  skip_before_filter :delete_messages, :only => [:destroy, :update, :cancel_deletion]
+  before_filter :valid_message_ids, :only => [:destroy, :recover, :update]
+  skip_before_filter :existent_user, :only => [:new, :create, :destroy, :recover, :update]
+  skip_before_filter :delete_messages, :only => [:destroy, :update, :recover]
 
 
   # Used to autocomplete users login when sending a new message
@@ -69,53 +68,53 @@ class MessagesController < ApplicationController
 
   def update # used to mass update messages using checkboxes in view
 
-    render guilty_response unless ['delete', 'mark_as_read'].include? params[:update]
-
-    @success = true
-    @attr = (params[:update] == 'delete') ? :marked_as_deleted= : :read=
-
     @messages.each do |message|
-      message.send(@attr, true)
-      @success = false unless message.save
+      message.read = true
+      message.save
     end
 
     respond_to do |format|
-      if @success
-        format.js {  } # render update.js.erb
-        format.html { redirect_to :back }
-      else
-        format.js {  }
-        format.html { redirect_to :back }
-      end
+      format.js {  } # render update.js.erb
+      format.html { redirect_to :back }
     end
 
   end
 
   def destroy
 
-    @message.marked_as_deleted = true
+    @messages.each do |message|
+      message.marked_as_deleted = true
+      message.save
+    end
+
+    # We only respond with translated urlText ( to not hardcode russian into js ), the link is then
+    # crafted with $.licemerov.utils.linkTo(). Somewhat clumsy hence we should think of a better option
+    url_text = ( @messages.size == 1 ) ? t(:cancel) : t(:recover_messages)
 
     respond_to do |format|
-      if @message.save
-        format.js {  } # render destroy.js.erb
-        format.html { redirect_to :back, :notice => t(:message_deleted) }
-      else
-        format.js {  }
-        format.html { redirect_to :back }
-      end
+      format.json { render :json => { :url_text => url_text }, :status => 200 }
+      format.html { redirect_to :back }
     end
 
   end
 
-  def cancel_deletion
-    @message.marked_as_deleted = false
+  def recover
+
+    @messages = current_user.messages.deleted if params[:id].to_s == 'all'
+
+    @messages.each do |message|
+      message.marked_as_deleted = false
+      message.save
+    end
+
+    # We only respond with translated urlText ( to not hardcode russian into js ), the link is then
+    # crafted with $.licemerov.utils.linkTo(). Somewhat clumsy hence we should think of a better option
 
     respond_to do |format|
-      if @message.save
-        format.js {  } # render cancel_deletion.js.erb
-        format.html { redirect_to :back, :notice => t(:message_recovered)}
-      end
+      format.json { render :json => { :url_text => t(:recover_messages) }, :status => 200  }
+      format.html { redirect_to :back, :notice => t(:message_recovered)}
     end
+
   end
 
   private
@@ -123,51 +122,39 @@ class MessagesController < ApplicationController
   def valid_term
     if params[:term]
       render guilty_response unless params[:term] =~ /\A\w[\w\.\-_]+$/
-    else
-      true
     end
   end
 
   def valid_parent
     if params[:message][:parent_id]
       # Means that current_user should be the one who received or sent parent message ( common sense )
-      message = Message.find params[:message][:parent_id]
-      (message.user_id == current_user.id || message.receiver_id == current_user.id) ? true : false
-    else
-      true
+      render guilty_response unless
+          Message.of(current_user).where( :id => params[:message][:parent_id] ).count > 0
     end
   end
 
-  def valid_unwanted_message_ids
-    # params[:messages] is a string of message id's that user wishes to delete ( using checkboxes in view )
+  def valid_message_ids
+    # params[:id] is a string that may  containt 1 or  more message id's that user wishes to delete
+    # or mark as read ( using checkboxes in view )
     # we split it by comma, check each supposed id for validness ( should match /^\d+$/ regex[ ), join these back into
-    # comma separated string and use it in sql IN statement. Then we check each record if it belongs to current user
-    # ( which is the main reason why this before filter exists )
+    # comma separated string and use it in sql IN statement.
 
-    if params[:messages]
-      @messages = Message.where(['id IN (?)',
-                                 params[:messages].split(',')
-                                 .find_all { |id| id =~ /^\d+$/ }                                
-                                ])
-      .find_all { |message| message.user_id == current_user.id || message.receiver_id == current_user.id }
+    if params[:id]
+      @messages = Message.of(current_user)
+      .where(['id IN (?)',
+              params[:id].split(',')
+              .find_all { |id| id =~ /^\d+$/ }
+             ])
 
-      render(guilty_response) unless @messages.size > 0
+      render(guilty_response) unless (@messages.size > 0 || params[:id].to_s == 'all')
 
     else
       render :nothing => true
     end
   end
 
-  def valid_message
-    # You must be somehow related to the message
-    @message = Message.find params[:id]
-    unless (@message.user_id == current_user.id || @message.receiver_id == current_user.id)
-      render guilty_response # Take that!
-    end
-  end
-
-
   def valid_section
     params[:section] = 'inbox' unless SECTIONS.include?(params[:section])
   end
 end
+

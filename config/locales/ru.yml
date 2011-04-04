@@ -66,6 +66,7 @@ ru:
   delete_message: Удалить
   message_deleted: Сообщение удалено
   message_recovered: Сообщение восстановлено
+  messages_recovered: Сообщения восстановлены
   messages_deleted: Сообщения удалены
   failed_to_delete_messages: Некоторые сообщения не удалось удалить, попробуйте еще раз
   send_message: Отправить Сообщение
@@ -77,6 +78,11 @@ ru:
   recipient: Получатель
   new_message: Написать Сообщение
   mark_as_read: Отметить как прочитанные
+  read_messages: Прочитанные
+  unread_messages: Непрочитанные
+  all_messages: Все
+  mark_messages: Отметить
+  recover_messages: Восстановить удаленные сообщения
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'
