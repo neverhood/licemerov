@@ -105,7 +105,7 @@ $(document).ready(function() {
         version: '1.0',
         domain: window.location.origin,
         location: window.location.href,
-        loader: $("<img class='loader' src='/images/loader.gif' />"),
+        loader: ("<img class='loader' src='/images/loader.gif' />"),
         user: {},
         actions: {},
         utils: {}
@@ -204,7 +204,7 @@ $(document).ready(function() {
     $('a.delete-messages').bind('ajax:complete', function(event, xhr, status) {
         if (status == 'success') {
             var elements = [],
-                $this = $(this).toggleLoader().show();
+                    $this = $(this).toggleLoader().show();
 
             $.each( $this.data('messages').split(','), function() {
                 var elem = $('tr#' + this).toggleClass('deleted-message');
@@ -213,19 +213,19 @@ $(document).ready(function() {
             });
 
             var params = $.parseJSON(xhr.responseText),
-                url = $.licemerov.utils.linkTo({
-                    text: params.multiple,
-                    href: '/messages/all/recover',
-                    data: { remote: true, method: 'post' },
-                    html: { className: 'recover-messages' }
-                }).bind('ajax:complete', function(event, xhr, status) {
-                    if ( status == 'success' ) {
-                        $.each(elements, function() {
-                            this.toggleClass('deleted-message');
-                        });
-                        $(this).toggleLoader().remove();
-                    }
-                });
+                    url = $.licemerov.utils.linkTo({
+                        text: params.multiple,
+                        href: '/messages/all/recover',
+                        data: { remote: true, method: 'post' },
+                        html: { className: 'recover-messages' }
+                    }).bind('ajax:complete', function(event, xhr, status) {
+                        if ( status == 'success' ) {
+                            $.each(elements, function() {
+                                this.toggleClass('deleted-message');
+                            });
+                            $(this).toggleLoader().remove();
+                        }
+                    });
 
             changeMarkedMessagesCounter( 0 );
             $.licemerov.user.messages_marked_filter = null;
@@ -234,13 +234,16 @@ $(document).ready(function() {
         }
     });
 
-    $('a.update-messages').bind('ajax:complete', function() {
+    $('a.read-messages').bind('ajax:complete', function() {
         var $this = $(this).toggleLoader().show();
         $.each( $('td.mark-message input:checked'), function() {
-          this.checked = false;
+            this.checked = false;
         });
         $.each( $this.data('messages').split(','), function() {
-          $('tr#' + this).toggleClass('read unread');
+            var row = $('tr#' + this);
+            if ( ! row.hasClass('read') ) {
+                row.toggleClass('read unread')
+            }
         });
 
         changeMarkedMessagesCounter( 0 );
@@ -358,11 +361,11 @@ $(document).ready(function() {
 $.fn.toggleLoader = function() {
     return this.each(function() {
         var $this = $(this),
-                loader = $.licemerov.loader;
+                loader = ("<img class='loader' src='/images/loader.gif' />");
 
         if (this.tagName.toLowerCase() == 'a') {
             $this.is(':visible')? $this.before(loader).hide() :
-                    loader.remove();
+                    $this.prev().remove();
         } else if ( this.tagName.toLowerCase() == 'form' ) {
             var submit = $this.find(':submit');
             if (submit.is(':visible')) {
