@@ -173,7 +173,7 @@ $(document).ready(function() {
             live("ajax:complete",  function() { $(this).toggleLoader() } );
 
     // Messages
-    $('a.delete-message, a.delete-messages, a.recover-message, a.recover-messages')
+    $('a.delete-message, a.delete-messages, a.recover-message, a.recover-messages, a.read-messages')
             .live('ajax:beforeSend', function() {
         $(this).toggleLoader();
     });
@@ -227,11 +227,24 @@ $(document).ready(function() {
                     }
                 });
 
-            changeMarkedMessagesCounter( $('td.mark-message input:checked').length );
+            changeMarkedMessagesCounter( 0 );
             $.licemerov.user.messages_marked_filter = null;
             $('#marking-message-options').append(url);
 
         }
+    });
+
+    $('a.update-messages').bind('ajax:complete', function() {
+        var $this = $(this).toggleLoader().show();
+        $.each( $('td.mark-message input:checked'), function() {
+          this.checked = false;
+        });
+        $.each( $this.data('messages').split(','), function() {
+          $('tr#' + this).toggleClass('read unread');
+        });
+
+        changeMarkedMessagesCounter( 0 );
+        $.licemerov.user.messages_marked_filter = null;
     });
 
     $('td.mark-message input[type="checkbox"]').click(function() {

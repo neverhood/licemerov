@@ -1,10 +1,38 @@
 <table id='messages'>
 
+  <div id="options-placeholder">
+
+    <div id="marking-options">
+      <span id="marking-message-options">
+        <%= t(:mark_messages) %>:
+        <%= link_to t(:unread_messages), nil, :id => 'mark-unread-messages' %>
+        <%= link_to t(:read_messages),nil, :id => 'mark-read-messages' %>
+        <%= link_to t(:all_messages), nil, :id => 'mark-all-messages' %>
+      </span>
+    </div>
+
+    <div id="options">
+
+      <span id="messages-marked"> <%= t(:messages_marked) %>:
+        <strong id="marked-messages-counter">0</strong>
+      </span>
+
+      <span>
+        <%= link_to t(:delete_message), message_path(0),
+                    :method => :delete, :remote => true, :class => 'delete-messages' %>
+        <%= link_to t(:mark_messages_as_read), message_path(0),
+                    :method => :put, :remote => true, :class => 'read-messages' %>
+      </span>
+
+    </div>
+
+
+  </div>
 
   <% @messages.each do |message| %>
       <% sender = message.user %>
-      <tr id="<%= message.id %>">
-        <td class='middle-vertical-align'>
+      <tr id="<%= message.id %>" class="<%= message.read?? 'read' : 'unread' %>">
+        <td class='middle-vertical-align mark-message'>
           <%= check_box_tag "message-#{message.id}" %>
         </td>
         <td>
@@ -18,10 +46,9 @@
           <div> Subject: <%= message.subject %> </div>
           <div> Body: <%= message.body %></div>
         </td>
-        <td class="middle-vertical-align delete-message">
-          <%= link_to t(:delete_message), message, :method => :delete, :remote => true %>
+        <td class="middle-vertical-align">
+          <%= link_to t(:delete_message), message, :method => :delete, :remote => true, :class => 'delete-message' %>
         </td>
       </tr>
   <% end %>
-
 </table>

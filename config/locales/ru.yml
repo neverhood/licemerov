@@ -77,7 +77,7 @@ ru:
   whom_to: Кому
   recipient: Получатель
   new_message: Написать Сообщение
-  mark_as_read: Отметить как прочитанные
+  mark_messages_as_read: Отметить как прочитанные
   read_messages: Прочитанные
   unread_messages: Непрочитанные
   all_messages: Все

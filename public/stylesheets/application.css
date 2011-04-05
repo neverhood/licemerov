@@ -100,7 +100,7 @@ td.message-details { color:gray; font-size:12px; font-weight:bold; padding:5px; 
 td.message-body { padding:25px; width:300px;}
 table#messages td, table#messages, th {   }
 div#options { display:none; padding: 15px;  }
-div#options-placeholder { height: 50px; }
+div#options-placeholder { height: 50px; width:600px; }
 a.recover-message { color:gray; text-decoration:none; font-size:12px; border-bottom: 1px dashed gray; }
 a.recover-messages { margin-left: 100px; color:gray; font-size:12px; }
 /* MESSAGES END */

@@ -74,7 +74,7 @@ class MessagesController < ApplicationController
     end
 
     respond_to do |format|
-      format.js {  } # render update.js.erb
+      format.json { render :json => {:hello => 'test'}, :status => 200 } 
       format.html { redirect_to :back }
     end
 
