@@ -1,17 +1,47 @@
-<% @friends.each do |friend| %>
-    <% friendship = current_user.friendship_with(friend, :approved => false).first %>
 
-    <div class="friendship-invite" id="<%= friendship.id %>" >
-      <div class="user">
-        <strong><%= friend.login %></strong>
-      </div>
+<h1 class="friends-count">
+  <%= profile_owner?? t( :your_friends_count, :count => @friends.size ) :
+              t(:user_friends_count, :user => @user.login, :count => @friends.size) %>
+</h1>
 
-      <div class="options">
-        <%= link_to t(:add_friend), friendship_path(friendship), :remote => true, :method => :put, :class => :confirm %>
-        <%= link_to t(:cancel_friend), friendship_path(friendship), :remote => true,
-                    :method => :delete, :class => :cancel, :confirm => t(:cancel_friendship) %>
-        <%= link_to t(:blacklist_friend), cancel_friendship_path(friendship), :remote => true, :method => :post,
+<table id='friends'>
+  <% @friends.each do |friend| %>
+      <% friendship = current_user.friendship_with(friend, :approved => false).first %>
+
+      <tr id='<%= friendship.id %>'>
+
+        <td class='friend-avatar'>
+          <%= image_tag friend.avatar.url(:thumb) %>
+        </td>
+
+        <td class='friend-info top-vertical-align'>
+          <div>
+            <%= link_to friend.login, user_profile_path(friend), :class => "#{friend.gender}-login user-profile-url" %>
+          </div>
+          <strong class='user-name'> <%= friend.name %> </strong>
+        </td>
+
+        <td class='friend-options top-vertical-align'>
+          <div>
+            <%= link_to t(:write_message), nil, :class => 'write-message' %>
+          </div>
+          <div>
+            <%= link_to t(:add_friend), friendship_path(friendship), :remote => true, :method => :put, :class => :confirm %>
+          </div>
+          <div>
+            <%= link_to t(:cancel_friend), friendship_path(friendship), :remote => true,
+                    :method => :delete, :class => 'cancel-friendship-invite', :confirm => t(:cancel_friendship) %>
+          </div>
+          <div>
+            <%= link_to t(:blacklist_friend), cancel_friendship_path(friendship), :remote => true, :method => :post,
                     :confirm => t(:confirm_blacklisting, :name => friend.login), :class => :blacklist %>
-      </div>
-    </div>
-<% end %>
+          </div>
+
+        </td>
+
+      </tr>
+
+
+  <% end %>
+</table>
+

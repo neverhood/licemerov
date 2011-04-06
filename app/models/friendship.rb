@@ -32,6 +32,10 @@ class Friendship < ActiveRecord::Base
         where(['approved = ?', true]).where(['canceled = ?', false])
   }
 
+  scope :of, proc { |user|
+    where(['(("friendships".user_id = ?) OR ("friendships".friend_id = ?))', user.id, user.id])
+  }
+
   private
 
   def uniq_combination

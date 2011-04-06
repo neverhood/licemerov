@@ -32,7 +32,7 @@ module FriendshipsHelper
     login = User.where(:id => (friendship.user_id == current_user.id)?
         friendship.friend_id : friendship.user_id).first.login
     link_to t(:delete_friend), friendship, :method => :delete, :remote => true,
-            :id => 'delete-friend', :confirm => t(:confirm_friend_delete, :name => login)
+            :id => 'delete-friend', :confirm => t(:confirm_friend_deletion, :name => login)
   end
 
   def add

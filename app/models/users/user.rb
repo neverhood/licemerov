@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
 
   has_one :user_details # e.g -> Name, gender etc
 
-  # Pseudo many-to-many friendship relationship with joining table
+
   has_many :friendships
   has_many :inverse_friendships, :class_name => 'Friendship', :foreign_key => :friend_id
 

@@ -100,7 +100,8 @@ function updateMessageActionLinks( ids ) {
 
 
 $(document).ready(function() {
-    if ($('#wrapper').attr('data-user').length > 1) var user_attributes = $('#wrapper').attr('data-user').split(',');
+    if ($('#wrapper').attr('data-user').length > 1)
+        var user_attributes = $('#wrapper').attr('data-user').split(',');
     $.licemerov = {
         version: '1.0',
         domain: window.location.origin,
@@ -111,9 +112,12 @@ $(document).ready(function() {
         utils: {}
     };
     if(typeof user_attributes != 'undefined') {
-        $.licemerov.user.attributes = {login: user_attributes[0], sex: user_attributes[1]};
-        if (typeof user_attributes[2] != 'undefined')
-            $.licemerov.user.attributes.avatar_url = user_attributes[2];
+        $.licemerov.user.attributes = {
+            login: user_attributes[0],
+            sex: user_attributes[1],
+            avatar_url: user_attributes[2],
+            id: user_attributes[3]
+        };
     }
     if ($('#friends-json').length)
         $.licemerov.user.friends = $.parseJSON( $('#friends-json').text() );
@@ -126,6 +130,7 @@ $(document).ready(function() {
         var $url = $('<a></a>').
                 attr( {href: options.href} ).text(options.text);
         if ( typeof options.data != 'undefined' ) {
+            if ( options.data.remote ) $url.attr('rel', 'nofollow');
             $.each( options.data, function(key, value) {
                 $url.attr('data-' + key, value);
             });
@@ -152,7 +157,10 @@ $(document).ready(function() {
         return false;
     });
 
-    $('a.inactive').live('click', function() { return false });
+    $('a.inactive').live('click', function(event) {
+        event.preventDefault();
+        return false;
+    });
 
     $('#parent_form, #response_form, #edit_avatar').clearForm();
 
@@ -168,9 +176,68 @@ $(document).ready(function() {
                 .attr('disabled', this.value.length == 0);
     });
 
-    $('a#delete-friend, a#add-friend').
-            live("ajax:beforeSend", function() { $(this).toggleLoader() } ).
-            live("ajax:complete",  function() { $(this).toggleLoader() } );
+
+    // Friendships
+    $('a#delete-friend, a#add-friend, a.delete-friend, a.cancel-friendship-invite').
+            live('ajax:beforeSend', function() {
+
+        var $this = $(this).toggleLoader(),
+            row = $this.parents('tr');
+
+        if ($this.hasClass('delete-friend') || $this.hasClass('cancel-friendship-invite')) {
+            row.find('.friend-options a').addClass('hidden');
+        }
+    });
+
+    // Delete friend using a link on his profile page
+    $('a#delete-friend').bind('ajax:complete', function(event, xhr, status) {
+        if ( status == 'success' ) {
+            var params = $.parseJSON( xhr.responseText ),
+                    $this = $(this).toggleLoader(),
+                    url = $.licemerov.utils.linkTo({
+                        text: params.add_friend,
+                        href: '/friendships?friend_id=' + $.licemerov.user.attributes.id,
+                        data: { remote: true, method: 'post' },
+                        html: { id: 'add-friend' }
+                    }).bind('ajax:complete', function(event, xhr, status) {
+                        if ( status == 'success' ) {
+                            var params = $.parseJSON( xhr.responseText ),
+                                    noticesContainer = $('#notices'),
+                                    notice = $('<div class="' + params.html_class + '">' +
+                                            params.message + '</div>');
+                            noticesContainer.find('.' + params.html_class)
+                                    .append(notice);
+                        }
+                        $(this).toggleLoader();
+                    });
+
+            // Update friends counter
+            $this.before(url).remove();
+        }
+    });
+
+    // Delete from /friends page or cancel friendship invite
+    $('a.delete-friend, a.cancel-friendship-invite').bind('ajax:complete', function() {
+        $(this).parents('tr').hide();
+        // Update friends counter
+    });
+
+
+
+    // TODO: To be refactored
+//    $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
+//        $(this).parents('div.options').hide().after($.licemerov.loader);
+//    }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
+//
+//    $('a.confirm, a.blacklist').live('ajax:complete', function(evt, xhr) {
+//        var params = $.parseJSON(xhr.responseText);
+//        $(this).parents('div.options').html('<div class="' +
+//                params.html_class + '">' + params.message + '</div>').show();
+//    });
+
+    // TODO: till here
+
+    // Friendships end
 
     // Messages
     $('a.delete-message, a.delete-messages, a.recover-message, a.recover-messages, a.read-messages')
@@ -309,18 +376,22 @@ $(document).ready(function() {
 
     // Messages end
 
-    $('a#add-friend').live("ajax:complete", function(evt, xhr) {
-        var params = $.parseJSON(xhr.responseText);
-        $(this).after('<div class="' + params.html_class + '">' + params.message + '</div>');
-    });
-
 
     $('.reply').live('click', function() {
-        var form = $('#response_form');
-        var div = $(this).next();
-        var id = $(this).parents('.parent').attr('id').replace(/entry-/, '');
+        var form = $('#response_form'),
+                $this = $(this),
+                div = $this.next(),
+                id = $this.parents('.parent')
+                        .attr('id')
+                        .replace(/entry-/, '');
+
         if (! (div.children('#response_form').length && form.is(':visible')) )
-            form.clearForm().appendTo(div).fadeIn().find('textarea').focus().next().val(id);
+            form.clearForm()
+                    .appendTo(div)
+                    .fadeIn()
+                    .find('textarea').focus()
+                    .next()
+                    .val(id);
         else
             form.hide();
         $('#parent_form').clearForm();
@@ -343,20 +414,6 @@ $(document).ready(function() {
                 .find(':submit')
                 .attr('disabled', ($cancel.attr('rel') != 'disable'));
     });
-
-    // TODO: To be refactored
-    $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
-        $(this).parents('div.options').hide().after($.licemerov.loader);
-    }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
-
-    $('a.confirm, a.blacklist').live('ajax:complete', function(evt, xhr) {
-        var params = $.parseJSON(xhr.responseText);
-        $(this).parents('div.options').html('<div class="' +
-                params.html_class + '">' + params.message + '</div>').show();
-    });
-
-    // TODO: till here
-
 
 });
 

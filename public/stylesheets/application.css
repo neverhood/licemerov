@@ -112,6 +112,7 @@ table#friends td { border-bottom: 1px solid gray;  }
 td.friend-avatar { padding: 15px; }
 td.friend-info, td.friend-options { padding: 25px 15px 15px 15px; }
 td.friend-info { width: 150px; }
+td.friend-options { min-width: 165px; }
 /* FRIENDSHIPS END */
 
 /***************** Profiles END ***************/

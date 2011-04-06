@@ -28,7 +28,8 @@
         <% if profile_owner? %>
           <div>
              <%= link_to t(:delete_friend), friendship_path(friendship), :remote => true,
-               :method => :delete, :class => :cancel, :confirm => t(:confirm_friend_deletion, :name => friend.login) %>
+               :method => :delete, :class => 'delete-friend',
+               :confirm => t(:confirm_friend_deletion, :name => friend.login) %>
           </div>
         <% end %>
       </td>
