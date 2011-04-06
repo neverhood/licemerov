@@ -31,8 +31,9 @@ a.inactive {color:gray; text-decoration:none; cursor:default;}
 #popup {
     background-color: #FFFFFF; position: fixed; left:50%; top:50%; min-width: 300px; z-index: 11;
 }
-td.middle-vertical-align { vertical-align:middle }
-.text-align-center { text-align:center }
+td.middle-vertical-align { vertical-align:middle; }
+td.top-vertical-align { vertical-align:top; }
+.text-align-center { text-align:center; }
 
 /**** Bases ****/
 /* body {background: url(/images/background.png)} */
@@ -104,6 +105,14 @@ div#options-placeholder { height: 50px; width:600px; }
 a.recover-message { color:gray; text-decoration:none; font-size:12px; border-bottom: 1px dashed gray; }
 a.recover-messages { margin-left: 100px; color:gray; font-size:12px; }
 /* MESSAGES END */
+
+/* FRIENDSHIPS */
+table#friends { border: 1px solid gray;   }
+table#friends td { border-bottom: 1px solid gray;  }
+td.friend-avatar { padding: 15px; }
+td.friend-info, td.friend-options { padding: 25px 15px 15px 15px; }
+td.friend-info { width: 150px; }
+/* FRIENDSHIPS END */
 
 /***************** Profiles END ***************/
 .ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}

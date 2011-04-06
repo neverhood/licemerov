@@ -1,20 +1,41 @@
 
-<div id="friends">
+<h1 class="friends-count">
+  <%= profile_owner?? t( :your_friends_count, :count => @friends.size ) : 
+    t(:user_friends_count, :user => @user.login, :count => @friends.size) %>
+</h1>
+
+<table id='friends'>
   <% @friends.each do |friend| %>
-      <% friendship = @user.friendship_with(friend).first %>
+    <% friendship = @user.friendship_with(friend).first %>
 
-      <div class="friend" id="<%= friendship.id %>" >
-        <div class="user">
-          <strong><%= friend.login %></strong>
+    <tr id='<%= friend.id %>'>
+
+      <td class='friend-avatar'>
+        <%= image_tag friend.avatar.url(:thumb) %>
+      </td>
+
+      <td class='friend-info top-vertical-align'>
+        <div>
+          <%= link_to friend.login, user_profile_path(friend), :class => "#{friend.gender}-login user-profile-url" %>
         </div>
+        <strong class='user-name'> <%= friend.name %> </strong>
+      </td>
 
+      <td class='friend-options top-vertical-align'>
+        <div>
+           <%= link_to t(:write_message), nil, :class => 'write-message' %>
+        </div>
         <% if profile_owner? %>
-          <div class="options">
-            <%= link_to 'SEND MESSAGE' %>
-            <%= link_to t(:delete_friend), friendship_path(friendship), :remote => true,
-              :method => :delete, :class => :cancel, :confirm => t(:confirm_friend_delete, :name => friend.login) %>
+          <div>
+             <%= link_to t(:delete_friend), friendship_path(friendship), :remote => true,
+               :method => :delete, :class => :cancel, :confirm => t(:confirm_friend_deletion, :name => friend.login) %>
           </div>
         <% end %>
-      </div>
+      </td>
+
+    </tr>
+
+
   <% end %>
-</div>
+</table>
+

@@ -50,7 +50,7 @@ ru:
   blacklist: Черный Список
   friendship_approved: Приглашение принято 
   friendship_canceled: Приглашение отменено
-  confirm_friend_delete: 'Вы действительно хотите удалить %{name} из друзей?'
+  confirm_friend_deletion: 'Вы действительно хотите удалить %{name} из друзей?'
   confirm_blacklisting: 'Вы действительно хотите добавить %{name} в черный список?'
   cancel_friendship: Отменить приглашение?
   cancel_deletion: Отменить
@@ -60,8 +60,14 @@ ru:
   invite_sent: Приглашение отправлено
   really_delete_from_blacklist: Действительно убрать пользователя из черного списка?
   really_add_friend: Действительно добавить в друзья?
+  # Friendships
+
+  your_friends_count: 'У вас %{count} друзей'
+  user_friends_count: 'У %{user} %{count} друзей'
+
   # Messages
   messages: Сообщения
+  write_message: Написать сообщение
   messages_marked: Сообщений Отмечено
   delete_message: Удалить
   message_deleted: Сообщение удалено

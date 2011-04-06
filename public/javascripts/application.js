@@ -344,6 +344,7 @@ $(document).ready(function() {
                 .attr('disabled', ($cancel.attr('rel') != 'disable'));
     });
 
+    // TODO: To be refactored
     $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
         $(this).parents('div.options').hide().after($.licemerov.loader);
     }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
@@ -354,6 +355,7 @@ $(document).ready(function() {
                 params.html_class + '">' + params.message + '</div>').show();
     });
 
+    // TODO: till here
 
 
 });
