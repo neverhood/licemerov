@@ -38,8 +38,8 @@ class FriendshipsController < ApplicationController
   end
 
   def update # Confirm  friendship
-    @friendship.approved, @friendship.canceled = true, false
-    if @friendship.changed? && @friendship.save
+    #@friendship.approved, @friendship.canceled = true, false
+    if  @friendship.save
       render :json => { :message => t(:friendship_approved), :html_class => :notice }
     else
       render :nothing => true
@@ -54,7 +54,12 @@ class FriendshipsController < ApplicationController
     respond_to do |format|
       format.json { render :json => {
           :add_friend => t(:add_friend),
-          :removed_from_blacklist => t(:removed_from_blacklist)
+          :removed_from_blacklist => t(:removed_from_blacklist),
+          :message => { 
+              :rejected => t(:friendship_rejected, :user => @user.login),
+              :deleted => t(:friendship_canceled, :user => @user.login)
+          },
+          :html_class => :warning
       },  :status => 200 }
       format.html { redirect_to :back }
     end

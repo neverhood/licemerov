@@ -26,11 +26,12 @@
             <%= link_to t(:write_message), nil, :class => 'write-message' %>
           </div>
           <div>
-            <%= link_to t(:add_friend), friendship_path(friendship), :remote => true, :method => :put, :class => :confirm %>
+            <%= link_to t(:add_friend), friendship_path(friendship),
+              :remote => true, :method => :put, :class => 'approve-friendship-invite' %>
           </div>
           <div>
             <%= link_to t(:cancel_friend), friendship_path(friendship), :remote => true,
-                    :method => :delete, :class => 'cancel-friendship-invite', :confirm => t(:cancel_friendship) %>
+                    :method => :delete, :class => 'reject-friendship-invite', :confirm => t(:cancel_friendship) %>
           </div>
           <div>
             <%= link_to t(:blacklist_friend), cancel_friendship_path(friendship), :remote => true, :method => :post,

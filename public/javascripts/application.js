@@ -109,6 +109,7 @@ $(document).ready(function() {
         loader: ("<img class='loader' src='/images/loader.gif' />"),
         user: {},
         actions: {},
+        noticesContainer: $('#notices'),
         utils: {}
     };
     if(typeof user_attributes != 'undefined') {
@@ -146,6 +147,10 @@ $(document).ready(function() {
 
     };
 
+    $.licemerov.utils.noticeFor = function(options) {
+    
+    };
+
 });
 
 
@@ -178,13 +183,34 @@ $(document).ready(function() {
 
 
     // Friendships
-    $('a#delete-friend, a#add-friend, a.delete-friend, a.cancel-friendship-invite').
+
+    function messageFor(htmlClass, variations) {
+      var message = variations;
+      if ( /reject-friendship-invite/.test(htmlClass) ) {
+         message = variations.rejected; 
+      } else if ( /delete-friend/.test(htmlClass) ) {
+         message = variations.deleted;
+      }
+      return message;
+    };
+
+    $('a#delete-friend, a#add-friend, a.delete-friend, ' + 
+        'a.reject-friendship-invite, a.approve-friendship-invite').
             live('ajax:beforeSend', function() {
 
         var $this = $(this).toggleLoader(),
-            row = $this.parents('tr');
+            row = $this.parents('tr'),
+            hideBeforeComplete = function() {
+              var classes = ['delete-friend', 'reject-friendship-invite', 
+                             'approve-friendship-invite'];
+              $.each(classes, function() {
+                if ($this.hasClass(this)) return true;
+              });
 
-        if ($this.hasClass('delete-friend') || $this.hasClass('cancel-friendship-invite')) {
+              return false;
+            };
+
+        if ( hideBeforeComplete ) {
             row.find('.friend-options a').addClass('hidden');
         }
     });
@@ -202,10 +228,9 @@ $(document).ready(function() {
                     }).bind('ajax:complete', function(event, xhr, status) {
                         if ( status == 'success' ) {
                             var params = $.parseJSON( xhr.responseText ),
-                                    noticesContainer = $('#notices'),
                                     notice = $('<div class="' + params.html_class + '">' +
                                             params.message + '</div>');
-                            noticesContainer.find('.' + params.html_class)
+                            $.licemerov.noticesContainer.find('.' + params.html_class)
                                     .append(notice);
                         }
                         $(this).toggleLoader();
@@ -216,10 +241,20 @@ $(document).ready(function() {
         }
     });
 
-    // Delete from /friends page or cancel friendship invite
-    $('a.delete-friend, a.cancel-friendship-invite').bind('ajax:complete', function() {
-        $(this).parents('tr').hide();
-        // Update friends counter
+
+    $('a.approve-friendship-invite, a.delete-friend, a.reject-friendship-invite')
+      .bind('ajax:complete', function(event, xhr, status) {
+        if ( status == 'success' ) {
+           var params = $.parseJSON( xhr.responseText ),
+               $this = $(this),
+               row = $this.parents('tr'),
+               message = messageFor( $this.attr('class'), params.message  ),
+               notice = $('<div class="' + params.html_class + '">' + message + '</div>');
+
+           $.licemerov.noticesContainer.find('.' + params.html_class)
+                    .append(notice);
+           row.addClass('hidden');
+        }
     });
 
 
