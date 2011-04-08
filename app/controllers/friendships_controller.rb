@@ -67,10 +67,10 @@ class FriendshipsController < ApplicationController
 
   def cancel # cancel permanently (add to black list)
     @friendship.canceled, @friendship.approved = true, false
-    if @friendship.changed? && @friendship.save
+    if @friendship.save
       respond_to do |format|
+        format.json { render :json => {:message => t(:added_to_blacklist), :html_class => :warning } }
         format.html { redirect_to :back }
-        format.js { render :json => {:message => t(:added_to_blacklist), :html_class => :warn } }
       end
     else
       render :nothing => true

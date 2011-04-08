@@ -194,15 +194,16 @@ $(document).ready(function() {
       return message;
     };
 
-    $('a#delete-friend, a#add-friend, a.delete-friend, ' + 
+    $('a#delete-friend, a#add-friend, a.delete-friend, a.add-to-black-list, ' + 
         'a.reject-friendship-invite, a.approve-friendship-invite').
             live('ajax:beforeSend', function() {
 
-        var $this = $(this).toggleLoader(),
+        var $this = $(this).toggleLoader(), 
             row = $this.parents('tr'),
+            classes = ['delete-friend', 'reject-friendship-invite', 'approve-friendship-invite',
+            'add-to-black-list'],
             hideBeforeComplete = function() {
-              var classes = ['delete-friend', 'reject-friendship-invite', 
-                             'approve-friendship-invite'];
+
               $.each(classes, function() {
                 if ($this.hasClass(this)) return true;
               });
@@ -242,7 +243,7 @@ $(document).ready(function() {
     });
 
 
-    $('a.approve-friendship-invite, a.delete-friend, a.reject-friendship-invite')
+    $('a.approve-friendship-invite, a.delete-friend, a.reject-friendship-invite, a.add-to-black-list')
       .bind('ajax:complete', function(event, xhr, status) {
         if ( status == 'success' ) {
            var params = $.parseJSON( xhr.responseText ),
