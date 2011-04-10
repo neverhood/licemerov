@@ -139,16 +139,12 @@ $(document).ready(function() {
 
         if ( typeof options.html != 'undefined' ) {
             $.each( options.html, function(key, value) {
-                eval('$url[0].' + key + ' = "' + value + '"'); // duh, ugly
+                eval('$url[0].' + key + ' = "' + value + '"');
             });
         }
 
         return $url;
 
-    };
-
-    $.licemerov.utils.noticeFor = function(options) {
-    
     };
 
 });
@@ -192,7 +188,7 @@ $(document).ready(function() {
          message = variations.deleted;
       }
       return message;
-    };
+    }
 
     $('a#delete-friend, a#add-friend, a.delete-friend, a.add-to-black-list, ' + 
         'a.reject-friendship-invite, a.approve-friendship-invite').
@@ -222,7 +218,7 @@ $(document).ready(function() {
             var params = $.parseJSON( xhr.responseText ),
                     $this = $(this).toggleLoader(),
                     url = $.licemerov.utils.linkTo({
-                        text: params.add_friend,
+                        text: params.message.add_friend,
                         href: '/friendships?friend_id=' + $.licemerov.user.attributes.id,
                         data: { remote: true, method: 'post' },
                         html: { id: 'add-friend' }

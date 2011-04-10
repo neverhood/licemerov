@@ -38,7 +38,7 @@ class FriendshipsController < ApplicationController
   end
 
   def update # Confirm  friendship
-    #@friendship.approved, @friendship.canceled = true, false
+    @friendship.approved, @friendship.canceled = true, false
     if  @friendship.save
       render :json => { :message => t(:friendship_approved), :html_class => :notice }
     else
@@ -47,17 +47,16 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy # delete/cancel friendship
-   # @friendship.destroy
+    @friendship.destroy
     # As this action skips 'existent user' filter, we must know the profile owners id to show 
     # an 'add to friends' link
     @user = User.where(:id => friend_id(@friendship)).first
     respond_to do |format|
       format.json { render :json => {
-          :add_friend => t(:add_friend),
-          :removed_from_blacklist => t(:removed_from_blacklist),
           :message => { 
               :rejected => t(:friendship_rejected, :user => @user.login),
-              :deleted => t(:friendship_canceled, :user => @user.login)
+              :deleted => t(:friendship_canceled, :user => @user.login),
+              :add => t(:add_friend)
           },
           :html_class => :warning
       },  :status => 200 }
