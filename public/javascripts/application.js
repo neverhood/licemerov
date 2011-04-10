@@ -1,6 +1,3 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
-
 
 function toggleImageSize(img) {
     var type = img.className,
@@ -233,7 +230,6 @@ $(document).ready(function() {
                         $(this).toggleLoader();
                     });
 
-            // Update friends counter
             $this.before(url).remove();
         }
     });
@@ -253,21 +249,6 @@ $(document).ready(function() {
            row.addClass('hidden');
         }
     });
-
-
-
-    // TODO: To be refactored
-//    $('a.confirm, a.cancel, a.blacklist').live('ajax:beforeSend', function() {
-//        $(this).parents('div.options').hide().after($.licemerov.loader);
-//    }).bind('ajax:complete', function() { $(this).parent().next().remove(); });
-//
-//    $('a.confirm, a.blacklist').live('ajax:complete', function(evt, xhr) {
-//        var params = $.parseJSON(xhr.responseText);
-//        $(this).parents('div.options').html('<div class="' +
-//                params.html_class + '">' + params.message + '</div>').show();
-//    });
-
-    // TODO: till here
 
     // Friendships end
 

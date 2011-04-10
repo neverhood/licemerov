@@ -227,7 +227,7 @@ $(document).ready(function() {
                 data('autocomplete')._renderItem = function( ul, item ) {
 
             return $('<li></li>').data('item.autocomplete', item)
-                    .append('<a class="wtf">' + item.value + '<div>' + item.name + '</div>' + '</a>')
+                    .append('<a class="autocompletion-item">' + item.value + '<div>' + item.name + '</div>' + '</a>')
                     .appendTo(ul);
 
         }

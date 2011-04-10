@@ -118,4 +118,4 @@ td.friend-options { min-width: 165px; }
 /***************** Profiles END ***************/
 .ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}
 .thin-border { border: 1px solid gray; }
-.wtf { border-bottom : 1px dashed black;}
+.autocompletion-item { border-bottom : 1px dashed black;}
