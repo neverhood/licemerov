@@ -1,9 +1,9 @@
 class CreateAlbums < ActiveRecord::Migration
   def self.up
     create_table :albums do |t|
-      t.integer :user_id
-      t.string :cover
-      t.string :title
+      t.integer :user_id, :null => false, :default => 0
+      t.string :cover, :default => '/images/missing.png'
+      t.string :title, :null => false, :default => ''
       t.string :description
 
       t.timestamps

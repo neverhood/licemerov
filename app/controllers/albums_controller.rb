@@ -4,14 +4,13 @@ class AlbumsController < ApplicationController
   before_filter :valid_album, :only => [ :update, :destroy ]
   before_filter :valid_title, :only => :show
 
-  skip_before_filter :existent_user, :only => [ :index, :show ]
+  skip_before_filter :existent_user, :except => [ :index, :show ]
 
   def index
-    @albums = current_user.albums
+    @albums = @user.albums
   end
 
   def show
-
   end
 
   def create

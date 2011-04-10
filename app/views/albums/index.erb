@@ -1,0 +1,11 @@
+<% @albums.each do |album| %>
+    <div class='album'>
+      <span class="album-name">
+        <%= album.title %>
+      </span>
+      <%= image_tag album.cover %>
+      <div class="album-description">
+        <%= album.description %>
+      </div>
+    </div>
+<% end %>
