@@ -27,12 +27,20 @@ Licemerov::Application.routes.draw do
   end
   get '/:user_profile/friends' => 'friendships#show', :as => :friends
 
-  # Messages 
+  # ****************** Messages ******************
   resources :messages, :only => [:create, :destroy, :update] do
     post :recover, :on => :member
   end
+
   get '/:user_profile/messages' => 'messages#show', :as => :user_messages
   get '/:user_profile/new_message' => 'messages#new', :as => :new_message
+  # ****************** Messages  END ******************
+
+  #  ****************** Photo Albums ******************
+  resources :albums, :only => [:create, :destroy, :update]
+  get '/:user_profile/albums' => 'albums#index', :as => :user_albums
+  get '/:user_profile/albums/:album_name' => 'albums#show', :as => :album
+  #  ****************** Photo Albums END ******************
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
