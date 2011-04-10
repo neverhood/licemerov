@@ -90,6 +90,13 @@ ru:
   all_messages: Все
   mark_messages: Отметить
   recover_messages: Восстановить удаленные сообщения
+
+  # Albums
+  create_album: Создать новый альбом
+  submit_album: Создать
+  album_title: Название
+  album_description: Описание
+
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'

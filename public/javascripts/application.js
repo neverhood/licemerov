@@ -174,6 +174,27 @@ $(document).ready(function() {
                 .attr('disabled', this.value.length == 0);
     });
 
+    // Albums
+
+    $('h1#create-album').click(function() {
+       var form = $('#new-album-form-container'),
+           visible = form.is(':visible');
+        if ( visible ) {
+            form.slideUp();
+        } else {
+            form.slideDown();
+        }
+    });
+
+    $('input#album_title').keyup(function() {
+        var $this = $(this),
+            submit = $('#album_submit'),
+            length = this.value.length;
+
+        submit.attr('disabled', !( length > 2 && length < 25 ));
+    });
+
+    // Albums END
 
     // Friendships
 

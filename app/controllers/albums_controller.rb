@@ -8,6 +8,7 @@ class AlbumsController < ApplicationController
 
   def index
     @albums = @user.albums
+    @album = Album.new
   end
 
   def show

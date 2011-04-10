@@ -1,3 +1,9 @@
+<h1 id="create-album">
+  <%= t(:create_album) %>
+</h1>
+
+<%= render :partial => 'new_album_form' %>
+
 <% @albums.each do |album| %>
     <div class='album'>
       <span class="album-name">

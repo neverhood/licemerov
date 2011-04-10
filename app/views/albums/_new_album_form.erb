@@ -1,0 +1,24 @@
+<div id='new-album-form-container'>
+
+  <%= render :partial => 'shared/errors', :locals => { :target => @album } %>
+
+  <%= form_for @album, :remote => true, :method => :post do |f| %>
+
+      <div class="row">
+        <%= t(:album_title) %>
+        <%= f.text_field :title %>
+      </div>
+
+      <div class="row">
+        <div>
+          <%= t(:album_description) %>
+        </div>
+
+        <%= f.text_area :description, :rows => 5, :cols => 50%>
+      </div>
+
+      <%= f.submit t(:submit_album), :disabled => true %>
+
+  <% end %>
+
+</div>
