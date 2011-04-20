@@ -16,6 +16,8 @@
     <%= link_to t(:friends), friends_path(@user) %>
 <% end %>
 
+<%= link_to t(:albums), user_albums_path(@user) %>
+
 
 <% if !profile_owner? && current_user %>
     <% if current_user.friendship_with(@user).first %>
