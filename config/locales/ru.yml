@@ -92,6 +92,8 @@ ru:
   recover_messages: Восстановить удаленные сообщения
 
   # Albums
+  albums: Фото альбомы
+  album_created: Альбом создан
   create_album: Создать новый альбом
   submit_album: Создать
   album_title: Название

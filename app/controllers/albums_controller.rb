@@ -1,10 +1,12 @@
 class AlbumsController < ApplicationController
 
-  before_filter :require_owner, :only => [ :create, :update, :destroy ]
+  #before_filter :require_owner, :only => [ :create, :update, :destroy ]
   before_filter :valid_album, :only => [ :update, :destroy ]
   before_filter :valid_title, :only => :show
 
   skip_before_filter :existent_user, :except => [ :index, :show ]
+
+  layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
 
   def index
     @albums = @user.albums
@@ -16,6 +18,17 @@ class AlbumsController < ApplicationController
 
   def create
     @album = current_user.albums.build( params[:album] )
+    respond_to do |format|
+      if @album.save
+      format.json { render :json => { :message => t(:album_created), :html_class => :notice,
+                                     :album => (render_to_string(:partial => 'albums/album', :locals => {:album => @album}))
+                 }, :status => 200
+      }
+      format.html { redirect_to :back, :notice => t(:album_created)}
+      else
+
+      end
+    end
   end
 
   def update

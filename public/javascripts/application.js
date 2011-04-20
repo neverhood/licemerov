@@ -145,7 +145,11 @@ $(document).ready(function() {
         }
 
         return $url;
+    };
 
+    $.licemerov.utils.appendNotice = function(notice) {
+        $.licemerov.noticesContainer.find('.' + notice.className ).
+                append( notice );
     };
 
 });
@@ -191,11 +195,21 @@ $(document).ready(function() {
     });
 
     $('input#album_title').keyup(function() {
-        var $this = $(this),
-            submit = $('#album_submit'),
+        var submit = $('#album_submit'),
             length = this.value.length;
 
         submit.attr('disabled', !( length > 2 && length < 25 ));
+    });
+
+    $('form#new_album').bind('ajax:complete', function(event, xhr, status) {
+        if ( status == 'success' ) {
+            var params = $.parseJSON( xhr.responseText ),
+                album = params.album,
+                notice = $('<div></div>').toggleClass( params.html_class ).
+                        text( params.message );
+            $('div#albums').append( album );
+            $.licemerov.utils.appendNotice( notice );
+        }
     });
 
     // Albums END
@@ -357,17 +371,14 @@ $(document).ready(function() {
 
     $('td.mark-message input[type="checkbox"]').click(function() {
         var  ids = [],
-                checkedMessages = $('td.mark-message input:checked'),
-                buttons = $('a.delete-messages, a.read-messages');
+             checkedMessages = $('td.mark-message input:checked');
 
         $.each(checkedMessages, function() {
             ids.push( this.id.replace('message-', '') );
         });
 
         updateMessageActionLinks(ids);
-
         $.licemerov.user.messages_marked_filter = null;
-
         changeMarkedMessagesCounter( checkedMessages.length );
     });
 
