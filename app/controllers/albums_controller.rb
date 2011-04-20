@@ -37,7 +37,7 @@ class AlbumsController < ApplicationController
   def valid_title
     @album = @user.albums.
         where( :title => params[:album_name] ).first
-    redirect_to user_albums_path(@user)
+    redirect_to user_albums_path(@user) unless @album
   end
 
 

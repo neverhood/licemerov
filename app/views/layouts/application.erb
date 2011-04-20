@@ -15,7 +15,7 @@
 <% else %>
     <% user_attrs = nil %>
 <% end %>
-<div id="wrapper" data-user="<%= user_attrs %>">
+<div id="wrapper" data-user="<%= user_attrs %>" class="<%= controller_name %>">
 
   <div id="notices">
     <div class="notice"><%= flash[:notice] %></div>

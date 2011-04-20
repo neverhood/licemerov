@@ -108,11 +108,7 @@ class User < ActiveRecord::Base
   end
 
   def name
-    if first_name
-      first_name + (last_name ? (' ' + last_name) : '')
-    else
-      ''
-    end
+    [first_name, last_name].compact.join(' ') 
   end
 
   # Alias to relation

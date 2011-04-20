@@ -97,8 +97,11 @@ function updateMessageActionLinks( ids ) {
 
 
 $(document).ready(function() {
-    if ($('#wrapper').attr('data-user').length > 1)
-        var user_attributes = $('#wrapper').attr('data-user').split(',');
+    var wrapper = $('#wrapper');
+
+    if (wrapper.attr('data-user').length > 1)
+        var user_attributes = wrapper.attr('data-user').split(',');
+
     $.licemerov = {
         version: '1.0',
         domain: window.location.origin,
@@ -107,7 +110,8 @@ $(document).ready(function() {
         user: {},
         actions: {},
         noticesContainer: $('#notices'),
-        utils: {}
+        utils: {},
+        controller: wrapper.attr('class')
     };
     if(typeof user_attributes != 'undefined') {
         $.licemerov.user.attributes = {
