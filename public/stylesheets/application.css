@@ -119,7 +119,6 @@ td.friend-options { min-width: 165px; }
 div#new-album-form-container { display:none; }
 h1#create-album { cursor:pointer; }
 div.album { width:150px; height:150px; border:1px solid black; -webkit-border-radius:2px; }
->>>>>>> albums
 /* ALBUMS END */
 
 /***************** Profiles END ***************/
