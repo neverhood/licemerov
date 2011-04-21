@@ -14,11 +14,29 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page, :details, :friends_online,
-    :guilty_response
+    :guilty_response, :json_for
 
   before_filter :existent_user
   before_filter :delete_messages
 
+
+  # Prepare a hash( to be converted to json ) for a newly created object
+  # Includes partial, message and an html class for a notice
+  def json_for(object)
+    instance = object.class.name.downcase
+    partial = instance.dup.insert(0, '_').insert(-1, '.erb')
+    path = Pathname.new(Rails.root.join('app', 'views', instance.pluralize))
+
+    if path.directory? && path.entries.map { |e| e.to_s }.include?(partial)
+      Hash[ [ [instance.to_sym, render_to_string(:partial => instance.pluralize + '/' + instance,
+                                             :locals => {instance.to_sym => object})],
+              [:message, t(instance.insert(-1, '_created'))],
+              [:html_class, :notice]
+      ] ]
+    else
+      nil
+    end
+  end
 
   private
 
@@ -87,7 +105,7 @@ class ApplicationController < ActionController::Base
   end
 
   def home_page
-    current_user && user_profile_url(:user_profile => current_user.login)
+    current_user && user_profile_url(current_user)
   end
 
   def profile_owner?

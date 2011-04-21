@@ -148,7 +148,7 @@ $(document).ready(function() {
     };
 
     $.licemerov.utils.appendNotice = function(notice) {
-        $.licemerov.noticesContainer.find('.' + notice.className ).
+        $.licemerov.noticesContainer.find('.' + notice.attr('class') ).
                 append( notice );
     };
 
@@ -204,10 +204,14 @@ $(document).ready(function() {
     $('form#new_album').bind('ajax:complete', function(event, xhr, status) {
         if ( status == 'success' ) {
             var params = $.parseJSON( xhr.responseText ),
-                album = params.album,
-                notice = $('<div></div>').toggleClass( params.html_class ).
-                        text( params.message );
-            $('div#albums').append( album );
+                album = $(params.album).
+                    appendTo( $('body') ).
+                    hide(),
+                notice = $('<div></div>').
+                    addClass( params.html_class ).
+                    text( params.message );
+
+            $('div#albums').append( album.slideDown() );
             $.licemerov.utils.appendNotice( notice );
         }
     });

@@ -17,7 +17,7 @@
         <%= f.text_area :description, :rows => 5, :cols => 50%>
       </div>
 
-      <%= f.submit t(:submit_album), :disabled => true %>
+      <%= f.submit t(:submit_album), :disabled => true, :disable_with => t(:please_wait) %>
 
   <% end %>
 

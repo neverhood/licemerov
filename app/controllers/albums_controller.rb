@@ -1,6 +1,6 @@
 class AlbumsController < ApplicationController
 
-  #before_filter :require_owner, :only => [ :create, :update, :destroy ]
+  before_filter :require_user, :only => [ :create, :update, :destroy ]
   before_filter :valid_album, :only => [ :update, :destroy ]
   before_filter :valid_title, :only => :show
 
@@ -18,15 +18,15 @@ class AlbumsController < ApplicationController
 
   def create
     @album = current_user.albums.build( params[:album] )
+    logger.debug( json_for(@album) )
     respond_to do |format|
       if @album.save
-      format.json { render :json => { :message => t(:album_created), :html_class => :notice,
-                                     :album => (render_to_string(:partial => 'albums/album', :locals => {:album => @album}))
-                 }, :status => 200
-      }
-      format.html { redirect_to :back, :notice => t(:album_created)}
+        format.json { render :json => json_for(@album), :status => 200 }
+        format.html { redirect_to :back, :notice => t(:album_created)}
       else
-
+        format.json {
+          render :json => {:errors => @album.errors}, :status => :unprocessable_entity
+        }
       end
     end
   end
