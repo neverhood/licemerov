@@ -25,7 +25,8 @@ class AlbumsController < ApplicationController
         format.html { redirect_to :back, :notice => t(:album_created)}
       else
         format.json {
-          render :json => {:errors => @album.errors}, :status => :unprocessable_entity
+          render :json => {:errors => @album.errors.values.map {|error| error.first} }, # messages only
+                 :status => :unprocessable_entity
         }
       end
     end

@@ -148,8 +148,17 @@ $(document).ready(function() {
     };
 
     $.licemerov.utils.appendNotice = function(notice) {
-        $.licemerov.noticesContainer.find('.' + notice.attr('class') ).
-                append( notice );
+        $.licemerov.noticesContainer.find('div').
+          html(''); // Reset notices
+
+        if (! notice instanceof Array) notice = [notice];
+
+        $.each(notice, function() {
+            var message = $(this);
+            $.licemerov.noticesContainer.find('.' + message.attr('class')).
+               append( message );
+        });
+
     };
 
 });
@@ -185,13 +194,7 @@ $(document).ready(function() {
     // Albums
 
     $('h1#create-album').click(function() {
-       var form = $('#new-album-form-container'),
-           visible = form.is(':visible');
-        if ( visible ) {
-            form.slideUp();
-        } else {
-            form.slideDown();
-        }
+        $('#new-album-form-container').toggle('fast');
     });
 
     $('input#album_title').keyup(function() {
@@ -202,9 +205,9 @@ $(document).ready(function() {
     });
 
     $('form#new_album').bind('ajax:complete', function(event, xhr, status) {
+        var params = $.parseJSON( xhr.responseText );
         if ( status == 'success' ) {
-            var params = $.parseJSON( xhr.responseText ),
-                album = $(params.album).
+                var album = $(params.album).
                     appendTo( $('body') ).
                     hide(),
                 notice = $('<div></div>').
@@ -214,7 +217,19 @@ $(document).ready(function() {
             $('div#albums').append( album.slideDown() );
             $.licemerov.utils.appendNotice( notice );
         }
-    });
+        else if ( status == 'error' ) {
+          var errors = [];
+          $.each( params.errors, function() {
+            errors.push( $('<div class="alert">' + this + '</div>') );
+          });
+
+          $.licemerov.utils.appendNotice( errors );
+        }
+
+        $(this).clearForm().
+            find(':submit').attr('disabled', true).
+            parents('#new-album-form-container').toggle('fast');
+    })
 
     // Albums END
 
