@@ -25,7 +25,8 @@ class AlbumsController < ApplicationController
         format.html { redirect_to :back, :notice => t(:album_created)}
       else
         format.json {
-          render :json => {:errors => @album.errors.values.map {|error| error.first} }, # messages only
+          render :json => { :errors => @album.errors.values.map {|error| error.first},
+                            :html_class => 'alert' },
                  :status => :unprocessable_entity
         }
       end
@@ -37,7 +38,13 @@ class AlbumsController < ApplicationController
   end
 
   def destroy
-
+    #@album.destroy
+    respond_to do |format|
+      format.json {
+        render :json => {:message => t(:album_deleted), :status => 200, :html_class => 'warning'  }
+      }
+      format.html { redirect_to :back, flash(:warning, t(:album_deleted)) }
+    end
   end
 
   private

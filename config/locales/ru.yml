@@ -48,7 +48,8 @@ ru:
   pending_friends: Заявки в друзья 
   friends_online: Друзья Онлайн
   blacklist: Черный Список
-  friendship_approved: Приглашение принято 
+  friendship_approved: Приглашение принято
+  friendship_exists: Вы не можете отправить приглашение повторно, пока Ваш друг не его не отклонит
   confirm_friend_deletion: 'Вы действительно хотите удалить %{name} из друзей?'
   confirm_blacklisting: 'Вы действительно хотите добавить %{name} в черный список?'
   cancel_friendship: Отменить приглашение?
@@ -94,7 +95,9 @@ ru:
   # Albums
   albums: Фото альбомы
   album_created: Альбом создан
+  album_deleted: Альбом удален
   create_album: Создать новый альбом
+  delete_album: Удалить Альбом
   submit_album: Создать
   album_title: Название
   album_description: Описание

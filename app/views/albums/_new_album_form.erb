@@ -2,7 +2,7 @@
 
   <%= render :partial => 'shared/errors', :locals => { :target => @album } %>
 
-  <%= form_for @album, :remote => true, :method => :post do |f| %>
+  <%= form_for @album, :remote => true, :method => :post, :html => {'data-notify' => true} do |f| %>
 
       <div class="row">
         <%= t(:album_title) %>

@@ -1,13 +1,15 @@
 <div class='album'>
 
   <span class="album-name">
-    <%= album.title %>
+    <%= truncate album.title %>
   </span>
 
-  <%= image_tag album.cover %>
+  <%= image_tag album.cover, :class => 'album-cover' %>
 
   <div class="album-description">
-    <%= album.description %>
+    <%= truncate album.description %>
   </div>
+
+  <%= link_to t(:delete_album), album, :method => :delete, :remote => true, 'data-notify' => true, :class => 'delete-album' %>
 
 </div>

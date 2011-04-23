@@ -33,7 +33,10 @@ class FriendshipsController < ApplicationController
         format.html { redirect_to :back, :notice => t(:invite_sent) }
       end
     else
-      render :nothing => true # probably request submitted by mistake 
+      logger.debug( @friendship.errors )
+      render :json => { :html_class => 'alert',
+                        :errors => @friendship.errors.values.map {|error| error.first} },
+             :status => :unprocessable_entity
     end
   end
 
@@ -47,7 +50,7 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy # delete/cancel friendship
-    @friendship.destroy
+    #@friendship.destroy
     # As this action skips 'existent user' filter, we must know the profile owners id to show 
     # an 'add to friends' link
     @user = User.where(:id => friend_id(@friendship)).first

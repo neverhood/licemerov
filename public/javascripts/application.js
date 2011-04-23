@@ -129,13 +129,14 @@ $(document).ready(function() {
         if (typeof options.href == 'undefined') {
             options.href = $.licemerov.location;
         }
-        var $url = $('<a></a>').
-                attr( {href: options.href} ).text(options.text);
+        var $url = $('<a></a>')
+                .attr('href', options.href).text(options.text);
+
         if ( typeof options.data != 'undefined' ) {
-            if ( options.data.remote ) $url.attr('rel', 'nofollow');
-            $.each( options.data, function(key, value) {
-                $url.attr('data-' + key, value);
-            });
+            if ( options.data.remote )
+                $.each( options.data, function(key, value) {
+                    $url.attr('data-' + key, value);
+                });
         }
 
         if ( typeof options.html != 'undefined' ) {
@@ -147,24 +148,61 @@ $(document).ready(function() {
         return $url;
     };
 
+    $.licemerov.utils.noticeFor = function(params) {
+        var notice = $('<div></div>');
+
+        return notice.addClass(params.html_class)
+                .text( params.message )
+    };
+
     $.licemerov.utils.appendNotice = function(notice) {
         $.licemerov.noticesContainer.find('div').
-          html(''); // Reset notices
+                html(''); // Reset notices
 
         if (! notice instanceof Array) notice = [notice];
 
         $.each(notice, function() {
             var message = $(this);
             $.licemerov.noticesContainer.find('.' + message.attr('class')).
-               append( message );
+                    append( message );
         });
 
     };
+
+    // Let's occupy more namespaces!
+
+    $.user = $.licemerov.user;
+    $.utils = $.licemerov.utils;
 
 });
 
 
 $(document).ready(function() {
+
+
+    $('a[data-notify="true"], form[data-notify="true"]')
+            .live('ajax:complete', function(event, xhr, status) {
+
+        var params = $.parseJSON( xhr.responseText );
+        if ( status == 'success' ) {
+            var notice = $.utils.noticeFor( params );
+            $.utils.appendNotice( notice );
+
+        } else if ( status == 'error' ) {
+            var errors = [];
+            $.each(params.errors, function(index) {
+                var notice = $.utils.noticeFor( { message: params.errors[index],
+                    html_class: params.html_class } );
+                errors.push(notice);
+            });
+
+            $.utils.appendNotice( errors );
+        }
+    });
+
+    $('a[data-remote="true"]').live('ajax:beforeSend ajax:complete', function() {
+        $(this).toggleLoader();
+    });
 
     $('a#new-message, #close-popup').click(function(event) { //TODO: Refactoring
         event.preventDefault();
@@ -199,7 +237,7 @@ $(document).ready(function() {
 
     $('input#album_title').keyup(function() {
         var submit = $('#album_submit'),
-            length = this.value.length;
+                length = this.value.length;
 
         submit.attr('disabled', !( length > 2 && length < 25 ));
     });
@@ -207,60 +245,53 @@ $(document).ready(function() {
     $('form#new_album').bind('ajax:complete', function(event, xhr, status) {
         var params = $.parseJSON( xhr.responseText );
         if ( status == 'success' ) {
-                var album = $(params.album).
-                    appendTo( $('body') ).
-                    hide(),
-                notice = $('<div></div>').
-                    addClass( params.html_class ).
-                    text( params.message );
-
-            $('div#albums').append( album.slideDown() );
-            $.licemerov.utils.appendNotice( notice );
-        }
-        else if ( status == 'error' ) {
-          var errors = [];
-          $.each( params.errors, function() {
-            errors.push( $('<div class="alert">' + this + '</div>') );
-          });
-
-          $.licemerov.utils.appendNotice( errors );
+            $('div#albums').append(
+                    $(params.album)
+                            .appendTo( $('body') )
+                            .hide().slideDown()
+                    )
         }
 
         $(this).clearForm().
-            find(':submit').attr('disabled', true).
-            parents('#new-album-form-container').toggle('fast');
-    })
+                find(':submit').attr('disabled', true).
+                parents('#new-album-form-container').toggle('fast');
+    });
+
+
+    $('.delete-album').bind('ajax:complete', function() {
+        $(this).parent().slideUp('fast', function() { $(this).remove() });
+    });
 
     // Albums END
 
     // Friendships
 
     function messageFor(htmlClass, variations) {
-      var message = variations;
-      if ( /reject-friendship-invite/.test(htmlClass) ) {
-         message = variations.rejected; 
-      } else if ( /delete-friend/.test(htmlClass) ) {
-         message = variations.deleted;
-      }
-      return message;
+        var message = variations;
+        if ( /reject-friendship-invite/.test(htmlClass) ) {
+            message = variations.rejected;
+        } else if ( /delete-friend/.test(htmlClass) ) {
+            message = variations.deleted;
+        }
+        return message;
     }
 
-    $('a#delete-friend, a#add-friend, a.delete-friend, a.add-to-black-list, ' + 
-        'a.reject-friendship-invite, a.approve-friendship-invite').
+    $('a.delete-friend, a.add-to-black-list, ' +
+            'a.reject-friendship-invite, a.approve-friendship-invite').
             live('ajax:beforeSend', function() {
 
-        var $this = $(this).toggleLoader(), 
-            row = $this.parents('tr'),
-            classes = ['delete-friend', 'reject-friendship-invite', 'approve-friendship-invite',
-            'add-to-black-list'],
-            hideBeforeComplete = function() {
+        var $this = $(this),
+                row = $this.parents('tr'),
+                classes = ['delete-friend', 'reject-friendship-invite', 'approve-friendship-invite',
+                    'add-to-black-list'],
+                hideBeforeComplete = function() {
 
-              $.each(classes, function() {
-                if ($this.hasClass(this)) return true;
-              });
+                    $.each(classes, function() {
+                        if ($this.hasClass(this)) return true;
+                    });
 
-              return false;
-            };
+                    return false;
+                };
 
         if ( hideBeforeComplete ) {
             row.find('.friend-options a').addClass('hidden');
@@ -271,66 +302,55 @@ $(document).ready(function() {
     $('a#delete-friend').bind('ajax:complete', function(event, xhr, status) {
         if ( status == 'success' ) {
             var params = $.parseJSON( xhr.responseText ),
-                    $this = $(this).toggleLoader(),
-                    url = $.licemerov.utils.linkTo({
-                        text: params.message.add_friend,
+                    $this = $(this),
+                    url = $.utils.linkTo({
+                        text: params.message.add,
                         href: '/friendships?friend_id=' + $.licemerov.user.attributes.id,
-                        data: { remote: true, method: 'post' },
-                        html: { id: 'add-friend' }
-                    }).bind('ajax:complete', function(event, xhr, status) {
-                        if ( status == 'success' ) {
-                            var params = $.parseJSON( xhr.responseText ),
-                                    notice = $('<div class="' + params.html_class + '">' +
-                                            params.message + '</div>');
-                            $.licemerov.noticesContainer.find('.' + params.html_class)
-                                    .append(notice);
-                        }
-                        $(this).toggleLoader();
-                    });
-
+                        data: { remote: true, method: 'post', notify: true },
+                        html: { id: 'add-friend' }});
             $this.before(url).remove();
         }
     });
 
 
     $('a.approve-friendship-invite, a.delete-friend, a.reject-friendship-invite, a.add-to-black-list')
-      .bind('ajax:complete', function(event, xhr, status) {
+            .bind('ajax:complete', function(event, xhr, status) {
         if ( status == 'success' ) {
-           var params = $.parseJSON( xhr.responseText ),
-               $this = $(this),
-               row = $this.parents('tr'),
-               message = messageFor( $this.attr('class'), params.message  ),
-               notice = $('<div class="' + params.html_class + '">' + message + '</div>');
+            var params = $.parseJSON( xhr.responseText ),
+                    $this = $(this),
+                    row = $this.parents('tr'),
+                    message = messageFor( $this.attr('class'), params.message  ),
+                    notice = $('<div class="' + params.html_class + '">' + message + '</div>');
 
-           $.licemerov.noticesContainer.find('.' + params.html_class)
+            $.licemerov.noticesContainer.find('.' + params.html_class)
                     .append(notice);
-           row.addClass('hidden');
+            row.addClass('hidden');
         }
     });
 
     // Friendships end
 
     // Messages
-    $('a.delete-message, a.delete-messages, a.recover-message, a.recover-messages, a.read-messages')
-            .live('ajax:beforeSend', function() {
-        $(this).toggleLoader();
-    });
+//    $('a.delete-message, a.delete-messages, a.recover-message, a.recover-messages, a.read-messages')
+//            .live('ajax:beforeSend', function() {
+//        $(this).toggleLoader();
+//    });
 
     $('a.delete-message').bind('ajax:complete', function(event, xhr, status) {
         if (status == 'success') {
             var params = $.parseJSON(xhr.responseText),
-                    $this = $(this).toggleLoader(),
+                    $this = $(this),
                     row = $this.parents('tr')[0],
                     column = $this.parent(),
 
-                    url = $.licemerov.utils.linkTo({
+                    url = $.utils.linkTo({
                         text: params.single,
                         href: '/messages/' + row.id + '/recover',
                         data: { remote: true, method: 'post' },
                         html: { className: 'recover-message' }
                     }).bind('ajax:complete', function(event, xhr, status) {
                         if (status == 'success') {
-                            $(this).toggleLoader().remove();
+                            $(this).remove();
                             column.find('.delete-message').show();
                         }
                     });
@@ -341,34 +361,32 @@ $(document).ready(function() {
 
     $('a.delete-messages').bind('ajax:complete', function(event, xhr, status) {
         if (status == 'success') {
-            var elements = [],
-                    $this = $(this).toggleLoader().show();
+            var $this = $(this).toggleLoader().show(),
+                recoveryLinkSupplied = $('.recover-messages').length;
 
             $.each( $this.data('messages').split(','), function() {
-                var elem = $('tr#' + this).toggleClass('deleted-message');
-                elem.find('input[type="checkbox"]').attr('checked', false);
-                elements.push(elem);
+                $('tr#' + this).toggleClass('deleted-message')
+                        .find('input[type="checkbox"]')
+                           .attr('checked', false)
             });
 
-            var params = $.parseJSON(xhr.responseText),
-                    url = $.licemerov.utils.linkTo({
-                        text: params.multiple,
-                        href: '/messages/all/recover',
-                        data: { remote: true, method: 'post' },
-                        html: { className: 'recover-messages' }
-                    }).bind('ajax:complete', function(event, xhr, status) {
-                        if ( status == 'success' ) {
-                            $.each(elements, function() {
-                                this.toggleClass('deleted-message');
-                            });
-                            $(this).toggleLoader().remove();
-                        }
-                    });
-
+            if ( ! recoveryLinkSupplied ) {
+                var params = $.parseJSON(xhr.responseText),
+                        url = $.licemerov.utils.linkTo({
+                            text: params.multiple,
+                            href: '/messages/all/recover',
+                            data: { remote: true, method: 'post' },
+                            html: { className: 'recover-messages' }
+                        }).bind('ajax:complete', function(event, xhr, status) {
+                            if ( status == 'success' ) {
+                                $('.deleted-message').removeClass('deleted-message');
+                                $(this).remove();
+                            }
+                        });
+                $('#marking-message-options').append(url);
+            }
             changeMarkedMessagesCounter( 0 );
             $.licemerov.user.messages_marked_filter = null;
-            $('#marking-message-options').append(url);
-
         }
     });
 
@@ -390,7 +408,7 @@ $(document).ready(function() {
 
     $('td.mark-message input[type="checkbox"]').click(function() {
         var  ids = [],
-             checkedMessages = $('td.mark-message input:checked');
+                checkedMessages = $('td.mark-message input:checked');
 
         $.each(checkedMessages, function() {
             ids.push( this.id.replace('message-', '') );
@@ -487,12 +505,14 @@ $(document).ready(function() {
 
 $.fn.toggleLoader = function() {
     return this.each(function() {
-        var $this = $(this),
-                loader = ("<img class='loader' src='/images/loader.gif' />");
+        var loadersCount = $('.loader').length,
+                currentLoaderClass = 'loader-' + (loadersCount + 1),
+                $this = $(this),
+                loader = ("<img class='" + currentLoaderClass  + "' src='/images/loader.gif' />");
 
         if (this.tagName.toLowerCase() == 'a') {
-            $this.is(':visible')? $this.before(loader).hide() :
-                    $this.prev().remove();
+            $this.is(':visible')? $this.after(loader).hide() :
+                    $('.' + currentLoaderClass).remove();
         } else if ( this.tagName.toLowerCase() == 'form' ) {
             var submit = $this.find(':submit');
             if (submit.is(':visible')) {

@@ -39,6 +39,6 @@ class Friendship < ActiveRecord::Base
   private
 
   def uniq_combination
-    errors[:user_id] << 'wrong attribute' if Friendship.unique_combination(user_id, friend_id).count > 0
+    errors[:user_id] << I18n.t(:friendship_exists) if Friendship.unique_combination(user_id, friend_id).count > 0
   end
 end

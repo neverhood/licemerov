@@ -11,7 +11,7 @@
 <body>
 <%= render :partial => 'shared/header' %>
 <% if @user && @user.avatar.exists? %>
-    <% user_attrs = "#{@user.login},#{@user.gender},#{@user.avatar.url(:small)}, #{@user.id}" %>
+    <% user_attrs = "#{@user.login},#{@user.gender},#{@user.avatar.url(:small)},#{@user.id}" %>
 <% else %>
     <% user_attrs = nil %>
 <% end %>
