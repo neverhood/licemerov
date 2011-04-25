@@ -70,3 +70,22 @@ module Russian
     end
   end
 end
+
+# Extend String with some methods to work with russian
+
+class String
+
+    def translit
+      Russian::Transliteration.transliterate(self)
+    end
+
+    def translit!
+      self.replace Russian::Transliteration.transliterate(self)
+    end
+
+    def unicode_downcase
+      Unicode.downcase(self)
+    end
+
+
+end

@@ -14,9 +14,11 @@ class AlbumsController < ApplicationController
   end
 
   def show
+
   end
 
   def create
+    @user = current_user # used in view to craft link_to new album
     @album = current_user.albums.build( params[:album] )
     logger.debug( json_for(@album) )
     respond_to do |format|
@@ -25,7 +27,7 @@ class AlbumsController < ApplicationController
         format.html { redirect_to :back, :notice => t(:album_created)}
       else
         format.json {
-          render :json => { :errors => @album.errors.values.map {|error| error.first},
+          render :json => { :errors => @album.errors.values.map(&:first),
                             :html_class => 'alert' },
                  :status => :unprocessable_entity
         }
@@ -57,7 +59,7 @@ class AlbumsController < ApplicationController
 
   def valid_title
     @album = @user.albums.
-        where( :title => params[:album_name] ).first
+        where( :title => params[:album_title] ).first
     redirect_to user_albums_path(@user) unless @album
   end
 

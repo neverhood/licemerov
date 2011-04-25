@@ -35,7 +35,7 @@ class FriendshipsController < ApplicationController
     else
       logger.debug( @friendship.errors )
       render :json => { :html_class => 'alert',
-                        :errors => @friendship.errors.values.map {|error| error.first} },
+                        :errors => @friendship.errors.values.map(&:first) },
              :status => :unprocessable_entity
     end
   end

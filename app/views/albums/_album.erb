@@ -1,15 +1,17 @@
 <div class='album'>
 
-  <span class="album-name">
+  <span class="album-name <%= profile_owner?? 'editable' : '' %>" >
     <%= truncate album.title %>
   </span>
 
-  <%= image_tag album.cover, :class => 'album-cover' %>
+  <%= link_to image_tag(album.cover, :class => 'album-cover'), user_album_path(@user, album) %>
 
-  <div class="album-description">
+  <div class="album-description <%= profile_owner?? 'editable' : '' %>">
     <%= truncate album.description %>
   </div>
 
-  <%= link_to t(:delete_album), album, :method => :delete, :remote => true, 'data-notify' => true, :class => 'delete-album' %>
+  <%= link_to t(:delete_album), album, :method => :delete,
+              :remote => true, 'data-notify' => true, :confirm => t(:delete_album_confirmation),
+              :class => 'delete-album' %>
 
 </div>

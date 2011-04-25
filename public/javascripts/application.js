@@ -235,11 +235,11 @@ $(document).ready(function() {
         $('#new-album-form-container').toggle('fast');
     });
 
-    $('input#album_title').keyup(function() {
+    $('input#album_title').bind('keyup keydown', function() {
         var submit = $('#album_submit'),
                 length = this.value.length;
 
-        submit.attr('disabled', !( length > 2 && length < 25 ));
+        submit.attr('disabled', !( length > 2 && length <= 25 ));
     });
 
     $('form#new_album').bind('ajax:complete', function(event, xhr, status) {

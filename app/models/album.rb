@@ -10,4 +10,14 @@ class Album < ActiveRecord::Base
   validates :user_id, :presence => true, :numericality => true
   validates :description, :allow_blank => true, :length => { :within => (2..500) }
 
+  before_save proc {|album| album.title = album.title.translit.parameterize }
+
+
+  def to_param
+    title.parameterize
+  end
+
+  private
+
+
 end

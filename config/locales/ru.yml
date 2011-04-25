@@ -98,6 +98,7 @@ ru:
   album_deleted: Альбом удален
   create_album: Создать новый альбом
   delete_album: Удалить Альбом
+  delete_album_confirmation: Удалить Альбом?
   submit_album: Создать
   album_title: Название
   album_description: Описание
