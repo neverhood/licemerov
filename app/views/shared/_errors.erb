@@ -1,10 +1,10 @@
 <% if target.errors.any? -%>
     <h2>
-      <%= pluralize(target.errors.count, 'error') %>:
+      <%= t(:errors_occured) %>:
     </h2>
     <ul>
-      <% target.errors.full_messages.each do |error| %>
-          <li> <%= error %> </li>
+      <% target.errors.values.map(&:first).each do |error| %>
+          <li class="error"> <%= error %> </li>
       <% end %>
     </ul>
 <% end %>

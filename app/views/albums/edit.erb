@@ -1,0 +1,11 @@
+<%= form_for @album, :method => :put do |f| %>
+
+    <%= render :partial => 'shared/errors', :locals => {:target => @album} %>
+
+    <%= t(:album_title) %> <%= f.text_field :title, :value => @album.title %> <br />
+
+    <%= t(:album_description) %> <br />
+    <%= f.text_area :description, :rows => 4, :cols => 35, :value => @album.description %> <br />
+
+    <%= f.submit t(:update), :disable_with => t(:please_wait) %>
+<% end %>

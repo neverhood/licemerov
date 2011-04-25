@@ -10,15 +10,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110410102425) do
+ActiveRecord::Schema.define(:version => 20110425151825) do
 
   create_table "albums", :force => true do |t|
-    t.integer  "user_id",     :default => 0,                     :null => false
-    t.string   "cover",       :default => "/images/missing.png"
-    t.string   "title",       :default => "",                    :null => false
+    t.integer  "user_id",         :default => 0,                     :null => false
+    t.string   "cover",           :default => "/images/missing.png"
+    t.string   "title",           :default => "",                    :null => false
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "latinized_title"
   end
 
   create_table "friendships", :force => true do |t|

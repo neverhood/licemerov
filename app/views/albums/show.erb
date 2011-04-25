@@ -1,1 +1,8 @@
-<%= @album.title %>
+<%= link_to t(:change_settings), edit_user_album_path(current_user, @album.latinized_title) %>
+
+<div id="delete-album">
+  <%= button_to t(:delete_album), @album, :method => :delete,
+                :confirm => t(:delete_album_confirmation),
+                :disable_with => t(:please_wait)
+  %>
+</div>

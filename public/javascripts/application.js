@@ -243,7 +243,8 @@ $(document).ready(function() {
     });
 
     $('form#new_album').bind('ajax:complete', function(event, xhr, status) {
-        var params = $.parseJSON( xhr.responseText );
+        var params = $.parseJSON( xhr.responseText ),
+            $this = $(this);
         if ( status == 'success' ) {
             $('div#albums').append(
                     $(params.album)
@@ -252,9 +253,12 @@ $(document).ready(function() {
                     )
         }
 
-        $(this).clearForm().
-                find(':submit').attr('disabled', true).
-                parents('#new-album-form-container').toggle('fast');
+        // jquery ujs set's input 'disabled' attr to false when using :disable_with
+        setTimeout( function() {
+            $this.clearForm().
+                    find(':submit').attr('disabled', true).
+                    parents('#new-album-form-container').toggle('fast')
+        }, 1);
     });
 
 
