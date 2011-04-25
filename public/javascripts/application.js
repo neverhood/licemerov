@@ -258,7 +258,7 @@ $(document).ready(function() {
     });
 
 
-    $('.delete-album').bind('ajax:complete', function() {
+    $('.delete-album').live('ajax:complete', function() {
         $(this).parent().slideUp('fast', function() { $(this).remove() });
     });
 
