@@ -27,5 +27,6 @@
     <% end %>
 <% end %>
 
-
-
+<% if current_user %>
+  <%= render :partial => 'messages/new_message_form' %>
+<% end %>

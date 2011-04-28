@@ -3,15 +3,24 @@ class MessagesController < ApplicationController
   SECTIONS = ['sent']
   layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
 
-  before_filter :require_owner, :only => :show
+  before_filter :require_owner, :only => :index
   before_filter :require_user, :only => :new
   before_filter :valid_term, :only => :new # Only hit database with trusted LIKE statement
-  before_filter :valid_section, :only => :show
+  before_filter :valid_section, :only => :index
   before_filter :valid_parent, :only => :create
   before_filter :valid_message_ids, :only => [:destroy, :recover, :update]
   skip_before_filter :existent_user, :only => [:new, :create, :destroy, :recover, :update]
   skip_before_filter :delete_messages, :only => [:destroy, :update, :recover]
 
+
+
+  def index
+    @message = Message.new
+    @messages = case params[:section]
+                  when 'inbox' then current_user.incoming_messages
+                  when 'sent' then current_user.messages
+                end
+  end
 
   # Used to autocomplete users login when sending a new message
   #
@@ -33,11 +42,6 @@ class MessagesController < ApplicationController
   end
 
   def show
-    @message = Message.new
-    @messages = case params[:section]
-                  when 'inbox' then current_user.incoming_messages
-                  when 'sent' then current_user.messages
-                end
   end
 
   def create
@@ -58,10 +62,12 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @success
-        format.json { render :json => { :message => t(:message_created) } }
+        format.json { 
+          render :json => { :message => t(:message_created), :html_class => :notice }
+        }
         format.html { redirect_to :back, :notice => t(:message_created) }
       else
-        render guilty_response
+        render guilty_response # God, that's messy
       end
     end
   end

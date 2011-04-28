@@ -32,7 +32,7 @@ Licemerov::Application.routes.draw do
     post :recover, :on => :member
   end
 
-  get '/:user_profile/messages' => 'messages#show', :as => :user_messages
+  get '/:user_profile/messages' => 'messages#index', :as => :user_messages
   get '/:user_profile/new_message' => 'messages#new', :as => :new_message
   # ****************** Messages  END ******************
 

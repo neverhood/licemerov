@@ -39,7 +39,6 @@ class AlbumsController < ApplicationController
   end
 
   def update
-    @album = current_user.albums.where(:id => params[:id]).first
     if @album.update_attributes(params[:album])
       redirect_to edit_user_album_path(current_user, @album.latinized_title),
                   :notice => t(:album_updated)

@@ -1,0 +1,18 @@
+<div class='hidden'>
+
+<%# Pop up form to send a message, no autocompletion %>
+<% @message = Message.new %> <%# Declaring it in non-related controller would be even more stupid %> 
+
+<%= form_for @message, :remote => true, :html => { 'data-notify' => true } do |f| %>
+
+  <div>
+    <input type="text" disabled="disabled" value="" />
+  </div>
+
+
+  <%= f.hidden_field :recipients %>
+  <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>
+
+<% end %>
+
+</div>

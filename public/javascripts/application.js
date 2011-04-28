@@ -463,6 +463,11 @@ $(document).ready(function() {
         return false;
     });
 
+    $('a.send-user-message').click(function(event) {
+        event.stopPropagation();
+        // TODO: PopUp implementation
+    });
+
 
     // Messages end
 
