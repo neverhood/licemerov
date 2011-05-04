@@ -56,9 +56,9 @@ class MessagesController < ApplicationController
                                    :parent_id => params[:message][:parent_id] )
     }
 
-    @success = true
+    @success, @errors = true, Array.new
 
-    @messages.each {|message| @success = false unless message.save }
+    @messages.each {|message| @success, @errors = false, message.errors unless message.save }
 
     respond_to do |format|
       if @success
@@ -67,7 +67,10 @@ class MessagesController < ApplicationController
         }
         format.html { redirect_to :back, :notice => t(:message_created) }
       else
-        render guilty_response # God, that's messy
+        format.json {
+          render :json => { :errors => @errors.values.map(&:first), :html_class => :alert },
+            :status => :unprocessable_entity
+        }
       end
     end
   end

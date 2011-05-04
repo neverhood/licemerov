@@ -50,30 +50,6 @@ $(window).load(function() {
             minSize: [100, 100], aspectRation:1});
 });
 
-function togglePopup() { //TODO: REFACTORING
-    var $popUp = $('#popup'),
-            $opaco = $('#opaco');
-
-    if ($popUp.hasClass('hidden'))  {
-
-        if($.browser.msie) {
-            $opaco.height($(document).height()).toggleClass('hidden');
-        } else {
-            $opaco.height($(document).height()).toggleClass('hidden').fadeTo('slow', 0.7);
-        }
-        $popUp
-                .alignCenter()
-                .toggleClass('hidden');
-        $('#message_body').focus();
-    } else {
-        $opaco.toggleClass('hidden').removeAttr('style');
-        $popUp.toggleClass('hidden');
-        if ($popUp.find('form')) {
-            $popUp.find('form').clearForm();
-        }
-    }
-}
-
 function changeMarkedMessagesCounter( count ) {
     var counter = $('#marked-messages-counter').
             html( count ),
@@ -463,14 +439,62 @@ $(document).ready(function() {
         return false;
     });
 
-    $('a.send-user-message').click(function(event) {
-        event.stopPropagation();
-        // TODO: PopUp implementation
-    });
+   $('[data-popup]').click(function(event) {
+        event.preventDefault();
+            var $this = $(this),
+                $opaco = $('#opaco'),
+                $popUp = $( $this.attr('data-popup') ). // data-popup attr holds a selector
+                                  alignCenter().
+                                  toggleClass('hidden');
+                                                                
+            $opaco.height( $(document).height() ).toggleClass('hidden');
+   });
 
+   $('.close').click(function() {
+       var popUp = $(this).parents('.popup'),
+           form = popUp.find('form');
+
+       if ( popUp.is(':visible') ) {
+          popUp.toggleClass('hidden');
+          $('#opaco').toggleClass('hidden').removeAttr('style');
+          if ( form.length ) {
+            form.clearForm();
+          }
+       }
+   });
+
+   $('#single-receiver-message-form').bind('ajax:complete', function() {
+       var $this = $(this).clearForm(),
+           popUp = $this.parents('.popup');
+
+       if ( popUp.is(':visible') ) {
+          popUp.toggleClass('hidden');
+          $('#opaco').toggleClass('hidden').removeAttr('style');
+       }
+
+       setTimeout(function() {
+         $this.find(':submit').attr('disabled', true)
+       }, 1);
+   });
+
+   $('#single-receiver-message-form #message_body').bind('keyup keydown', function() {
+       var submit = $('#single-receiver-message-form').find(':submit'),
+           length = this.value.length;
+
+       submit.attr('disabled', !(length >= 2 && length < 1000));
+   });
+
+   $('.write-message').click(function() {
+       var recipient = $.parseJSON( $(this).attr('data-recipient') );
+       $('#message-recipient').
+          val( recipient.login );
+       $('#message_recipients').
+          val( recipient.id );
+   });
 
     // Messages end
 
+    // Main page (comments and stuff)
 
     $('.reply').live('click', function() {
         var form = $('#response_form'),

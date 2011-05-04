@@ -21,15 +21,21 @@ a.inactive {color:gray; text-decoration:none; cursor:default;}
     opacity: 0;  /* general CSS3 */
     position: absolute; top: 0; width: 100%; z-index: 10;
 }
-#popup textarea {
+.popup textarea {
     display: block;
     width: auto;
     margin-bottom: 10px;
 }
+.popup-header {
+  height:25px;
+  margin-bottom:5px;
+  text-align:right;
+}
+.close { cursor:pointer }
 .clear-both { clear:both }
 .float-left { float:left }
 
-#popup {
+.popup {
     background-color: #FFFFFF; position: fixed; left:50%; top:50%; min-width: 300px; z-index: 11;
 }
 td.middle-vertical-align { vertical-align:middle; }
@@ -95,6 +101,8 @@ div#avatar { width:100px; height:100px; border:1px solid black; }
 td#avatar-row { padding:50px 30px 50px 0; }
 td#recipients-row { vertical-align:middle;padding-right:15px; }
 div#new-message-form-container { margin-left:30px; }
+
+form#single-receiver-message-form textarea { margin: 15px; }
 
 tr.deleted-message { display:none; }
 

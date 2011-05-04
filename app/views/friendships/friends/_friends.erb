@@ -23,7 +23,8 @@
 
       <td class='friend-options top-vertical-align'>
         <div>
-           <%= link_to t(:write_message), nil, :class => 'write-message' %>
+          <%= link_to t(:write_message), nil, :class => 'write-message', 'data-popup' => '#message-form-container',
+                     'data-recipient' => "{\"id\":\"#{friend.id}\", \"login\":\"#{friend.login}\"}"  %>
         </div>
         <% if profile_owner? %>
           <div>

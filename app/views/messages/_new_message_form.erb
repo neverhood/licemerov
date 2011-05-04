@@ -1,18 +1,25 @@
-<div class='hidden'>
+<div class='hidden popup' id='message-form-container'>
+  <div class='popup-header'><%= image_tag '/images/cancel.gif', :class => 'close' %></div>
 
-<%# Pop up form to send a message, no autocompletion %>
-<% @message = Message.new %> <%# Declaring it in non-related controller would be even more stupid %> 
+<%# Pop up form to send a message. single receiver, no autocompletion %>
 
-<%= form_for @message, :remote => true, :html => { 'data-notify' => true } do |f| %>
+<%= form_for Message.new, :remote => true, :html => { 'data-notify' => true, :id => 'single-receiver-message-form' } do |f| %>
 
   <div>
-    <input type="text" disabled="disabled" value="" />
+    <%= t(:recipient) %>:  <input id='message-recipient' type="text" disabled="disabled" value="" />
   </div>
 
 
   <%= f.hidden_field :recipients %>
-  <%= f.submit t(:send_message), :disable_with => t(:please_wait) %>
+
+  <div>
+    <%= f.text_area :body, :cols => 35, :rows => 5 %>
+  </div>
+
+  <%= f.submit t(:send_message), :disable_with => t(:please_wait), :disabled => true %>
 
 <% end %>
 
 </div>
+
+<div id="opaco" class="hidden"></div>
