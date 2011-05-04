@@ -320,20 +320,32 @@ $(document).ready(function() {
         if (status == 'success') {
             var params = $.parseJSON(xhr.responseText),
                     $this = $(this),
-                    row = $this.parents('tr')[0],
+                    row = $this.parents('tr').
+                            toggleClass('to-be-deleted'),
                     column = $this.parent(),
 
                     url = $.utils.linkTo({
                         text: params.single,
-                        href: '/messages/' + row.id + '/recover',
+                        href: '/messages/' + row.attr('id') + '/recover',
                         data: { remote: true, method: 'post' },
                         html: { className: 'recover-message' }
                     }).bind('ajax:complete', function(event, xhr, status) {
                         if (status == 'success') {
                             $(this).remove();
                             column.find('.delete-message').show();
+                            $(row).toggleClass('to-be-deleted').
+                                find('input[type="checkbox"]').attr({checked:false, disabled:false});
                         }
-                    });
+                    }),
+
+            
+                    checkbox = row.find('input[type="checkbox"]').attr('disabled', true);
+
+
+          if (checkbox.is(':checked')) { // You're nasty or not confident with your hands
+            checkbox.attr('checked', false);
+            changeMarkedMessagesCounter( $('td.mark-message input:checked').length );
+          }
 
             column.append(url);
         }
