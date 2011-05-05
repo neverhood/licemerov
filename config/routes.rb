@@ -33,6 +33,7 @@ Licemerov::Application.routes.draw do
   end
 
   get '/:user_profile/messages' => 'messages#index', :as => :user_messages
+  get '/:user_profile/messages/:id' => 'messages#show', :as => :show_message
   get '/:user_profile/new_message' => 'messages#new', :as => :new_message
   # ****************** Messages  END ******************
 

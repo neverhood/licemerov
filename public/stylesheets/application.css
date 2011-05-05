@@ -106,6 +106,9 @@ form#single-receiver-message-form textarea { margin: 15px; }
 
 tr.deleted-message { display:none; }
 
+a.show-message { color:black; text-decoration:none; }
+a.show-message:visited { color:black; text-decoration:none;}
+
 td.message-details { color:gray; font-size:12px; font-weight:bold; padding:5px; }
 td.message-body { padding:25px; width:300px;}
 table#messages td, table#messages, th {   }

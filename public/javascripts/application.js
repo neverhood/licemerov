@@ -349,7 +349,7 @@ $(document).ready(function() {
 
     $('a.delete-messages').bind('ajax:complete', function(event, xhr, status) {
         if (status == 'success') {
-            var $this = $(this).toggleLoader().show(),
+            var $this = $(this).show(),
                 recoveryLinkSupplied = $('.recover-messages').length;
 
             $.each( $this.data('messages').split(','), function() {
@@ -379,7 +379,7 @@ $(document).ready(function() {
     });
 
     $('a.read-messages').bind('ajax:complete', function() {
-        var $this = $(this).toggleLoader().show();
+        var $this = $(this).show();
         $.each( $('td.mark-message input:checked'), function() {
             this.checked = false;
         });
