@@ -239,7 +239,7 @@ $(document).ready(function() {
 
 
     $('.delete-album').live('ajax:complete', function() {
-        $(this).parent().slideUp('fast', function() { $(this).remove() });
+        $(this).parent().slideUp('fast', function() { $(this).delayedRemove() });
     });
 
     // Albums END
@@ -311,10 +311,6 @@ $(document).ready(function() {
     // Friendships end
 
     // Messages
-//    $('a.delete-message, a.delete-messages, a.recover-message, a.recover-messages, a.read-messages')
-//            .live('ajax:beforeSend', function() {
-//        $(this).toggleLoader();
-//    });
 
     $('a.delete-message').bind('ajax:complete', function(event, xhr, status) {
         if (status == 'success') {
@@ -331,7 +327,7 @@ $(document).ready(function() {
                         html: { className: 'recover-message' }
                     }).bind('ajax:complete', function(event, xhr, status) {
                         if (status == 'success') {
-                            $(this).remove();
+                            $(this).delayedRemove();
                             column.find('.delete-message').show();
                             $(row).toggleClass('to-be-deleted').
                                 find('input[type="checkbox"]').attr({checked:false, disabled:false});
@@ -372,7 +368,7 @@ $(document).ready(function() {
                         }).bind('ajax:complete', function(event, xhr, status) {
                             if ( status == 'success' ) {
                                 $('.deleted-message').removeClass('deleted-message');
-                                $(this).remove();
+                                $(this).delayedRemove(); 
                             }
                         });
                 $('#marking-message-options').append(url);
@@ -548,29 +544,37 @@ $(document).ready(function() {
 
 });
 
+// removing support for form elements(:disable_with is used instead)
+$.fn.delayedRemove = function() {
+    return this.each(function() {
+        $this = $(this);
+        setTimeout(function() {
+          $this.remove();
+        }, 5);
+    });
+}
 $.fn.toggleLoader = function() {
     return this.each(function() {
-        var loadersCount = $('.loader').length,
-                currentLoaderClass = 'loader-' + (loadersCount + 1),
-                $this = $(this),
-                loader = ("<img class='" + currentLoaderClass  + "' src='/images/loader.gif' />");
+        var $this = $(this);
+            var loadersCount = $('.loader').length; 
+            var thisLoaderId = $this.data('loader'); 
 
-        if (this.tagName.toLowerCase() == 'a') {
-            $this.is(':visible')? $this.after(loader).hide() :
-                    $('.' + currentLoaderClass).remove();
-        } else if ( this.tagName.toLowerCase() == 'form' ) {
-            var submit = $this.find(':submit');
-            if (submit.is(':visible')) {
-                submit.hide();
-                $this.append(loader);
-            } else {
-                submit.show().next().remove();
-                if (this.id == 'response_form' && $this.find('.field_with_errors').length == 0)
-                    $this.hide();
-            }
+        if (! this ) return;
+
+        if ( thisLoaderId ) {
+          // Remove loader (action completed)
+          $('#' + thisLoaderId).remove();
+          $this.data('loader', null);
+        } else { // Starting action, append loader
+          thisLoaderId = 'loader-' + (loadersCount + 1);
+          $this.
+            after("<img class='loader' id='" + thisLoaderId + "' src='/images/loader.gif' />").
+            data('loader', thisLoaderId).
+            hide();
         }
     });
-};
+}
+
 
 function appendErrors(errors, form) { // Render object errors
     $.each(errors, function(index) {
