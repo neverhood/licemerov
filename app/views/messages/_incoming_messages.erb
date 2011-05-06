@@ -35,7 +35,7 @@
         <td class='middle-vertical-align mark-message'>
           <%= check_box_tag "message-#{message.id}" %>
         </td>
-        <td>
+        <td class='avatar-box'>
           <div><%= image_tag(sender.avatar.url(:thumb)) %></div>
         </td>
         <td class="middle-vertical-align message-details">
@@ -43,7 +43,9 @@
           <div><%= l message.created_at %></div>
         </td>
           <td class='middle-vertical-align message-body'>
-            <%= link_to show_message_path(current_user, message.id), :class => 'show-message' do %>
+            <%= link_to show_message_path(current_user, message.id), :class => 'show-message',
+                    'data-popup' => '#message-form-container',
+                    'data-params' => {:parentId => message.id, :recipient => {:id => sender.id, :login => sender.login}}.to_json do %>
               <div> Subject: <%= message.subject %> </div>
               <div> Body: <%= message.body %></div>
             <% end %>
@@ -54,3 +56,7 @@
       </tr>
   <% end %>
 </table>
+
+
+<%= render :partial => 'messages/new_message_form', :layout => 'shared/popup', :locals => {:id => 'message-form-container'}  %>
+

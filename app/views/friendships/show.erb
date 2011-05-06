@@ -24,4 +24,4 @@
     </div>
 <% end  %>
 
-<%= render :partial => 'messages/new_message_form' %>
+<%= render :partial => 'messages/new_message_form', :layout => 'shared/popup', :locals => {:id => 'message-form-container'}  %>

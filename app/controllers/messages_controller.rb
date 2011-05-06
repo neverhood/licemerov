@@ -135,7 +135,7 @@ class MessagesController < ApplicationController
   end
 
   def valid_parent
-    if params[:message][:parent_id]
+    if params[:message][:parent_id] && params[:message][:parent_id].to_i > 0
       # Means that current_user should be the one who received or sent parent message ( common sense )
       render guilty_response unless
           Message.of(current_user).where( :id => params[:message][:parent_id] ).count > 0
@@ -143,9 +143,9 @@ class MessagesController < ApplicationController
   end
 
   def valid_message_ids
-    # params[:id] is a string that may  containt 1 or  more message id's that user wishes to delete
+    # params[:id] is a string that may  contain 1 or more message id's that user wishes to delete
     # or mark as read ( using checkboxes in view )
-    # we split it by comma, check each supposed id for validness ( should match /^\d+$/ regex[ ), join these back into
+    # we split it by comma, check each supposed id for validness ( should match /^\d+$/ regex ), join these back into
     # comma separated string and use it in sql IN statement.
 
     if params[:id]

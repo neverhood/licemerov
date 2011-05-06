@@ -500,6 +500,13 @@ $(document).ready(function() {
           val( recipient.id );
    });
 
+   $('.show-message').click(function() {
+       var params = $.parseJSON( $(this).attr('data-params') );
+       $('#message-recipient').val( params.recipient.login );
+       $('#message_recipients').val( params.recipient.id );
+       $('#message_parent_id').val( params.parentId );
+   });
+
     // Messages end
 
     // Main page (comments and stuff)
