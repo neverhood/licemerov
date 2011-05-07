@@ -547,8 +547,8 @@ $(document).ready(function() {
     });
 
     $('.cancel-upload').click(function() {
-        var $cancel = $(this).hide();
-        var $field = $cancel.prev();
+        var $cancel = $(this).hide(),
+            $field = $cancel.prev();
         $field.replaceWith($field.clone(true)).val('');
         $cancel.parents('form')
                 .find(':submit')
@@ -599,9 +599,11 @@ function appendErrors(errors, form) { // Render object errors
 //  ******************* CROPPING FUNCTIONS ******************** TODO: please refactor me
 
 function releaseJcrop() {
-    $.licemerov.jcrop_api.release();
-    $('#release_jcrop').hide().parent('form').find(':submit').attr('disabled', 'disabled').
-            parent('form').find('input[id^="crop"]').val('');
+    if ( typeof $.licemerov.jcrop_api != 'undefined' ) {
+        $.licemerov.jcrop_api.release();
+        $('#release_jcrop').hide().parent('form').find(':submit').attr('disabled', 'disabled').
+                parent('form').find('input[id^="crop"]').val('');
+    }
 }
 
 $(document).ready(function() {
