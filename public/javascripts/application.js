@@ -220,7 +220,7 @@ $(document).ready(function() {
 
     $('form#new_album').bind('ajax:complete', function(event, xhr, status) {
         var params = $.parseJSON( xhr.responseText ),
-            $this = $(this);
+                $this = $(this);
         if ( status == 'success' ) {
             $('div#albums').append(
                     $(params.album)
@@ -312,6 +312,19 @@ $(document).ready(function() {
 
     // Messages
 
+    var messagesApi = $.licemerov.messages = {
+        closePopup: function(popUp) {
+            var form = popUp.find('form');
+            if ( popUp.is(':visible') ) {
+                popUp.toggleClass('hidden');
+                $('#opaco').addClass('hidden').removeAttr('style');
+                if ( form.length ) {
+                    form.clearForm();
+                }
+            }
+        }
+    };
+
     $('a.delete-message').bind('ajax:complete', function(event, xhr, status) {
         if (status == 'success') {
             var params = $.parseJSON(xhr.responseText),
@@ -330,18 +343,18 @@ $(document).ready(function() {
                             $(this).delayedRemove();
                             column.find('.delete-message').show();
                             $(row).toggleClass('to-be-deleted').
-                                find('input[type="checkbox"]').attr({checked:false, disabled:false});
+                                    find('input[type="checkbox"]').attr({checked:false, disabled:false});
                         }
                     }),
 
-            
+
                     checkbox = row.find('input[type="checkbox"]').attr('disabled', true);
 
 
-          if (checkbox.is(':checked')) { // You're nasty or not confident with your hands
-            checkbox.attr('checked', false);
-            changeMarkedMessagesCounter( $('td.mark-message input:checked').length );
-          }
+            if (checkbox.is(':checked')) { // You're nasty or not confident with your hands
+                checkbox.attr('checked', false);
+                changeMarkedMessagesCounter( $('td.mark-message input:checked').length );
+            }
 
             column.append(url);
         }
@@ -350,12 +363,12 @@ $(document).ready(function() {
     $('a.delete-messages').bind('ajax:complete', function(event, xhr, status) {
         if (status == 'success') {
             var $this = $(this).show(),
-                recoveryLinkSupplied = $('.recover-messages').length;
+                    recoveryLinkSupplied = $('.recover-messages').length;
 
             $.each( $this.data('messages').split(','), function() {
                 $('tr#' + this).toggleClass('deleted-message')
                         .find('input[type="checkbox"]')
-                           .attr('checked', false)
+                        .attr('checked', false)
             });
 
             if ( ! recoveryLinkSupplied ) {
@@ -368,7 +381,7 @@ $(document).ready(function() {
                         }).bind('ajax:complete', function(event, xhr, status) {
                             if ( status == 'success' ) {
                                 $('.deleted-message').removeClass('deleted-message');
-                                $(this).delayedRemove(); 
+                                $(this).delayedRemove();
                             }
                         });
                 $('#marking-message-options').append(url);
@@ -413,8 +426,11 @@ $(document).ready(function() {
                 ids = [],
                 markMessages = function( elements, check ) {
                     $.each( elements, function() {
-                        this.checked = check;
-                        if ( check ) ids.push(this.id.replace('message-', ''))
+                        var disabled = this.disabled;
+                        if (! disabled ) {
+                            this.checked = check;
+                            if ( check ) ids.push(this.id.replace('message-', ''));
+                        }
                     });
                 },
                 elements = [],
@@ -429,11 +445,11 @@ $(document).ready(function() {
             $.licemerov.user.messages_marked_filter = null; // hence no filter is active
         } else {
             if ( id == 'mark-unread-messages' ) {
-                elements = $('tr.unread:not(.deleted-message) input[type="checkbox"]');
+                elements = $('tr.unread:not(.deleted-message) input[type="checkbox"]').not(':disabled');
             } else if ( id == 'mark-read-messages' ) {
-                elements = $('tr.read:not(.deleted-message) input[type="checkbox"]')
+                elements = $('tr.read:not(.deleted-message) input[type="checkbox"]').not(':disabled');
             } else if ( id == 'mark-all-messages' ) {
-                elements = $('tr:not(.deleted-message) input[type="checkbox"]')
+                elements = $('tr:not(.deleted-message) input[type="checkbox"]').not(':disabled');
             }
 
             markMessages(elements, true);
@@ -447,65 +463,55 @@ $(document).ready(function() {
         return false;
     });
 
-   $('[data-popup]').click(function(event) {
+    $('[data-popup]').click(function(event) {
         event.preventDefault();
-            var $this = $(this),
-                $opaco = $('#opaco'),
-                $popUp = $( $this.attr('data-popup') ). // data-popup attr holds a selector
-                                  alignCenter().
-                                  toggleClass('hidden');
-                                                                
-            $opaco.height( $(document).height() ).toggleClass('hidden');
-   });
+        var $this = $(this),
+                $opaco = $('#opaco');
+        $( $this.attr('data-popup') ). // data-popup attr holds a selector
+                alignCenter().
+                toggleClass('hidden');
 
-   $('.close').click(function() {
-       var popUp = $(this).parents('.popup'),
-           form = popUp.find('form');
+        $opaco.height( $(document).height() ).toggleClass('hidden');
+    });
 
-       if ( popUp.is(':visible') ) {
-          popUp.toggleClass('hidden');
-          $('#opaco').toggleClass('hidden').removeAttr('style');
-          if ( form.length ) {
-            form.clearForm();
-          }
-       }
-   });
+    $('.close').click(function() {
+        messagesApi.closePopup( $(this).parents('.popup') );
+    });
 
-   $('#single-receiver-message-form').bind('ajax:complete', function() {
-       var $this = $(this).clearForm(),
-           popUp = $this.parents('.popup');
+    $('#opaco').click(function() {
+        messagesApi.closePopup( $('.popup').filter(':visible') );
+    });
 
-       if ( popUp.is(':visible') ) {
-          popUp.toggleClass('hidden');
-          $('#opaco').toggleClass('hidden').removeAttr('style');
-       }
+    $('#single-receiver-message-form').bind('ajax:complete', function() {
+        var $this = $(this).clearForm();
+        messagesApi.closePopup( $this.parents('.popup') );
 
-       setTimeout(function() {
-         $this.find(':submit').attr('disabled', true)
-       }, 1);
-   });
+        setTimeout(function() {
+            $this.find(':submit').attr('disabled', true)
+        }, 1);
+    });
 
-   $('#single-receiver-message-form #message_body').bind('keyup keydown', function() {
-       var submit = $('#single-receiver-message-form').find(':submit'),
-           length = this.value.length;
+    $('#single-receiver-message-form #message_body').bind('keyup keydown', function() {
+        var submit = $('#single-receiver-message-form').find(':submit'),
+                length = this.value.length;
 
-       submit.attr('disabled', !(length >= 2 && length < 1000));
-   });
+        submit.attr('disabled', !(length >= 2 && length < 1000));
+    });
 
-   $('.write-message').click(function() {
-       var recipient = $.parseJSON( $(this).attr('data-recipient') );
-       $('#message-recipient').
-          val( recipient.login );
-       $('#message_recipients').
-          val( recipient.id );
-   });
+    $('.write-message').click(function() {
+        var recipient = $.parseJSON( $(this).attr('data-recipient') );
+        $('#message-recipient').
+                val( recipient.login );
+        $('#message_recipients').
+                val( recipient.id );
+    });
 
-   $('.show-message').click(function() {
-       var params = $.parseJSON( $(this).attr('data-params') );
-       $('#message-recipient').val( params.recipient.login );
-       $('#message_recipients').val( params.recipient.id );
-       $('#message_parent_id').val( params.parentId );
-   });
+    $('.show-message').click(function() {
+        var params = $.parseJSON( $(this).attr('data-params') );
+        $('#message-recipient').val( params.recipient.login );
+        $('#message_recipients').val( params.recipient.id );
+        $('#message_parent_id').val( params.parentId );
+    });
 
     // Messages end
 
@@ -554,30 +560,30 @@ $(document).ready(function() {
 // removing support for form elements(:disable_with is used instead)
 $.fn.delayedRemove = function() {
     return this.each(function() {
-        $this = $(this);
+        var $this = $(this);
         setTimeout(function() {
-          $this.remove();
+            $this.remove();
         }, 5);
     });
 }
 $.fn.toggleLoader = function() {
     return this.each(function() {
         var $this = $(this);
-            var loadersCount = $('.loader').length; 
-            var thisLoaderId = $this.data('loader'); 
+        var loadersCount = $('.loader').length;
+        var thisLoaderId = $this.data('loader');
 
         if (! this ) return;
 
         if ( thisLoaderId ) {
-          // Remove loader (action completed)
-          $('#' + thisLoaderId).remove();
-          $this.data('loader', null);
+            // Remove loader (action completed)
+            $('#' + thisLoaderId).remove();
+            $this.data('loader', null);
         } else { // Starting action, append loader
-          thisLoaderId = 'loader-' + (loadersCount + 1);
-          $this.
-            after("<img class='loader' id='" + thisLoaderId + "' src='/images/loader.gif' />").
-            data('loader', thisLoaderId).
-            hide();
+            thisLoaderId = 'loader-' + (loadersCount + 1);
+            $this.
+                    after("<img class='loader' id='" + thisLoaderId + "' src='/images/loader.gif' />").
+                    data('loader', thisLoaderId).
+                    hide();
         }
     });
 }
