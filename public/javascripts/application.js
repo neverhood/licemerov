@@ -50,28 +50,6 @@ $(window).load(function() {
             minSize: [100, 100], aspectRation:1});
 });
 
-function changeMarkedMessagesCounter( count ) {
-    var counter = $('#marked-messages-counter').
-            html( count ),
-            container = $('#options'),
-            visible = counter.is(':visible');
-    if ( count == 0 )  {
-        container.hide();
-    } else {
-        if ( !visible ) container.show();
-    }
-}
-
-function updateMessageActionLinks( ids ) {
-    var buttons = $('a.delete-messages, a.read-messages');
-    $.each(buttons, function() {
-        var messages = ids.join(','),
-                href = '/messages/' + messages;
-        $(this).data('messages', messages).attr('href', href);
-    });
-}
-
-
 $(document).ready(function() {
     var wrapper = $('#wrapper');
 
@@ -86,7 +64,6 @@ $(document).ready(function() {
         user: {},
         actions: {},
         noticesContainer: $('#notices'),
-        utils: {},
         controller: wrapper.attr('class')
     };
     if(typeof user_attributes != 'undefined') {
@@ -101,48 +78,57 @@ $(document).ready(function() {
         $.licemerov.user.friends = $.parseJSON( $('#friends-json').text() );
 
 
-    $.licemerov.utils.linkTo = function(options) {
-        if (typeof options.href == 'undefined') {
-            options.href = $.licemerov.location;
-        }
-        var $url = $('<a></a>')
-                .attr('href', options.href).text(options.text);
+    $.licemerov.utils = {
+        linkTo: function(options) {
+            if (typeof options.href == 'undefined') {
+                options.href = $.licemerov.location;
+            }
+            var $url = $('<a></a>')
+                    .attr('href', options.href).text(options.text);
 
-        if ( typeof options.data != 'undefined' ) {
-            if ( options.data.remote )
-                $.each( options.data, function(key, value) {
-                    $url.attr('data-' + key, value);
+            if ( typeof options.data != 'undefined' ) {
+                if ( options.data.remote )
+                    $.each( options.data, function(key, value) {
+                        $url.attr('data-' + key, value);
+                    });
+            }
+
+            if ( typeof options.html != 'undefined' ) {
+                $.each( options.html, function(key, value) {
+                    eval('$url[0].' + key + ' = "' + value + '"');
                 });
-        }
+            }
 
-        if ( typeof options.html != 'undefined' ) {
-            $.each( options.html, function(key, value) {
-                eval('$url[0].' + key + ' = "' + value + '"');
+            return $url;
+        },
+        noticeFor: function(params) {
+            var notice = $('<div></div>');
+
+            return notice.addClass(params.html_class)
+                    .text( params.message )
+        },
+        appendNotice: function(notice) {
+            $.licemerov.noticesContainer.find('div').
+                    html(''); // Reset notices
+
+            if (! notice instanceof Array) notice = [notice];
+
+            $.each(notice, function() {
+                var message = $(this);
+                $.licemerov.noticesContainer.find('.' + message.attr('class')).
+                        append( message );
             });
+        },
+        closePopup: function(popUp) {
+            var form = popUp.find('form');
+            if ( popUp.is(':visible') ) {
+                popUp.toggleClass('hidden');
+                $('#opaco').addClass('hidden').removeAttr('style');
+                if ( form.length ) {
+                    form.clearForm();
+                }
+            }
         }
-
-        return $url;
-    };
-
-    $.licemerov.utils.noticeFor = function(params) {
-        var notice = $('<div></div>');
-
-        return notice.addClass(params.html_class)
-                .text( params.message )
-    };
-
-    $.licemerov.utils.appendNotice = function(notice) {
-        $.licemerov.noticesContainer.find('div').
-                html(''); // Reset notices
-
-        if (! notice instanceof Array) notice = [notice];
-
-        $.each(notice, function() {
-            var message = $(this);
-            $.licemerov.noticesContainer.find('.' + message.attr('class')).
-                    append( message );
-        });
-
     };
 
     // Let's occupy more namespaces!
@@ -312,16 +298,31 @@ $(document).ready(function() {
 
     // Messages
 
+    // I am chainable
     var messagesApi = $.licemerov.messages = {
-        closePopup: function(popUp) {
-            var form = popUp.find('form');
-            if ( popUp.is(':visible') ) {
-                popUp.toggleClass('hidden');
-                $('#opaco').addClass('hidden').removeAttr('style');
-                if ( form.length ) {
-                    form.clearForm();
-                }
+        filter: null,
+        setFilter: function(value) {
+            messagesApi.filter = value;
+        },
+        setMarkedMessagesCount: function(count) {
+            var counter = $('#marked-messages-counter').
+                    html( count ),
+                    container = $('#options');
+            if ( count == 0 )  {
+                container.hide();
+            } else {
+                if ( container.not(':visible') ) container.show();
             }
+            return messagesApi;
+        },
+        updateMessageActionLinks: function(ids) {
+            var buttons = $('a.delete-messages, a.read-messages');
+            $.each(buttons, function() {
+                var messages = ids.join(','),
+                    href = '/messages/' + messages;
+                $(this).data('messages', messages).attr('href', href);
+            });
+            return messagesApi;
         }
     };
 
@@ -353,7 +354,13 @@ $(document).ready(function() {
 
             if (checkbox.is(':checked')) { // You're nasty or not confident with your hands
                 checkbox.attr('checked', false);
-                changeMarkedMessagesCounter( $('td.mark-message input:checked').length );
+                var ids = [];
+                $.each( $('td.mark-message input:checked'), function() {
+                    ids.push(this.id.replace('message-', ''));
+                });
+                messagesApi.setMarkedMessagesCount( ids.length ).
+                        updateMessageActionLinks( ids ).
+                        setFilter(null);
             }
 
             column.append(url);
@@ -386,8 +393,8 @@ $(document).ready(function() {
                         });
                 $('#marking-message-options').append(url);
             }
-            changeMarkedMessagesCounter( 0 );
-            $.licemerov.user.messages_marked_filter = null;
+            messagesApi.setMarkedMessagesCount( 0 ).
+                    setFilter(null);
         }
     });
 
@@ -403,8 +410,8 @@ $(document).ready(function() {
             }
         });
 
-        changeMarkedMessagesCounter( 0 );
-        $.licemerov.user.messages_marked_filter = null;
+        messagesApi.setMarkedMessagesCount( 0 ).
+                setFilter(null);
     });
 
     $('td.mark-message input[type="checkbox"]').click(function() {
@@ -415,9 +422,9 @@ $(document).ready(function() {
             ids.push( this.id.replace('message-', '') );
         });
 
-        updateMessageActionLinks(ids);
-        $.licemerov.user.messages_marked_filter = null;
-        changeMarkedMessagesCounter( checkedMessages.length );
+        messagesApi.updateMessageActionLinks(ids).
+                setFilter(null).
+                setMarkedMessagesCount( checkedMessages.length );
     });
 
     $('span#marking-message-options a').click(function(event) {
@@ -434,15 +441,15 @@ $(document).ready(function() {
                     });
                 },
                 elements = [],
-                filter = $.licemerov.user.messages_marked_filter;
+                filter = messagesApi.filter;
 
         markMessages( $('td.mark-message input[type="checkbox"]:checked'), false ); // Unmark all messages first
 
         if ( filter && filter == id ) { // User didn't check/uncheck anything and clicks filter again
             // uncheck all messages
             markMessages( $('td.mark-message input[type="checkbox"]:checked'), false );
-            updateMessageActionLinks( [0] );
-            $.licemerov.user.messages_marked_filter = null; // hence no filter is active
+            messagesApi.updateMessageActionLinks( [0] ).
+                    setFilter(null); // hence no filter is active
         } else {
             if ( id == 'mark-unread-messages' ) {
                 elements = $('tr.unread:not(.deleted-message) input[type="checkbox"]').not(':disabled');
@@ -453,12 +460,11 @@ $(document).ready(function() {
             }
 
             markMessages(elements, true);
-            updateMessageActionLinks( ids );
-            $.licemerov.user.messages_marked_filter = (elements.length > 0)? id : null;
-
+            messagesApi.updateMessageActionLinks( ids ).
+                    setFilter( (elements.length > 0)? id : null );
         }
 
-        changeMarkedMessagesCounter( elements.length );
+        messagesApi.setMarkedMessagesCount( elements.length );
 
         return false;
     });
@@ -475,16 +481,16 @@ $(document).ready(function() {
     });
 
     $('.close').click(function() {
-        messagesApi.closePopup( $(this).parents('.popup') );
+        $.utils.closePopup( $(this).parents('.popup') );
     });
 
     $('#opaco').click(function() {
-        messagesApi.closePopup( $('.popup').filter(':visible') );
+        $.utils.closePopup( $('.popup').filter(':visible') );
     });
 
     $('#single-receiver-message-form').bind('ajax:complete', function() {
         var $this = $(this).clearForm();
-        messagesApi.closePopup( $this.parents('.popup') );
+        $.utils.closePopup( $this.parents('.popup') );
 
         setTimeout(function() {
             $this.find(':submit').attr('disabled', true)
