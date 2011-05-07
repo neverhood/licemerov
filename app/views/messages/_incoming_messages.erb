@@ -43,9 +43,7 @@
           <div><%= l message.created_at %></div>
         </td>
           <td class='middle-vertical-align message-body'>
-            <%= link_to show_message_path(current_user, message.id), :class => 'show-message',
-                    'data-popup' => '#message-form-container',
-                    'data-params' => {:parentId => message.id, :recipient => {:id => sender.id, :login => sender.login}}.to_json do %>
+            <%= link_to show_message_path(current_user, message.id), :class => 'show-message' do %>
               <div> Subject: <%= message.subject %> </div>
               <div> Body: <%= message.body %></div>
             <% end %>

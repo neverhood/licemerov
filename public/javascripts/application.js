@@ -303,6 +303,7 @@ $(document).ready(function() {
         filter: null,
         setFilter: function(value) {
             messagesApi.filter = value;
+            return messagesApi;
         },
         setMarkedMessagesCount: function(count) {
             var counter = $('#marked-messages-counter').
@@ -510,13 +511,6 @@ $(document).ready(function() {
                 val( recipient.login );
         $('#message_recipients').
                 val( recipient.id );
-    });
-
-    $('.show-message').click(function() {
-        var params = $.parseJSON( $(this).attr('data-params') );
-        $('#message-recipient').val( params.recipient.login );
-        $('#message_recipients').val( params.recipient.id );
-        $('#message_parent_id').val( params.parentId );
     });
 
     // Messages end

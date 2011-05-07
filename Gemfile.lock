@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/formasfunction/remotipart.git
-  revision: e1a38fe5aef40e2918f840ca5c51b95c383ff4a1
+  revision: 64ce25f5affcaad038314c53b06b8d6a0907e5b0
   specs:
-    remotipart (0.2.1)
+    remotipart (0.3.4)
 
 GIT
   remote: git://github.com/odorcicd/authlogic.git
@@ -42,26 +42,26 @@ GEM
       activemodel (= 3.0.3)
       activesupport (= 3.0.3)
     activesupport (3.0.3)
-    arel (2.0.7)
+    arel (2.0.9)
     builder (2.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
-    jquery-rails (0.2.6)
+    jquery-rails (1.0)
       rails (~> 3.0)
-      thor (~> 0.14.4)
-    mail (2.2.15)
+      thor (~> 0.14)
+    mail (2.2.19)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
-    paperclip (2.3.8)
-      activerecord
-      activesupport
+    paperclip (2.3.11)
+      activerecord (>= 2.3.0)
+      activesupport (>= 2.3.2)
     polyglot (0.3.1)
-    rack (1.2.1)
-    rack-mount (0.6.13)
+    rack (1.2.2)
+    rack-mount (0.6.14)
       rack (>= 1.0.0)
     rack-test (0.5.7)
       rack (>= 1.0)
@@ -85,8 +85,8 @@ GEM
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
-    tzinfo (0.3.24)
-    unicode (0.3.1)
+    tzinfo (0.3.27)
+    unicode (0.4.0)
 
 PLATFORMS
   ruby
