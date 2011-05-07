@@ -15,7 +15,7 @@ module Licemerov
 
     # Stylesheets and Javascripts
 
-    config.action_view.javascript_expansions[:defaults] = %w(jquery rails corners)
+    config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
     config.action_view.stylesheet_expansions[:defaults] = %w(reset application)
     config.action_view.javascript_expansions[:cdn] = %w(https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js rails)
 

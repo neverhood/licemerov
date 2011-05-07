@@ -565,7 +565,7 @@ $.fn.delayedRemove = function() {
             $this.remove();
         }, 5);
     });
-}
+};
 $.fn.toggleLoader = function() {
     return this.each(function() {
         var $this = $(this);
@@ -586,7 +586,7 @@ $.fn.toggleLoader = function() {
                     hide();
         }
     });
-}
+};
 
 
 function appendErrors(errors, form) { // Render object errors

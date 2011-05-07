@@ -37,7 +37,7 @@ module FriendshipsHelper
 
   def add
      link_to t(:add_friend), friendships_path(:friend_id => @user.id), :remote => true, :method => :post,
-                    :id => 'add-friend' 
+                    :id => 'add-friend', 'data-notify' => true
   end
 
 end

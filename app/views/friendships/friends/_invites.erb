@@ -23,19 +23,20 @@
 
         <td class='friend-options top-vertical-align'>
           <div>
-            <%= link_to t(:write_message), nil, :class => 'write-message' %>
+            <%= link_to t(:write_message), nil, :class => 'write-message', 'data-popup' => '#message-form-container',
+                        'data-recipient' => "{\"id\":\"#{friend.id}\", \"login\":\"#{friend.login}\"}"  %>
           </div>
           <div>
             <%= link_to t(:add_friend), friendship_path(friendship),
-              :remote => true, :method => :put, :class => 'approve-friendship-invite' %>
+                        :remote => true, :method => :put, :class => 'approve-friendship-invite' %>
           </div>
           <div>
             <%= link_to t(:cancel_friend), friendship_path(friendship), :remote => true,
-                    :method => :delete, :class => 'reject-friendship-invite', :confirm => t(:cancel_friendship) %>
+                        :method => :delete, :class => 'reject-friendship-invite', :confirm => t(:cancel_friendship) %>
           </div>
           <div>
             <%= link_to t(:blacklist_friend), cancel_friendship_path(friendship), :remote => true, :method => :post,
-                    :confirm => t(:confirm_blacklisting, :name => friend.login), :class => 'add-to-black-list' %>
+                        :confirm => t(:confirm_blacklisting, :name => friend.login), :class => 'add-to-black-list' %>
           </div>
 
         </td>

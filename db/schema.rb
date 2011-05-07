@@ -71,7 +71,6 @@ ActiveRecord::Schema.define(:version => 20110425151825) do
     t.string   "city"
     t.string   "phone"
     t.string   "website"
-    t.string   "avatar_dimensions"
   end
 
   create_table "users", :force => true do |t|
@@ -82,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20110425151825) do
     t.string   "persistence_token",   :default => "", :null => false
     t.string   "single_access_token", :default => "", :null => false
     t.string   "perishable_token",    :default => "", :null => false
+    t.integer  "sex",                 :default => 1,  :null => false
     t.integer  "login_count",         :default => 0,  :null => false
     t.integer  "failed_login_count",  :default => 0,  :null => false
     t.datetime "last_request_at"
@@ -91,7 +91,6 @@ ActiveRecord::Schema.define(:version => 20110425151825) do
     t.string   "last_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sex",                 :default => 1
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
