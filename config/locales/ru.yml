@@ -107,6 +107,9 @@ ru:
   album_description: Описание
   album_updated: Обновлено
 
+  # Photos
+  photo_created: Фотография добавлена
+
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'

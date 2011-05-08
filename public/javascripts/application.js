@@ -514,6 +514,19 @@ $(document).ready(function() {
 
     // Messages end
 
+    // Photos
+
+    $('#new_photo').bind('ajax:complete', function(event, xhr, status)  {
+        var params = $.parseJSON(xhr.responseText),
+            container = $('#photos'),
+            photo = params.photo;
+        if ( status == 'success' ) {
+            container.append( photo );
+        }
+    });
+
+    // Photos end
+
     // Main page (comments and stuff)
 
     $('.reply').live('click', function() {

@@ -1,10 +1,63 @@
 <% if profile_owner? %>
-  <%= link_to t(:change_settings), edit_user_album_path(current_user, @album.latinized_title) %>
+    <% content_for :head do %>
+        <%= javascript_include_tag "swfobject.js", "uploadify.js" %>
+        <%= stylesheet_link_tag 'uploadify' %>
+        <%# TODO: Move away ugly <script> ... %>
+        <script type="text/javascript" charset="utf-8">
+            <%- session_key = Rails.application.config.session_options[:key] -%>
+            $(document).ready(function() {
 
-  <div id="delete-album">
-    <%= button_to t(:delete_album), @album, :method => :delete,
-                   :confirm => t(:delete_album_confirmation),
-                   :disable_with => t(:please_wait)
-    %>
-  </div>
+                $('#photo_photo').click(function(event){
+                    event.preventDefault();
+                });
+
+                $('#photo_photo').uploadify({
+                    uploader : '/uploadify/uploadify.swf',
+                    cancelImg : '/uploadify/cancel.png',
+                    multi : true,
+                    auto : true,
+                    script : '/photos',
+                    onComplete : function(event, queueID, fileObj, response, data) {
+                        // flash thing doesn't trigger ujs events. We must follow conventions no matter what!! :)
+                        $('#new_photo').trigger('ajax:complete', [{responseText:response}, 'success']);
+                    },
+                    scriptData : {
+                        '_http_accept': 'application/javascript',
+                        'format' : 'json',
+                        '_method': 'post',
+                        '<%= session_key %>' : encodeURIComponent('<%= u cookies[session_key] %>'),
+                        'authenticity_token': encodeURIComponent('<%= u form_authenticity_token %>'),
+                        'album_id': '<%= @album.id %>'
+                    }
+                });
+
+                $('#photo_submit').click(function(event){
+                    event.preventDefault();
+                    $('#photo_photo').uploadifyUpload();
+                });
+
+            });
+        </script>
+    <% end %>
+    <%= link_to t(:change_settings), edit_user_album_path(current_user, @album.latinized_title) %>
+
+    <div id="delete-album">
+      <%= button_to t(:delete_album), @album, :method => :delete,
+                    :confirm => t(:delete_album_confirmation),
+                    :disable_with => t(:please_wait)
+      %>
+    </div>
+
+    <div id='photos'>
+      <% @photos.each do |photo| %>
+          <%= render :partial => 'photos/photo', :locals => {:photo => photo} %>
+      <% end %>
+    </div>
+
+    <%= form_for Photo.new, :html => {:multipart => true, 'data-notify' => true } do |f| %>
+        <%= f.hidden_field :album_id, :value => @album.id %>
+        <%= f.file_field :photo %>
+        <%= f.submit %>
+    <% end %>
+
 <% end %>

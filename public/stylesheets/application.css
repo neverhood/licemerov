@@ -139,6 +139,12 @@ div.album .album-cover { width:150px; height: 150px; }
 div#album-settings {float:left; width:200px; height:500px; border-right:1px solid red; margin-top:15px;}
 /* ALBUMS END */
 
+/* PHOTOS */
+form#new_photo { clear:both }
+div#photos { width: 800px; }
+div.photo { float:left }
+/* PHOTOS END */
+
 /***************** Profiles END ***************/
 .ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}
 .thin-border { border: 1px solid gray; }

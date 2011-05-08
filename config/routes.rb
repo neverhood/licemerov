@@ -44,6 +44,13 @@ Licemerov::Application.routes.draw do
   get '/:user_profile/albums/:album_title/edit' => 'albums#edit', :as => :edit_user_album
   #  ****************** Photo Albums END ******************
 
+  #  ****************** Photos ******************
+  resources :photos, :only => [:create, :update, :destroy]
+  get '/:user_profile/photos/:id' => 'photos#show', :as => :user_photo
+
+
+  #  ****************** Photos END ******************
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
