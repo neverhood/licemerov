@@ -2,19 +2,23 @@
 var type = "<%= @entry.type %>";
 var form = $('#' + type + '_form');
 var id = "entry-<%= @entry.id %>";
-var entry = "<%= escape_javascript(render :partial => @entry.type_partial, :locals => {:entry => @entry} ) %>";
+var entry = $("<%= escape_javascript(render :partial => @entry.type_partial, :locals => {:entry => @entry} ) %>");
 var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : nil %>".split(',');
-        if (errors[0] == '') errors.pop(); // Remove blank element
+if (errors[0] == '') errors.pop(); // Remove blank element
 
-        if (errors.length > 0)  // Errors didn't let it happen
-            appendErrors(errors, form);
-        else { // No errors
-            if (type == 'parent')
-                $(entry).prependTo('#wall').hide().fadeIn();
-            else
-                $('#entry-<%= @entry.parent_id%>').find('.head-hidden, .head').addClass('head').removeClass('head-hidden').next().
-                        append($(entry)).find('div#' + id).hide().fadeIn();
-            $(form).clearForm();
-            $('div.parent .body, div.parent ul.responses').corner();
-        }
+if (errors.length > 0)  // Errors didn't let it happen
+    appendErrors(errors, form);
+else { // No errors
+    if (type == 'parent')
+        entry.prependTo('#wall').hide().fadeIn();
+    else {
+        $('#entry-<%= @entry.parent_id%>').find('.head-hidden, .head').addClass('head').removeClass('head-hidden').next().
+                append(entry).find('div#' + id).hide().fadeIn();
+        $(form).hide();
+        $("html:not(:animated)"+( ! $.browser.opera ? ",body:not(:animated)" : "")).
+                animate({scrollTop: entry.offset().top - 25}, 700);
+    }
+
+    $(form).clearForm();
+}
 <% end %>

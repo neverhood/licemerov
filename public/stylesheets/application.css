@@ -8,7 +8,7 @@ div.warning {color:orange;}
 /***************** Rails specific END *****************/
 
 /***************** Shared *****************/
-img.loader { position:absolute;}
+
 li.error { color: red }
 a.inactive {color:gray; text-decoration:none; cursor:default;}
 .hidden { display:none; }

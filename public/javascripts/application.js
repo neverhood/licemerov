@@ -166,12 +166,6 @@ $(document).ready(function() {
         $(this).toggleLoader();
     });
 
-    $('a#new-message, #close-popup').click(function(event) { //TODO: Refactoring
-        event.preventDefault();
-        togglePopup();
-        return false;
-    });
-
     $('a.inactive').live('click', function(event) {
         event.preventDefault();
         return false;
@@ -180,11 +174,14 @@ $(document).ready(function() {
     $('#parent_form, #response_form, #edit_avatar').clearForm();
 
     $('form#parent_form, form#response_form').keyup(function() {
-        $(this.elements[this.elements.length - 1])
-                .attr('disabled', (this.elements[2].value.length < 2)); //elements[2] is a textarea
-    });
-//            .bind("ajax:beforeSend", function() {toggleLoader(this)}). // TODO: Wait for JangoSteve's pull request merged into jquery-ujs
-//            bind("ajax:complete", function() {toggleLoader(this)});
+        var $this = $(this),
+            submit = $this.find(':submit'),
+            textArea = $this.find('textarea');
+
+        submit.attr('disabled', !(textArea.val().length > 2) );
+    })
+            .bind("ajax:beforeSend", function() {$(this).toggleLoader()}).
+            bind("ajax:complete", function() {$(this).toggleLoader()});
 
     $('form#edit_avatar :file').change(function() {
         $('form#edit_avatar :submit')
@@ -559,7 +556,7 @@ $(document).ready(function() {
 
 });
 
-// removing support for form elements(:disable_with is used instead)
+
 $.fn.delayedRemove = function() {
     return this.each(function() {
         var $this = $(this);
@@ -570,9 +567,10 @@ $.fn.delayedRemove = function() {
 };
 $.fn.toggleLoader = function() {
     return this.each(function() {
-        var $this = $(this);
-        var loadersCount = $('.loader').length;
-        var thisLoaderId = $this.data('loader');
+        var $this = $(this),
+            loadersCount = $('.loader').length,
+            tag = $this[0].tagName.toLocaleLowerCase(),
+            thisLoaderId = $this.data('loader');
 
         if (! this ) return;
 
@@ -580,12 +578,16 @@ $.fn.toggleLoader = function() {
             // Remove loader (action completed)
             $('#' + thisLoaderId).remove();
             $this.data('loader', null);
+            if ( tag == 'form' ) $this.find(':submit').show();
         } else { // Starting action, append loader
             thisLoaderId = 'loader-' + (loadersCount + 1);
             $this.
                     after("<img class='loader' id='" + thisLoaderId + "' src='/images/loader.gif' />").
-                    data('loader', thisLoaderId).
-                    hide();
+                    data('loader', thisLoaderId);
+            if ( tag == 'a' ) $this.hide();
+            if ( tag == 'form' ) {
+                $this.find(':submit').hide();
+            }
         }
     });
 };
