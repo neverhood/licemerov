@@ -232,15 +232,17 @@ $(document).ready(function() {
 
     // Friendships
 
-    function messageFor(htmlClass, variations) {
-        var message = variations;
-        if ( /reject-friendship-invite/.test(htmlClass) ) {
-            message = variations.rejected;
-        } else if ( /delete-friend/.test(htmlClass) ) {
-            message = variations.deleted;
+    var friendshipsApi = $.licemerov.friendships = {
+        messageFor: function(htmlClass, variations) {
+            var message = variations;
+            if ( /reject-friendship-invite/.test(htmlClass) ) {
+                message = variations.rejected;
+            } else if ( /delete-friend/.test(htmlClass) ) {
+                message = variations.deleted;
+            }
+            return message;
         }
-        return message;
-    }
+    };
 
     $('a.delete-friend, a.add-to-black-list, ' +
             'a.reject-friendship-invite, a.approve-friendship-invite').
@@ -285,7 +287,7 @@ $(document).ready(function() {
             var params = $.parseJSON( xhr.responseText ),
                     $this = $(this),
                     row = $this.parents('tr'),
-                    message = messageFor( $this.attr('class'), params.message  ),
+                    message = friendshipsApi.messageFor( $this.attr('class'), params.message  ),
                     notice = $('<div class="' + params.html_class + '">' + message + '</div>');
 
             $.licemerov.noticesContainer.find('.' + params.html_class)
@@ -354,7 +356,7 @@ $(document).ready(function() {
 
 
             if (checkbox.is(':checked')) { // You're nasty or not confident with your hands
-                checkbox.attr('checked', false);
+                checkbox.prop('checked', false);
                 var ids = [];
                 $.each( $('td.mark-message input:checked'), function() {
                     ids.push(this.id.replace('message-', ''));
@@ -376,7 +378,7 @@ $(document).ready(function() {
             $.each( $this.data('messages').split(','), function() {
                 $('tr#' + this).toggleClass('deleted-message')
                         .find('input[type="checkbox"]')
-                        .attr('checked', false)
+                        .prop('checked', false)
             });
 
             if ( ! recoveryLinkSupplied ) {
