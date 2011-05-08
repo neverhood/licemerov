@@ -178,7 +178,7 @@ $(document).ready(function() {
             submit = $this.find(':submit'),
             textArea = $this.find('textarea');
 
-        submit.attr('disabled', !(textArea.val().length > 2) );
+        submit.attr('disabled', !(textArea.val().length >= 2) );
     })
             .bind("ajax:beforeSend", function() {$(this).toggleLoader()}).
             bind("ajax:complete", function() {$(this).toggleLoader()});
@@ -547,11 +547,13 @@ $(document).ready(function() {
 
     $('.cancel-upload').click(function() {
         var $cancel = $(this).hide(),
-            $field = $cancel.prev();
+            $field = $cancel.prev(),
+            $form = $(this).parents('form');
         $field.replaceWith($field.clone(true)).val('');
-        $cancel.parents('form')
-                .find(':submit')
-                .attr('disabled', ($cancel.attr('rel') != 'disable'));
+
+        // Stupid workaround
+        if ( $form.attr('id') == 'edit_avatar' )
+            $form.find(':submit').attr('disabled', true);
     });
 
 });
@@ -618,7 +620,7 @@ $(document).ready(function() {
 
 function updateCrop(coords) {
     if ($('#release_jcrop').not(':visible')) {
-        $('#edit_avatar').clearForm().find(':submit').attr('disabled', '');
+        $('#edit_avatar').clearForm().find(':submit').attr('disabled', false);
         $('#release_jcrop').show();
     }
     var ratio = (parseFloat($('#cropbox').attr('data-ratio'))); // The rate of original image / re-sized image
