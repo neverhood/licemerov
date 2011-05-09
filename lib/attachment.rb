@@ -11,12 +11,15 @@ module Paperclip
     end
 
     def dimensions(style = :original)
-      @avatar_dimensions ||= instance.avatar_dimensions
-      if @avatar_dimensions.is_a?(String)
-        @avatar_dimensions = eval(@avatar_dimensions)
+      model = instance.class.name.downcase
+      model = 'avatar' if model == 'user'      # stupid workaround
+      attribute = model + '_dimensions'
+      @image_dimensions ||= instance.send(attribute.to_sym)
+      if @image_dimensions.is_a?(String)
+        @image_dimensions = eval(@image_dimensions)
       end
-      if @avatar_dimensions && @avatar_dimensions[style]
-         Paperclip::Geometry.new(@avatar_dimensions[style][:width], @avatar_dimensions[style][:height])
+      if @image_dimensions && @image_dimensions[style]
+         Paperclip::Geometry.new(@image_dimensions[style][:width], @image_dimensions[style][:height])
       else
         nil
       end
