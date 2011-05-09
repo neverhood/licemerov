@@ -27,7 +27,7 @@ $('document').ready(function() {
                 'format' : 'json',
                 '_method': 'post',
                 '_licemerov_session' : encodeURIComponent( photosApi.sessionToken ),
-                'authenticity_token': encodeURIComponent( encodeURIComponent(photosApi.csrfToken) ), // that's evil ...
+                'authenticity_token': encodeURI( encodeURIComponent(photosApi.csrfToken) ), // double penetration. that's evil ...
                 'album_id': photosApi.albumId
             }
         };
