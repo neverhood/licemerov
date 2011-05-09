@@ -516,6 +516,7 @@ $(document).ready(function() {
 
     // Photos
 
+
     $('#new_photo').bind('ajax:complete', function(event, xhr, status)  {
         var params = $.parseJSON(xhr.responseText),
             container = $('#photos'),
@@ -524,6 +525,8 @@ $(document).ready(function() {
             container.append( photo );
         }
     });
+
+    // Other related code moved to photos.js ( to be merged later )
 
     // Photos end
 
