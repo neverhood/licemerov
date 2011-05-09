@@ -10,7 +10,7 @@ class Album < ActiveRecord::Base
   validates :user_id, :presence => true, :numericality => true
   validates :description, :allow_blank => true, :length => { :within => (2..500) }
 
-  has_many :photos
+  has_many :photos, :dependent => :destroy
  # def to_param
 #    latinized_title
  # end
