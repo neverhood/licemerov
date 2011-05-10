@@ -19,11 +19,13 @@
       </div>
 
       <div id='photos'>
-        <% if @photos.count > 0 %>
-          <h3 id='enable-fullscreen'> Enable Full Screen Mode </h3>
-        <% else %>
-          <h3 id='enable-fullscreen' class='hidden'> Enable Full Screen Mode </h3>
-        <% end %>
+        <div>
+          <% if @photos.count > 0 %>
+            <strong id='enable-fullscreen'> Enable Full Screen Mode </strong>
+          <% else %>
+            <strong id='enable-fullscreen' class='hidden'> Enable Full Screen Mode </strong>
+          <% end %>
+        </div>
 
         <% @photos.each do |photo| %>
             <%= render :partial => 'photos/photo', :locals => {:photo => photo} %>
