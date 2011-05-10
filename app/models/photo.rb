@@ -13,7 +13,7 @@ class Photo < ActiveRecord::Base
   # > Resize only if the image is greater than the geometry specification
   # # : Crop!
 
-  has_attached_file :photo, :styles => { :large => '400x400>', :medium => "300x200#", :thumb => "100x100>" }
+  has_attached_file :photo, :styles => { :large => '600x400>', :medium => "300x200#", :thumb => "100x100>" }
 
   before_save :randomize_file_name, :if => :uploading_photo?
   after_post_process :save_photo_dimensions

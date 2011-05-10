@@ -24,6 +24,9 @@
         <% end %>
       </div>
 
+      <div id='current-photo'>
+      </div>
+
       <%= form_for Photo.new, :html => {:multipart => true, 'data-notify' => true } do |f| %>
           <%= f.hidden_field :album_id, :value => @album.id %>
           <%= f.file_field :photo %>

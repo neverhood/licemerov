@@ -42,6 +42,15 @@ $('document').ready(function() {
         });
     }
 
+    if ( location.hash.length ) {
+      var photoId = location.hash.replace('#', ''),
+          url = '/' + $.user.attributes.login + '/photos/' + photoId;
+
+      $.getJSON(url, function(data) {
+        $('#current-photo').html($('<img></img>').attr('src', data.photo))
+      });
+    };
+
 
 
 });

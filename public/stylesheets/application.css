@@ -143,6 +143,7 @@ div#album-settings {float:left; width:200px; height:500px; border-right:1px soli
 form#new_photo { clear:both }
 div#photos { width: 800px; }
 div.photo { float:left }
+div#current-photo { width: 600px; height:400px; position:fixed; left:630px; top:90px;}
 /* PHOTOS END */
 
 /***************** Profiles END ***************/

@@ -517,6 +517,9 @@ $(document).ready(function() {
     // Photos
 
 
+    var currentPhotoContainer = $('#current-photo');
+
+
     $('#new_photo').bind('ajax:complete', function(event, xhr, status)  {
         var params = $.parseJSON(xhr.responseText),
             container = $('#photos'),
@@ -525,6 +528,18 @@ $(document).ready(function() {
             container.append( photo );
         }
     });
+
+    $('.photo').live('click', function() {
+      var $this = $(this),
+          smallImg = $this.find('img').attr('src'),
+          largeImg = $('<img></img>').attr('src', smallImg.replace('medium', 'large')),
+          photoId = $this.attr('id').replace('photo-', '');
+
+      location.hash = '#' + photoId;
+
+      currentPhotoContainer.html( largeImg );
+    });
+
 
     // Other related code moved to photos.js ( to be merged later )
 

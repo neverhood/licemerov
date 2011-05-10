@@ -68,6 +68,7 @@ class User < ActiveRecord::Base
   has_many :incoming_messages, :class_name => 'Message', :foreign_key => :receiver_id
 
   has_many :albums
+  has_many :photos
 
   # Make one db request instead of two ( for both direct and inverse friendships )
   # you must show it some love even though it's ugly

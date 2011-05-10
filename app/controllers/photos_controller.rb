@@ -7,7 +7,14 @@ class PhotosController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
 
   def show
-
+    @photo = @user.photos.where(['photos.id = ?', params[:id]]).first
+    respond_to do |format|
+      if @photo
+        format.json {render :json => {:photo => @photo.photo.url(:large)} }
+      else
+        render :nothing => true
+      end
+    end
   end
 
   def create
