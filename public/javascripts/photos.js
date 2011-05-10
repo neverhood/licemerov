@@ -47,7 +47,8 @@ $('document').ready(function() {
           url = '/' + $.user.attributes.login + '/photos/' + photoId;
 
       $.getJSON(url, function(data) {
-        $('#current-photo').html($('<img></img>').attr('src', data.photo))
+        $('#current-photo').html($('<img></img>').attr('src', data.photo)).
+          show()
       });
     };
 

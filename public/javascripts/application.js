@@ -526,6 +526,7 @@ $(document).ready(function() {
             photo = params.photo;
         if ( status == 'success' ) {
             container.append( photo );
+            $('#enable-fullscreen').show();
         }
     });
 
@@ -537,7 +538,7 @@ $(document).ready(function() {
 
       location.hash = '#' + photoId;
 
-      currentPhotoContainer.html( largeImg );
+      currentPhotoContainer.html( largeImg ).show();
     });
 
 
