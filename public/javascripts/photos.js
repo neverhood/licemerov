@@ -47,10 +47,6 @@ $('document').ready(function() {
                 uploadify(photosApi.uploadifySettings);
 
 
-        $('#photo_submit').click(function(event){
-            event.preventDefault();
-            $('#photo_photo').uploadifyUpload();
-        });
     }
 
     if ( location.hash.length ) {
