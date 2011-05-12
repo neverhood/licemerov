@@ -51,6 +51,9 @@ Licemerov::Application.routes.draw do
   #  ****************** Photo Comments ******************
   resources :photo_comments, :only => [:create, :update, :destroy]
 
+  #  ****************** Profile Comments ******************
+  resources :profile_comments, :only => [:create, :update, :destroy]
+  #  ****************** Profile Comments END******************
   #  ****************** Photos END ******************
 
   # The priority is based upon order of creation:

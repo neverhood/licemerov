@@ -70,6 +70,7 @@ class User < ActiveRecord::Base
   has_many :albums
   has_many :photos
   has_many :photo_comments
+  has_many :profile_comments
 
   # Make one db request instead of two ( for both direct and inverse friendships )
   # you must show it some love even though it's ugly

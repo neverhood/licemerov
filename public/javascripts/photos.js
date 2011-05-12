@@ -5,7 +5,9 @@ $('document').ready(function() {
         sessionMeta : $('meta[name="_licemerov_session"]'),
         csrfToken : $('meta[name="csrf-token"]').attr('content'),
         albumId : $('div.album-container').attr('id'),
-        uploader : $('#photo_photo')
+        uploader : $('#photo_photo'),
+        commentSection : $('#photo-comments'),
+        commentForm : $('#new-photo-comment-form')
     };
 
     if ( photosApi.sessionMeta.length ) {
@@ -27,7 +29,7 @@ $('document').ready(function() {
                 // flash thing doesn't trigger ujs events. We must follow conventions no matter what!! :)
                 $('#new_photo').trigger('ajax:complete', [{responseText:response}, 'success']);
             },
-            onError : function() {alert('wtf?');},
+            onError : function() {return false},
             onQueueFull : function() {
                 alert('Можно загружать до 50 фотографий одновременно');
                 photosApi.uploader.uploadifyClearQueue();
@@ -54,8 +56,12 @@ $('document').ready(function() {
           url = '/' + $.user.attributes.login + '/photos/' + photoId;
 
       $.getJSON(url, function(data) {
-        $('#current-photo').html($('<img />').attr('src', data.photo)).
-          show()
+        $('#current-photo').prepend($('<img />').attr('src', data.photo)).
+          show();
+        for (var comment in data.comments) {
+            photosApi.commentSection.append(comment);
+        }
+        photosApi.commentForm.show().find('#photo_comment_photo_id').val(photoId);
       });
     }
 

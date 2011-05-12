@@ -1,0 +1,2 @@
+module ProfileCommentsHelper
+end

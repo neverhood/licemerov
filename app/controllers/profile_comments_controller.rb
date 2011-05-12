@@ -1,16 +1,12 @@
-class PhotoCommentsController < ApplicationController
+class ProfileCommentsController < ApplicationController
 
-  skip_before_filter :existent_user
-  before_filter :require_user, :only => [:create, :destroy, :update]
+  before_filter :require_user, :only => [:create, :update, :destroy]
   before_filter :valid_comment, :only => [:destroy, :update]
-  before_filter :valid_photo_id, :only => :create
-
 
   def create
-    @comment = PhotoComment.new( params[:photo_comment] )
-    @comment.user_id, @comment.photo_id, @comment.user_avatar_url =
-        current_user.id, params[:photo_comment][:photo_id], current_user.avatar.url(:thumb)
-    
+    @comment = ProfileComment.new(params[:profile_comment])
+    @comment.author_id, @comment.author_sex, @comment.author_avatar_url =
+        current_user.id, current_user.sex, current_user.avatar.url(:small)
     respond_to do |format|
       if @comment.save
         format.json { render :json => json_for(@comment) }
@@ -45,12 +41,8 @@ class PhotoCommentsController < ApplicationController
   private
 
   def valid_comment
-    @comment = current_user.photo_comments.
+    @comment = ProfileComment.where(:author_id => current_user.id).
         where(:id => params[:id])
-  end
-
-  def valid_photo_id
-    render guilty_response unless Photo.where(:id => params[:photo_comment][:photo_id]).count > 0
   end
 
 end

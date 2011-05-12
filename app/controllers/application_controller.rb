@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     if object.errors.any?
       Hash[[ [:errors, object.errors.values.map(&:first)], [:html_class, :alert] ]]
     else
-      instance = object.class.name.downcase
+      instance = object.class.name.underscore.downcase
       partial = instance.dup.insert(0, '_').insert(-1, '.erb')
       path = Pathname.new(Rails.root.join('app', 'views', instance.pluralize))
 

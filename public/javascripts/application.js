@@ -533,7 +533,7 @@ $(document).ready(function() {
     $('.photo').live('click', function() {
       var $this = $(this),
           smallImg = $this.find('img').attr('src'),
-          largeImg = $('<img></img>').attr('src', smallImg.replace('medium', 'large')),
+          largeImg = $('<img/>').attr('src', smallImg.replace('medium', 'large')),
           photoId = $this.attr('id').replace('photo-', '');
 
       location.hash = '#' + photoId;
@@ -541,6 +541,24 @@ $(document).ready(function() {
       currentPhotoContainer.html( largeImg ).show();
     });
 
+    $('#new_photo_comment').bind('ajax:complete', function(event, xhr, status) {
+        var $this = $(this),
+            submit = $this.find(':submit'),
+            params = $.parseJSON( xhr.responseText );
+
+        if ( status == 'success') {
+            $('#photo-comments').append(params.photo_comment);
+        };
+
+        setTimeout(function() {  $this.clearForm(); }, 10);
+    });
+
+    $('#photo_comment_body').live('keyup keydown', function() {
+        var submit = $(this).parents('form').find(':submit'),
+                length = this.value.length;
+
+        submit.attr('disabled', !(length >= 1 && length < 1000));
+    });
 
     // Other related code moved to photos.js ( to be merged later )
 
@@ -599,6 +617,13 @@ $.fn.delayedRemove = function() {
         }, 5);
     });
 };
+
+$.fn.delayedClearForm = function() {
+    return this.each(function() {
+        setTimeout(function() { $(this).clearForm() }, 10 );
+    })
+};
+
 $.fn.toggleLoader = function() {
     return this.each(function() {
         var $this = $(this),

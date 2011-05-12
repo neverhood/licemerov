@@ -141,11 +141,16 @@ div#album-settings {float:left; width:200px; height:500px; border-right:1px soli
 
 /* PHOTOS */
 form#new_photo { clear:both }
+div#new-photo-comment-form { display:none }
 div#photos { width: 800px; }
 div.photo { float:left; margin-left: 5px; }
 div#current-photo { width: 600px; height:400px; position:fixed; left:630px; top:90px; display:none; }
 strong#enable-fullscreen { cursor:pointer; margin: 15px 0; }
 /* PHOTOS END */
+
+/* PHOTO COMMENTS */
+div#photo-comments { width:300px; }
+/* END */
 
 /***************** Profiles END ***************/
 .ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}
