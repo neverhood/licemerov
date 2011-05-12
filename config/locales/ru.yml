@@ -110,6 +110,12 @@ ru:
   # Photos
   photo_created: Фотография добавлена
 
+  # Comments
+  photo_comment_created: Комментарий добавлен
+  comment_created: Комментарий добавлен
+  comment_updated: Комментарий обновлен
+  comment_deleted: Комментарий удален
+
   # Notices
   welcome: Добро Пожаловать
   succesfully_updated: 'Обновлено Успешно: %{updated}'
@@ -163,6 +169,11 @@ ru:
               too_short: Название альбома не может быть пустым ( В названии должно быть хотя бы 2 буквы или цифры )
               too_long: Слишком длинное название ( должно быть от 2 до 25 символов )
               taken: У вас уже есть альбом с таким названием
+        photo_comments:
+          attributes:
+            body:
+              blank: Вы не можете оставить пустой комментарий
+              too_long: Слишком длинный комментарий ( максимум 1000 знаков )
         message:
           attributes:
             body:

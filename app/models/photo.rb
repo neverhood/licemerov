@@ -13,6 +13,7 @@ class Photo < ActiveRecord::Base
 
   belongs_to :album
   belongs_to :user # just to stay on a safe side, might be removed later
+  has_many :photo_comments
 
   #<width>x<height><specifier>
 
