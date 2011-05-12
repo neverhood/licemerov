@@ -8,6 +8,7 @@ module Paperclip
       else
         @geometry[style] ||= Paperclip::Geometry.from_file(queued_for_write[style])
       end
+    rescue Paperclip::NotIdentifiedByImageMagickError
     end
 
     def dimensions(style = :original)

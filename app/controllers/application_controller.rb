@@ -2,8 +2,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page, :details, :friends_online,
-    :guilty_response, :json_for
+  helper_method :current_user_session, :current_user, :cu, :profile_owner?, :home_page, :details,
+                :guilty_response, :json_for
 
   before_filter :existent_user
   before_filter :delete_messages
@@ -12,18 +12,23 @@ class ApplicationController < ActionController::Base
   # Prepare a hash( to be converted to json ) for a newly created object
   # Includes partial, message and an html class for a notice
   def json_for(object)
-    instance = object.class.name.downcase
-    partial = instance.dup.insert(0, '_').insert(-1, '.erb')
-    path = Pathname.new(Rails.root.join('app', 'views', instance.pluralize))
-
-    if path.directory? && path.entries.map { |e| e.to_s }.include?(partial)
-      Hash[ [ [instance.to_sym, render_to_string(:partial => instance.pluralize + '/' + instance,
-                                             :locals => {instance.to_sym => object})],
-              [:message, t(instance.insert(-1, '_created'))],
-              [:html_class, :notice]
-      ] ]
+    if object.errors.any?
+      Hash[[ [:errors, object.errors.values.map(&:first)], [:html_class, :alert] ]]
     else
-      nil
+      instance = object.class.name.downcase
+      partial = instance.dup.insert(0, '_').insert(-1, '.erb')
+      path = Pathname.new(Rails.root.join('app', 'views', instance.pluralize))
+
+      if path.directory? && path.entries.map { |e| e.to_s }.include?(partial)
+        Hash[ [ [instance.to_sym, render_to_string(:partial => instance.pluralize + '/' + instance,
+                                                   :locals => {instance.to_sym => object})],
+                [:message, t(instance.insert(-1, '_created'))],
+                [:html_class, :notice]
+              ] ]
+      else
+        nil
+      end
+
     end
   end
 
@@ -65,10 +70,10 @@ class ApplicationController < ActionController::Base
 
   def require_no_user
     if current_user
-       store_location
-       flash[:notice] = "You're already authenticated!"
-       redirect_to home_page
-       false
+      store_location
+      flash[:notice] = "You're already authenticated!"
+      redirect_to home_page
+      false
     end
   end
 
@@ -77,8 +82,8 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_back_or_default(default)
-     redirect_to(session[:return_to] || default)
-     session[:return_to] = nil
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
   end
 
   def existent_user

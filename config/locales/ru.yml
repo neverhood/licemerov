@@ -117,6 +117,10 @@ ru:
   # Controllers
   user_details: Данные пользователя
 
+  # Uploadify
+  queue_limit_reached: Извините, одновременно можно загружать до 50 фотографий
+  
+
   date:
     formats:
       default: "%d %M %Y"
