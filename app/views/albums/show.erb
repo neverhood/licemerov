@@ -45,13 +45,13 @@
   </div>
 
   <div id='current-photo'>
-    <div id='photo-comments'>
+    <table id='photo-comments'>
 
-    </div>
+    </table>
     <% if current_user %>
         <div id='new-photo-comment-form'>
           <%= form_for PhotoComment.new, :remote => true, :html => {'data-notify' => true} do |f| %>
-              <%= f.text_area :body, :cols => 25, :rows => 5 %>
+              <%= f.text_area :body, :cols => 45, :rows => 5 %>
               <%= f.hidden_field :photo_id %>
               <div>
                 <%= f.submit t(:new_comment), :disable_with => t(:please_wait), :disabled => true %>

@@ -150,6 +150,9 @@ strong#enable-fullscreen { cursor:pointer; margin: 15px 0; }
 
 /* PHOTO COMMENTS */
 div#photo-comments { width:300px; }
+td.photo-comment { padding: 15px;}
+td.photo-comment div { margin: 10px 0}
+div.photo-comment-footer { color: gray; font-size: 11px; }
 /* END */
 
 /***************** Profiles END ***************/

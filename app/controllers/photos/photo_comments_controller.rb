@@ -46,7 +46,8 @@ class PhotoCommentsController < ApplicationController
 
   def valid_comment
     @comment = current_user.photo_comments.
-        where(:id => params[:id])
+        where(:id => params[:id]).first
+    render guilty_response unless @comment
   end
 
   def valid_photo_id

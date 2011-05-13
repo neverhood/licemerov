@@ -541,10 +541,11 @@ $(document).ready(function() {
       location.hash = '#' + photoId;
 
       currentPhotoContainer.find('img').remove();
-      photoCommentSection.html('');
+      photoCommentSection.html('').append($.licemerov.loader);
       currentPhotoContainer.prepend( largeImg ).show();
 
       $.getJSON(url, function(data) {
+          photoCommentSection.html('');
           for (comment in data.photo_comments) {
               photoCommentSection.append(data.photo_comments[comment])
           }
@@ -571,6 +572,8 @@ $(document).ready(function() {
 
         submit.attr('disabled', !(length >= 1 && length < 1000));
     });
+
+    $('.delete-photo-comment').live('ajax:complete', function() { $(this).parents('tr').remove() });
 
     // Other related code moved to photos.js ( to be merged later )
 
