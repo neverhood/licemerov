@@ -9,9 +9,6 @@ class PhotosController < ApplicationController
   def show
     @photo = @user.photos.where(['photos.id = ?', params[:id]]).first
     @comments = {:photo_comments => @photo.photo_comments.map { |c| json_for(c)[:photo_comment] }}
-    logger.debug '================'
-    logger.debug(@comments)
-    logger.debug '================'
     respond_to do |format|
       if @photo
         format.json {render :json => {:photo => @photo.photo.url(:large)}.merge(@comments) }

@@ -175,8 +175,8 @@ $(document).ready(function() {
 
     $('form#parent_form, form#response_form').keyup(function() {
         var $this = $(this),
-            submit = $this.find(':submit'),
-            textArea = $this.find('textarea');
+                submit = $this.find(':submit'),
+                textArea = $this.find('textarea');
 
         submit.attr('disabled', !(textArea.val().length >= 2) );
     })
@@ -319,7 +319,7 @@ $(document).ready(function() {
             var buttons = $('a.delete-messages, a.read-messages');
             $.each(buttons, function() {
                 var messages = ids.join(','),
-                    href = '/messages/' + messages;
+                        href = '/messages/' + messages;
                 $(this).data('messages', messages).attr('href', href);
             });
             return messagesApi;
@@ -518,13 +518,13 @@ $(document).ready(function() {
 
 
     var currentPhotoContainer = $('#current-photo'),
-        photoCommentSection = $('#photo-comments'),
-        photoCommentForm = $('#new-photo-comment-form');
+            photoCommentSection = $('#photo-comments'),
+            photoCommentForm = $('#new-photo-comment-form');
 
     $('#new_photo').bind('ajax:complete', function(event, xhr, status)  {
         var params = $.parseJSON(xhr.responseText),
-            container = $('#photos'),
-            photo = params.photo;
+                container = $('#photos'),
+                photo = params.photo;
         if ( status == 'success' ) {
             container.append( photo );
             $('#enable-fullscreen').show();
@@ -532,32 +532,34 @@ $(document).ready(function() {
     });
 
     $('.photo').live('click', function() {
-      var $this = $(this),
-          smallImg = $this.find('img').attr('src'),
-          largeImg = $('<img/>').attr('src', smallImg.replace('medium', 'large')),
-          photoId = $this.attr('id').replace('photo-', ''),
-          url = '/' + $.user.attributes.login + '/photos/' + photoId;
+        var $this = $(this),
+                smallImg = $this.find('img').attr('src'),
+                largeImg = $('<img/>').attr('src', smallImg.replace('medium', 'large')),
+                photoId = $this.attr('id').replace('photo-', ''),
+                url = '/' + $.user.attributes.login + '/photos/' + photoId;
 
-      location.hash = '#' + photoId;
+        location.hash = '#' + photoId;
 
-      currentPhotoContainer.find('img').remove();
-      photoCommentSection.html('').append($.licemerov.loader);
-      currentPhotoContainer.prepend( largeImg ).show();
+        currentPhotoContainer.find('img').remove();
+        currentPhotoContainer.prepend( largeImg ).show();
 
-      $.getJSON(url, function(data) {
-          photoCommentSection.html('');
-          for (comment in data.photo_comments) {
-              photoCommentSection.append(data.photo_comments[comment])
-          }
 
-        photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
-      });
+        photoCommentSection.html('').append($.licemerov.loader);
+        $.getJSON(url, function(data) {
+            photoCommentSection.html('');
+            for (comment in data.photo_comments) {
+                photoCommentSection.append(data.photo_comments[comment])
+            }
+
+            photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
+        });
+
     });
 
     $('#new_photo_comment').bind('ajax:complete', function(event, xhr, status) {
         var $this = $(this),
-            submit = $this.find(':submit'),
-            params = $.parseJSON( xhr.responseText );
+                submit = $this.find(':submit'),
+                params = $.parseJSON( xhr.responseText );
 
         if ( status == 'success') {
             $('#photo-comments').append(params.photo_comment);
@@ -612,8 +614,8 @@ $(document).ready(function() {
 
     $('.cancel-upload').click(function() {
         var $cancel = $(this).hide(),
-            $field = $cancel.prev(),
-            $form = $(this).parents('form');
+                $field = $cancel.prev(),
+                $form = $(this).parents('form');
         $field.replaceWith($field.clone(true)).val('');
 
         // Stupid workaround
@@ -642,9 +644,9 @@ $.fn.delayedClearForm = function() {
 $.fn.toggleLoader = function() {
     return this.each(function() {
         var $this = $(this),
-            loadersCount = $('.loader').length,
-            tag = $this[0].tagName.toLocaleLowerCase(),
-            thisLoaderId = $this.data('loader');
+                loadersCount = $('.loader').length,
+                tag = $this[0].tagName.toLocaleLowerCase(),
+                thisLoaderId = $this.data('loader');
 
         if (! this ) return;
 
