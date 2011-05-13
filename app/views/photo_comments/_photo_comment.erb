@@ -2,7 +2,7 @@
 <div class='photo-comment' id='<%= photo_comment.id %>'>
   <div class='photo-comment-head'>
     <%= link_to user_profile_path(:user_profile => author.login), :class => "author-#{author.gender}" %>
-    <%= image_tag author.avatar.url(:small) %>
+    <%= image_tag author.avatar.url(:thumb) %>
   </div>
     <div class='photo-comment-body'>
       <%= photo_comment.body %>

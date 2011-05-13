@@ -517,8 +517,9 @@ $(document).ready(function() {
     // Photos
 
 
-    var currentPhotoContainer = $('#current-photo');
-
+    var currentPhotoContainer = $('#current-photo'),
+        photoCommentSection = $('#photo-comments'),
+        photoCommentForm = $('#new-photo-comment-form');
 
     $('#new_photo').bind('ajax:complete', function(event, xhr, status)  {
         var params = $.parseJSON(xhr.responseText),
@@ -534,11 +535,22 @@ $(document).ready(function() {
       var $this = $(this),
           smallImg = $this.find('img').attr('src'),
           largeImg = $('<img/>').attr('src', smallImg.replace('medium', 'large')),
-          photoId = $this.attr('id').replace('photo-', '');
+          photoId = $this.attr('id').replace('photo-', ''),
+          url = '/' + $.user.attributes.login + '/photos/' + photoId;
 
       location.hash = '#' + photoId;
 
-      currentPhotoContainer.html( largeImg ).show();
+      currentPhotoContainer.find('img').remove();
+      photoCommentSection.html('');
+      currentPhotoContainer.prepend( largeImg ).show();
+
+      $.getJSON(url, function(data) {
+          for (comment in data.photo_comments) {
+              photoCommentSection.append(data.photo_comments[comment])
+          }
+
+        photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
+      });
     });
 
     $('#new_photo_comment').bind('ajax:complete', function(event, xhr, status) {
@@ -548,7 +560,7 @@ $(document).ready(function() {
 
         if ( status == 'success') {
             $('#photo-comments').append(params.photo_comment);
-        };
+        }
 
         setTimeout(function() {  $this.clearForm(); }, 10);
     });
