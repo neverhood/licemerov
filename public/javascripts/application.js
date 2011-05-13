@@ -539,15 +539,16 @@ $(document).ready(function() {
                 url = '/' + $.user.attributes.login + '/photos/' + photoId;
 
         location.hash = '#' + photoId;
+        $('#photo_comment_body').val('')
+                .parents('form').find(':submit').attr('disabled', true);
 
         currentPhotoContainer.find('img').remove();
         currentPhotoContainer.prepend( largeImg ).show();
 
-
         photoCommentSection.html('').append($.licemerov.loader);
         $.getJSON(url, function(data) {
             photoCommentSection.html('');
-            for (comment in data.photo_comments) {
+            for (var comment in data.photo_comments) {
                 photoCommentSection.append(data.photo_comments[comment])
             }
 
