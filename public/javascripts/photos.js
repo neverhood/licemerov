@@ -58,9 +58,10 @@ $('document').ready(function() {
       $.getJSON(url, function(data) {
         $('#current-photo').prepend($('<img />').attr('src', data.photo)).
           show();
-        for (var comment in data.comments) {
-            photosApi.commentSection.append(comment);
-        }
+          $.each(data.photo_comments, function(index) {
+              photosApi.commentSection.append(data.photo_comments[index])
+          });
+
         photosApi.commentForm.show().find('#photo_comment_photo_id').val(photoId);
       });
     }
