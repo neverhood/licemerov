@@ -19,9 +19,10 @@
 
 <% if current_user %>
     <%= form_for ProfileComment.new, :remote => true, :html => { :id => 'parent_form' } do |f| %>
-        <%= f.text_area :body, :cols => 45, :rows => 5 %>
+        <%= f.text_area :body, :cols => 45, :rows => 5 %> <br />
         <%= f.hidden_field :user_id, :value => @user.id %>
         <%= f.file_field :image %>
+        <strong class='cancel-upload'>X</strong> <br />
         <div>
           <%= f.submit t(:new_comment), :disabled => true %>
         </div>

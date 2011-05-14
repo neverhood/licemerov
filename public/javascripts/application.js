@@ -584,6 +584,7 @@ $(document).ready(function() {
 
     // Photos end
 
+
     // Main page (comments and stuff)
 
     $('.reply').live('click', function() {
@@ -626,6 +627,9 @@ $(document).ready(function() {
             $form.find(':submit').attr('disabled', true);
     });
 
+    $('.delete-profile-response').live('ajax:complete', function() {
+        $(this).parents('.response').remove()
+    });
 });
 
 

@@ -69,7 +69,7 @@ div.parent .head, div.parent .head-hidden {
 div.parent .head-hidden { display: none; }
 /* BLUE: #5599BB */
 div.parent .body {background:white;color:black;width: 600px; padding:5px; margin: 10px;}
-div.response .body {color:#696969; background:white; margin-top:10px;}
+div.response .body {color:#696969; background:white; margin-top:3px;}
 div.parent a {text-decoration:none;}
 
 div.response {padding:5px 10px;}
