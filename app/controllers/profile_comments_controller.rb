@@ -6,17 +6,15 @@ class ProfileCommentsController < ApplicationController
   before_filter :valid_parent_id, :only => :create
   before_filter :valid_user_id, :only => :create
 
-  layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
-
   def create
     @comment = ProfileComment.new(params[:profile_comment])
     @comment.author_id = current_user.id
     respond_to do |format|
+      format.js { render :layout => false }
       if @comment.save
         @comment_with_user_details = ProfileComment.with_user_details.
             where(:id => @comment.id).first
-
-        format.js
+        format.js { render :layout => false }
         format.html { redirect_to :back, :notice => t(:comment_created)}
       else
         render :nothing => true

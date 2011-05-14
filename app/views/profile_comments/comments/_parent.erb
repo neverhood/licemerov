@@ -1,4 +1,4 @@
-<tr id="<%= profile_comment.id %>" class='profile-comment'>
+<tr id="<%= profile_comment.id %>" class='parent profile-comment'>
   <td class='avatar-box'>
     <div><%= image_tag(profile_comment.author_avatar(:thumb)) %></div>
   </td>
@@ -14,12 +14,24 @@
       </div>
       <%= profile_comment.body %>
     </div>
+
     <div class='profile-comment-footer'>
       <%= l profile_comment.created_at %>
-      <%= link_to t(:delete), profile_comment, :remote => true, 'data-notify' => true,
-                  :method => :delete, :class => 'delete-profile-comment',
-                  :confirm => t(:are_you_sure) %>
+      <% if profile_comment.author_id == current_user.id %>
+          <%= link_to t(:delete), profile_comment, :remote => true, 'data-notify' => true,
+                      :method => :delete, :class => 'delete-profile-comment',
+                      :confirm => t(:are_you_sure) %>
+      <% end %>
+      <strong class="reply"><%= t :reply %></strong>
+      <div class="form-placeholder"></div>
     </div>
-  </td>
 
+    <div class="profile-comment-responses">
+      <% profile_comment.children.order('"profile_comments".created_at DESC').each do |response| %>
+          <%= render :partial => 'profile_comments/comments/response', :locals => {:profile_comment => response} %>
+      <% end %>
+    </div>
+    
+
+  </td>
 </tr>

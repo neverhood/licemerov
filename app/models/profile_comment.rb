@@ -29,6 +29,8 @@ class ProfileComment < ActiveRecord::Base
            'users'.avatar_updated_at, 'users'.login").
       joins(:user)
 
+  before_destroy proc {|comment| comment.children.each {|response| response.destroy }}
+
 
   def type
     self.parent? ? 'parent' : 'response'
@@ -44,7 +46,7 @@ class ProfileComment < ActiveRecord::Base
 
   def children
     return @children if defined?(@children)
-    @children = RootEntry.where(:parent_id => self.id).all
+    @children = ProfileComment.with_user_details.where(:parent_id => self.id)
   end
 
   def author_avatar(style)

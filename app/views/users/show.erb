@@ -18,14 +18,23 @@
 <%= link_to t(:albums), user_albums_path(@user) %>
 
 <% if current_user %>
-    <%= form_for ProfileComment.new, :remote => true, :html => {'data-notify' => true, :id => 'parent_form'} do |f| %>
+    <%= form_for ProfileComment.new, :remote => true, :html => { :id => 'parent_form' } do |f| %>
         <%= f.text_area :body, :cols => 45, :rows => 5 %>
         <%= f.hidden_field :user_id, :value => @user.id %>
         <%= f.file_field :image %>
         <div>
-          <%= f.submit t(:new_comment), :disable_with => t(:please_wait) %>
+          <%= f.submit t(:new_comment), :disabled => true %>
         </div>
     <% end %>
+
+    <%= form_for ProfileComment.new, :remote => true, :html => {:id => :response_form} do |f| %>
+
+        <%= f.text_area :body, :cols => 50, :rows => 4 %>
+        <%= f.hidden_field :parent_id %> <br />
+        <%= f.hidden_field :user_id, :value => @user.id %>
+        <%= f.submit t(:say), :disabled => true %>
+    <% end %>
+
 <% end %>
 
 <table id='profile-comments'>

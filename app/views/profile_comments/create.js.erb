@@ -1,4 +1,5 @@
 <%= remotipart_response do %>
+
 var type = "<%= @comment.type %>";
 var form = $('#' + type + '_form');
 var id = "<%= @comment.id %>";
@@ -6,14 +7,14 @@ var comment = $("<%= escape_javascript(render :partial => @comment.type_partial,
 var errors = "<%= @comment.errors.any? ? @comment.errors.full_messages.join(',') : nil %>".split(',');
 if (errors[0] == '') errors.pop(); // Remove blank element
 
+
 if (errors.length > 0)  // Errors didn't let it happen
     appendErrors(errors, form);
 else { // No errors
     if (type == 'parent')
         comment.prependTo('#profile-comments').hide().fadeIn();
     else {
-        $('.profile-comment#<%= @comment.parent_id%>').find('.head-hidden, .head').addClass('head').removeClass('head-hidden').next().
-                append(comment).find('div#' + id).hide().fadeIn();
+        $('tr#<%= @comment.parent_id %> .profile-comment-responses').prepend( comment );
         $(form).hide();
         $("html:not(:animated)"+( ! $.browser.opera ? ",body:not(:animated)" : "")).
                 animate({scrollTop: comment.offset().top - 25}, 700);

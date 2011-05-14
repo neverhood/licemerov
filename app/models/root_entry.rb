@@ -21,6 +21,7 @@ class RootEntry < ActiveRecord::Base
                                     :unless => Proc.new  { |model| model.image }
   validates_attachment_size :image, :less_than => 1.megabytes, :unless => Proc.new { |model| model.image }
 
+  before_destroy proc {|comment| comment.children.each {|response| response.destroy }}
   before_create :randomize_file_name, :if => :uploading_image?
 
   def author
