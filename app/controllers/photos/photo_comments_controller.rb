@@ -8,12 +8,12 @@ class PhotoCommentsController < ApplicationController
 
   def create
     @comment = PhotoComment.new( params[:photo_comment] )
-    @comment.user_id, @comment.photo_id, @comment.user_avatar_url =
-        current_user.id, params[:photo_comment][:photo_id], current_user.avatar.url(:thumb)
+    @comment.user_id, @comment.photo_id =
+        current_user.id, params[:photo_comment][:photo_id]
     
     respond_to do |format|
       if @comment.save
-        format.json { render :json => json_for(@comment) }
+        format.json { render :json => json_for(PhotoComment.with_user_details.where(:id => @comment.id).first) }
         format.html { redirect_to :back, :notice => t(:comment_created)}
       else
         format.json { render :json => json_for(@comment) }

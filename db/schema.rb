@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110512111603) do
+ActiveRecord::Schema.define(:version => 20110512150601) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id",         :default => 0,                     :null => false
@@ -47,7 +47,6 @@ ActiveRecord::Schema.define(:version => 20110512111603) do
   create_table "photo_comments", :force => true do |t|
     t.integer  "user_id"
     t.integer  "photo_id"
-    t.string   "user_avatar_url"
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -61,6 +60,17 @@ ActiveRecord::Schema.define(:version => 20110512111603) do
     t.integer  "photo_file_size"
     t.datetime "photo_updated_at"
     t.string   "photo_dimensions"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "profile_comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "author_id"
+    t.text     "body"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

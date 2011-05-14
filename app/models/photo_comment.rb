@@ -6,5 +6,15 @@ class PhotoComment < ActiveRecord::Base
   attr_accessible :body
 
   validates :body, :length => {:within => 1..1000}, :presence => true, :allow_blank => false
-  
+
+  scope :with_user_details, select("'photo_comments'.*, 'users'.sex, 'users'.avatar_file_name,
+           'users'.avatar_updated_at, 'users'.login").
+      joins(:user)
+
+  scope :of, proc {|photo| with_user_details.where(:photo_id => photo.id) }
+
+  def avatar(style)
+    "/system/avatars/#{user_id}/#{style}/#{self.avatar_file_name}?#{self.avatar_updated_at.to_time.to_i.to_s}"
+  end
+
 end

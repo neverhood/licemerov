@@ -3,8 +3,6 @@ class CreateProfileComments < ActiveRecord::Migration
     create_table :profile_comments do |t|
       t.integer :user_id
       t.integer :author_id
-      t.integer :author_sex
-      t.string :author_avatar_url
       t.text :body
       t.string :image_file_name
       t.string :image_content_type
