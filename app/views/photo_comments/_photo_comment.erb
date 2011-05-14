@@ -1,11 +1,11 @@
 
 <tr id="<%= photo_comment.id %>" class='photo-comment'>
   <td class='avatar-box'>
-    <div><%= image_tag(photo_comment.avatar(:thumb)) %></div>
+    <div><%= image_tag(photo_comment.author_avatar(:thumb)) %></div>
   </td>
   <td class="middle-vertical-align photo-comment">
     <div>
-      <strong class="author-<%= 'male' %>">
+      <strong class="author-<%= photo_comment.author_gender %>">
         <%= link_to photo_comment.login, user_profile_path(:user_profile => photo_comment.login) %>
       </strong>
     </div>

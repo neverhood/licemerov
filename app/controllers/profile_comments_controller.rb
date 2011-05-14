@@ -1,19 +1,25 @@
 class ProfileCommentsController < ApplicationController
 
+  skip_before_filter :existent_user
   before_filter :require_user, :only => [:create, :update, :destroy]
   before_filter :valid_comment, :only => [:destroy, :update]
+  before_filter :valid_parent_id, :only => :create
+  before_filter :valid_user_id, :only => :create
+
+  layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
 
   def create
     @comment = ProfileComment.new(params[:profile_comment])
-    @comment.author_id, @comment.author_sex, @comment.author_avatar_url =
-        current_user.id, current_user.sex, current_user.avatar.url(:small)
+    @comment.author_id = current_user.id
     respond_to do |format|
       if @comment.save
-        format.json { render :json => json_for(@comment) }
+        @comment_with_user_details = ProfileComment.with_user_details.
+            where(:id => @comment.id).first
+
+        format.js
         format.html { redirect_to :back, :notice => t(:comment_created)}
       else
-        format.json { render :json => json_for(@comment) }
-        format.html { redirect_to :back, :alert => @comment.errors.values.map(&:first) }
+        render :nothing => true
       end
     end
   end
@@ -42,7 +48,19 @@ class ProfileCommentsController < ApplicationController
 
   def valid_comment
     @comment = ProfileComment.where(:author_id => current_user.id).
-        where(:id => params[:id])
+        where(:id => params[:id]).first
+    render guilty_response unless @comment
   end
 
+  def valid_parent_id
+    if params[:profile_comment][:parent_id]
+      render guilty_response unless ProfileComment.where(:id => params[:profile_comment][:parent_id]).count > 0
+    end
+  end
+
+  def valid_user_id
+    if params[:profile_comment][:user_id]
+      render guilty_response unless User.where(:id => params[:profile_comment][:user_id]).count > 0
+    end
+  end
 end

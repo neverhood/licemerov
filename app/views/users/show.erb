@@ -15,8 +15,26 @@
 <% else %>
     <%= link_to t(:friends), friends_path(@user) %>
 <% end %>
-
 <%= link_to t(:albums), user_albums_path(@user) %>
+
+<% if current_user %>
+    <%= form_for ProfileComment.new, :remote => true, :html => {'data-notify' => true, :id => 'parent_form'} do |f| %>
+        <%= f.text_area :body, :cols => 45, :rows => 5 %>
+        <%= f.hidden_field :user_id, :value => @user.id %>
+        <%= f.file_field :image %>
+        <div>
+          <%= f.submit t(:new_comment), :disable_with => t(:please_wait) %>
+        </div>
+    <% end %>
+<% end %>
+
+<table id='profile-comments'>
+
+  <% @comments.each do |comment| %>
+      <%= render :partial => 'profile_comments/comments/parent', :locals => {:profile_comment => comment} %>
+  <% end %>
+
+</table>
 
 
 <% if !profile_owner? && current_user %>

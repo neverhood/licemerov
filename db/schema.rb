@@ -45,9 +45,9 @@ ActiveRecord::Schema.define(:version => 20110512150601) do
   end
 
   create_table "photo_comments", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "photo_id"
-    t.text     "body"
+    t.integer  "user_id",                    :null => false
+    t.integer  "photo_id",                   :null => false
+    t.text     "body",       :default => "", :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -65,9 +65,10 @@ ActiveRecord::Schema.define(:version => 20110512150601) do
   end
 
   create_table "profile_comments", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "author_id"
-    t.text     "body"
+    t.integer  "user_id",                            :null => false
+    t.integer  "author_id",                          :null => false
+    t.integer  "parent_id"
+    t.text     "body",               :default => "", :null => false
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"

@@ -13,8 +13,12 @@ class PhotoComment < ActiveRecord::Base
 
   scope :of, proc {|photo| with_user_details.where(:photo_id => photo.id) }
 
-  def avatar(style)
+  def author_avatar(style)
     "/system/avatars/#{user_id}/#{style}/#{self.avatar_file_name}?#{self.avatar_updated_at.to_time.to_i.to_s}"
+  end
+
+  def author_gender
+    self.sex == 0 ? 'female' : 'male'
   end
 
 end

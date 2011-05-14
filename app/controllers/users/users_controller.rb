@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   before_filter :require_owner, :only => [:edit]
 
   def show
+    @comments = ProfileComment.with_user_details.where(:user_id => @user.id)
   end
 
   def edit

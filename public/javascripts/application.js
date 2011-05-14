@@ -176,9 +176,10 @@ $(document).ready(function() {
     $('form#parent_form, form#response_form').keyup(function() {
         var $this = $(this),
                 submit = $this.find(':submit'),
-                textArea = $this.find('textarea');
+                textArea = $this.find('textarea'),
+                length = textArea.val().length
 
-        submit.attr('disabled', !(textArea.val().length >= 2) );
+        submit.attr('disabled', !(length >= 1 && length <= 1000) );
     })
             .bind("ajax:beforeSend", function() {$(this).toggleLoader()}).
             bind("ajax:complete", function() {$(this).toggleLoader()});
@@ -576,7 +577,8 @@ $(document).ready(function() {
         submit.attr('disabled', !(length >= 1 && length < 1000));
     });
 
-    $('.delete-photo-comment').live('ajax:complete', function() { $(this).parents('tr').remove() });
+    $('.delete-photo-comment, .delete-profile-comment')
+            .live('ajax:complete', function() { $(this).parents('tr').remove() });
 
     // Other related code moved to photos.js ( to be merged later )
 

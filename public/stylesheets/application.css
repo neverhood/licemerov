@@ -149,13 +149,22 @@ strong#enable-fullscreen { cursor:pointer; margin: 15px 0; }
 /* PHOTOS END */
 
 /* PHOTO COMMENTS */
+td.avatar-box div { margin-top: 6px;}
 div#photo-comments { width:300px; }
 td.photo-comment { padding: 15px;}
-td.photo-comment div { margin: 10px 0}
+td.photo-comment div { margin: 10px 0 }
 div.photo-comment-footer { color: gray; font-size: 11px; }
 /* END */
+
+/* PROFILE COMMENTS */
+div#profile-comments {width:300px;}
+td.profile-comment { padding: 15px; }
+td.profile-comment div {margin:10px 0;}
+div.profile-comment-footer { color:gray; font-size: 11px; }
+/* PROFILE COMMENTS END */
 
 /***************** Profiles END ***************/
 .ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}
 .thin-border { border: 1px solid gray; }
 .autocompletion-item { border-bottom : 1px dashed black;}
+#photo-comments tr, #profile-comments tr { border-bottom:1px solid black; padding: 50px;}

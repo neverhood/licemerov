@@ -1,16 +1,21 @@
 class ProfileComment < ActiveRecord::Base
 
-  attr_accessible :body, :image, :user_id
+  attr_accessible :body, :image, :parent_id, :user_id
 
   belongs_to :user
 
-  validates :body, :length => {:within => 1.1000}, :presence => true, :allow_blank => false
+  validates :body, :length => {:within => 1..1000}, :presence => true, :allow_blank => false
+  validates :user_id, :presence => true, :allow_blank => false
 
-  has_attached_file :image, :styles => { :large => '600x400>', :medium => "300x200#", :thumb => "200x150>" }
+  has_attached_file :image, :styles => {
+      :regular => ['300x300>', :jpg],
+      :enlarged => ['400x400>', :jpg],
+  }
 
 
   validates_attachment_content_type :image,
                                     :path => ":rails_root/public/system/profiles/:id/:style/:filename",
+                                    :url => "/system/profiles/:id/:style/:filename",
                                     :content_type => ['image/jpeg', 'image/jpg',
                                                       'image/pjpeg', 'image/png', 'image/gif'],
                                     :unless => Proc.new  { |model| model.image }
@@ -19,6 +24,36 @@ class ProfileComment < ActiveRecord::Base
   validates_attachment_size :photo, :less_than => 4.megabytes, :unless => Proc.new { |model| model.image }
 
   before_save :randomize_file_name, :if => :uploading_image?
+
+  scope :with_user_details, select("'profile_comments'.*, 'users'.sex, 'users'.avatar_file_name,
+           'users'.avatar_updated_at, 'users'.login").
+      joins(:user)
+
+
+  def type
+    self.parent? ? 'parent' : 'response'
+  end
+
+  def type_partial
+    self.parent? ? 'profile_comments/comments/parent' : 'profile_comments/comments/response'
+  end
+
+  def parent?
+    self.parent_id.nil?
+  end
+
+  def children
+    return @children if defined?(@children)
+    @children = RootEntry.where(:parent_id => self.id).all
+  end
+
+  def author_avatar(style)
+    "/system/avatars/#{user_id}/#{style}/#{self.avatar_file_name}?#{self.avatar_updated_at.to_time.to_i.to_s}"
+  end
+
+  def author_gender
+    self.sex == 0 ? 'female' : 'male'
+  end
 
 
   private
