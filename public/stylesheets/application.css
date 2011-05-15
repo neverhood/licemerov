@@ -169,4 +169,4 @@ div.root-comment-body, div.profile-comment-body, div.photo-comment-body {
 .ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}
 .thin-border { border: 1px solid gray; }
 .autocompletion-item { border-bottom : 1px dashed black;}
-#photo-comments tr, #profile-comments tr { border-bottom:1px solid black; padding: 50px;}
+#photo-comments tr, #profile-comments tr, #root-comments tr { border-bottom:1px solid black; padding: 50px;}

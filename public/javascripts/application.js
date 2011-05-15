@@ -177,7 +177,7 @@ $(document).ready(function() {
         var $this = $(this),
                 submit = $this.find(':submit'),
                 textArea = $this.find('textarea'),
-                length = textArea.val().length
+                length = textArea.val().length;
 
         submit.attr('disabled', !(length >= 1 && length <= 1000) );
     })
@@ -578,7 +578,9 @@ $(document).ready(function() {
     });
 
     $('.delete-photo-comment, .delete-profile-comment, .delete-root-comment')
-            .live('ajax:complete', function() { $(this).parents('tr').remove() });
+            .live('ajax:complete', function() { $(this).parents('tr').
+            fadeOut('fast', function() { $(this).remove() })
+    });
 
     // Other related code moved to photos.js ( to be merged later )
 
@@ -628,7 +630,7 @@ $(document).ready(function() {
     });
 
     $('.delete-profile-response, .delete-root-response').live('ajax:complete', function() {
-        $(this).parents('.response').remove()
+        $(this).parents('.response').fadeOut('fast', function() { $(this).remove(); })
     });
 });
 
