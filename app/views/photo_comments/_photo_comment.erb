@@ -17,7 +17,7 @@
 
     <div class='photo-comment-footer'>
       <%= l photo_comment.created_at %>
-      <% if photo_comment.user_id == current_user.id || profile_owner? %>
+      <% if (current_user && photo_comment.user_id == current_user.id) || profile_owner? %>
           <%= link_to t(:delete), photo_comment, :remote => true, 'data-notify' => true,
                       :method => :delete, :class => 'delete-photo-comment',
                       :confirm => t(:are_you_sure) %>

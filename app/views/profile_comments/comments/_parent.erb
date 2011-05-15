@@ -17,7 +17,7 @@
 
     <div class='profile-comment-footer'>
       <%= l profile_comment.created_at %>
-      <% if (profile_comment.author_id == current_user.id) || profile_owner? %>
+      <% if (current_user && (profile_comment.author_id == current_user.id)) || profile_owner? %>
           <%= link_to t(:delete), profile_comment, :remote => true, 'data-notify' => true,
                       :method => :delete, :class => 'delete-profile-comment',
                       :confirm => t(:are_you_sure) %>
