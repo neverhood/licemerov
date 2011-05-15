@@ -150,10 +150,10 @@ strong#enable-fullscreen { cursor:pointer; margin: 15px 0; }
 
 /* PHOTO COMMENTS */
 td.avatar-box div { margin-top: 6px;}
-div#photo-comments { width:300px; }
-td.photo-comment { padding: 15px;}
-td.photo-comment div { margin: 10px 0 }
-div.photo-comment-footer { color: gray; font-size: 11px; }
+div#photo-comments, td.rooot-comments { width:300px; }
+td.photo-comment, td.root-comment { padding: 15px;}
+td.photo-comment div, td.root-comment div { margin: 10px 0 }
+div.photo-comment-footer, div.root-comment-footer { color: gray; font-size: 11px; }
 /* END */
 
 /* PROFILE COMMENTS */

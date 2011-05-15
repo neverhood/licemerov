@@ -5,6 +5,7 @@ class CreateAlbums < ActiveRecord::Migration
       t.string :cover, :default => '/images/missing.png'
       t.string :title, :null => false, :default => ''
       t.string :description
+      t.string :latinized_title, :null => false
 
       t.timestamps
     end

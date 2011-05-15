@@ -1,10 +1,12 @@
 
 class RootEntry < ActiveRecord::Base
 
-  validates :body, :presence => true, :length => {:minimum => 2, :maximum => 150}
+  validates :body, :presence => true, :length => {:minimum => 1, :maximum => 1000}
 
-  attr_accessible :mood, :body, :parent_id, :image 
-    
+  attr_accessible :mood, :body, :parent_id, :image
+
+  belongs_to :user
+
 
   has_attached_file :image,
                     #:path => Settings.services.assets.path,
@@ -24,8 +26,16 @@ class RootEntry < ActiveRecord::Base
   before_destroy proc {|comment| comment.children.each {|response| response.destroy }}
   before_create :randomize_file_name, :if => :uploading_image?
 
+  scope :with_user_details, select("'root_entries'.*, 'users'.sex, 'users'.avatar_file_name,
+           'users'.avatar_updated_at, 'users'.login").
+      joins(:user)
+
   def author
     User.where(:id => self.user_id).first
+  end
+
+  def author_avatar(style = 'thumb')
+    "/system/avatars/#{user_id}/#{style}/#{self.avatar_file_name}?#{self.avatar_updated_at.to_time.to_i.to_s}"
   end
 
   def type
@@ -42,11 +52,11 @@ class RootEntry < ActiveRecord::Base
 
   def children
     return @children if defined?(@children)
-    @children = RootEntry.where(:parent_id => self.id).all
+    @children = RootEntry.with_user_details.where(:parent_id => self.id)
   end
 
   def author_gender
-    self.author_sex == 0 ? 'female' : 'male'
+    self.sex == 0 ? 'female' : 'male'
   end
 
   private

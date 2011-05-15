@@ -7,6 +7,10 @@ class CreateUserDetails < ActiveRecord::Migration
       t.string :first_name # First name
       t.string :last_name # Last Name
       t.date :birth_date
+      t.string :country
+      t.string :city
+      t.string :phone
+      t.string :website
 
 
       t.timestamps

@@ -11,6 +11,15 @@ class CreateUsers < ActiveRecord::Migration
       t.string :perishable_token, :null => false, :default => ''
       t.integer :sex, :null => false, :default => 1
 
+      # Avatar columns (paperclip)
+      
+      t.string :avatar_file_name
+      t.string :avatar_content_type
+      t.integer :avatar_file_size
+      t.datetime :avatar_updated_at
+      t.string :avatar_dimensions
+
+
       # MAGIC Columns
 
       t.integer :login_count, :null => false, :default => 0

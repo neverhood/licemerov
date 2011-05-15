@@ -1,11 +1,19 @@
-<div id='entry-<%= entry.id %>' class="response">
+<div id='<%= entry.id %>' class="response">
   <strong class="author-<%= entry.author_gender %>">
     <%= link_to entry.login, user_profile_path(:user_profile => entry.login) %>
-  </strong> said:
+  </strong> <%= t(:said) %>:
   <div class="body">
     <%= entry.body %>
-    <% if entry.image.exists? %>
-      <div><%= image_tag entry.image.url, :class => :regular %></div>
+  </div>
+
+  <div class='profile-comment-footer'>
+    <%= l entry.created_at %>
+    <% if (current_user && (entry.user_id == current_user.id)) %>
+        <%= link_to t(:delete), entry, :remote => true, 'data-notify' => true,
+                    :method => :delete, :class => 'delete-root-response',
+                    :confirm => t(:are_you_sure) %>
     <% end %>
   </div>
+
 </div>
+

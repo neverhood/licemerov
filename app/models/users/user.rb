@@ -60,6 +60,8 @@ class User < ActiveRecord::Base
 
   has_one :user_details # e.g -> Name, gender etc
 
+  has_many :root_entries
+
 
   has_many :friendships
   has_many :inverse_friendships, :class_name => 'Friendship', :foreign_key => :friend_id

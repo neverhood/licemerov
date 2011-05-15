@@ -1,26 +1,39 @@
-<div id="entry-<%= entry.id %>" class="parent">
 
-  <%= raw author(entry) %> <%= t :said %>:
 
-  <div class="body">
-    <% if entry.image.exists? %>
-        <div><%= image_tag entry.image.url, :class => 'regular' %></div>
-    <% end %>
-    <%= entry.body %>
-    <% if current_user %>
-        <%= raw reply_button %>
-    <% end %>
-  </div>
+<tr id="<%= entry.id %>" class='parent root-comment'>
+  <td class='avatar-box'>
+    <div><%= image_tag(entry.author_avatar(:thumb)) %></div>
+  </td>
+  <td class="middle-vertical-align root-comment">
+    <div>
+      <strong class="author-<%= entry.author_gender %>">
+        <%= link_to entry.login, user_profile_path(:user_profile => entry.login) %>
+      </strong>
+    </div>
+    <div class='root-comment-body'>
+      <div>
+        <%= image_tag(entry.image.url(:regular), :class => 'regular') if entry.image.exists? %>
+      </div>
+      <%= entry.body %>
+    </div>
 
-  <% if entry.children.any? -%>
-      <div class="head"></div>
-  <% else %>
-      <div class="head-hidden"></div>
-  <% end -%>
-  <ul class="responses">
-    <% entry.children.each do |entry| %>
-        <%= render :partial => 'main/entries/response', :locals => {:entry => entry} %>
-    <% end %>
-  </ul>
+    <div class='root-comment-footer'>
+      <%= l entry.created_at %>
+      <% if (current_user && (entry.user_id == current_user.id)) %>
+          <%= link_to t(:delete), entry, :remote => true, 'data-notify' => true,
+                      :method => :delete, :class => 'delete-root-comment',
+                      :confirm => t(:are_you_sure) %>
+      <% end %>
+      <strong class="reply"><%= t :reply %></strong>
+      <div class="form-placeholder"></div>
+    </div>
 
-</div>
+    <div class="root-comment-responses">
+      <% entry.children.order.each do |response| %>
+          <%= render :partial => 'main/entries/response', :locals => {:entry => response} %>
+      <% end %>
+    </div>
+
+
+  </td>
+</tr>

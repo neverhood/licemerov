@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110512150601) do
+ActiveRecord::Schema.define(:version => 20110515102446) do
 
   create_table "albums", :force => true do |t|
     t.integer  "user_id",         :default => 0,                     :null => false
@@ -78,18 +78,14 @@ ActiveRecord::Schema.define(:version => 20110512150601) do
 
   create_table "root_entries", :force => true do |t|
     t.integer  "user_id",            :default => 0
-    t.string   "login",              :default => ""
     t.integer  "mood",               :default => 0
     t.text     "body",               :default => ""
-    t.string   "avatar_url",         :default => ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "parent_id"
-    t.integer  "author_sex"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
-    t.datetime "image_updated_at"
   end
 
   create_table "user_details", :force => true do |t|

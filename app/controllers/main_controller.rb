@@ -1,17 +1,19 @@
 class MainController < ApplicationController
 
   skip_before_filter :existent_user
-  before_filter :require_user, :only => [:create, :update]
+  before_filter :require_user, :only => [:create, :update, :destroy]
+  before_filter :valid_comment, :only => [:update, :destroy]
 
   def index
-    @entries = RootEntry.where(:parent_id => nil).order('created_at DESC')
+    @entries = RootEntry.with_user_details.where(:parent_id => nil).order('created_at DESC')
     @entry = RootEntry.new
   end
 
   def create
     @entry = RootEntry.new(params[:root_entry])
-    @entry.user_id, @entry.login, @entry.author_sex = current_user.id, current_user.login, current_user.sex
+    @entry.user_id = current_user.id
     @entry.save
+    @entry_with_user_details = RootEntry.with_user_details.where(:id => @entry.id).first
     respond_to do |format|
       format.html { redirect_to '/'}
       format.js {render :layout => false}
@@ -21,6 +23,26 @@ class MainController < ApplicationController
 
   def update
 
+  end
+
+  def destroy
+    respond_to do |format|
+      if @entry.destroy
+        format.json { render :json => {:message => t(:comment_deleted), :html_class => :warning} }
+        format.html { redirect_to :back, :flash => {:warning => t(:comment_deleted)} }
+      else
+        render :nothing => true
+      end
+    end
+  end
+
+  private
+
+  def valid_comment
+    if params[:id] || params[:root_entry]
+      @entry = current_user.root_entries.where(:id => params[:id]).first
+      render guilty_response unless @entry
+    end
   end
 
 end
