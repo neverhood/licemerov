@@ -2,10 +2,13 @@
 
 <%= render :partial => 'main/forms/parent' if current_user %>
 
-<table id='root-comments'>
-  <% @entries.each do |entry| %>
-    <%= render :partial => 'main/entries/parent', :locals => {:entry => entry} %>
-  <% end %>
-</table>
+
+  <table id='root-comments'>
+    <% @entries.each do |entry| %>
+        <%= render :partial => 'main/entries/parent', :locals => {:entry => entry} %>
+    <% end %>
+  </table>
+
+
 
 <%= render :partial => 'main/forms/response' %>

@@ -12,7 +12,7 @@
       <div>
         <%= image_tag(profile_comment.image.url(:regular), :class => 'regular') if profile_comment.image.exists? %>
       </div>
-      <%= profile_comment.body %>
+      <%= simple_format profile_comment.body %>
     </div>
 
     <div class='profile-comment-footer'>

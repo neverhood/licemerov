@@ -14,7 +14,7 @@
       <div>
         <%= image_tag(entry.image.url(:regular), :class => 'regular') if entry.image.exists? %>
       </div>
-      <%= entry.body %>
+      <%= simple_format entry.body %>
     </div>
 
     <div class='root-comment-footer'>
@@ -24,8 +24,10 @@
                       :method => :delete, :class => 'delete-root-comment',
                       :confirm => t(:are_you_sure) %>
       <% end %>
-      <strong class="reply"><%= t :reply %></strong>
-      <div class="form-placeholder"></div>
+      <% if current_user %>
+          <strong class="reply"><%= t :reply %></strong>
+          <div class="form-placeholder"></div>
+      <% end %>
     </div>
 
     <div class="root-comment-responses">

@@ -3,7 +3,7 @@
     <%= link_to entry.login, user_profile_path(:user_profile => entry.login) %>
   </strong> <%= t(:said) %>:
   <div class="body">
-    <%= entry.body %>
+    <%= simple_format entry.body %>
   </div>
 
   <div class='profile-comment-footer'>

@@ -69,12 +69,11 @@ div.parent .head, div.parent .head-hidden {
 div.parent .head-hidden { display: none; }
 /* BLUE: #5599BB */
 div.parent .body {background:white;color:black;width: 600px; padding:5px; margin: 10px;}
-div.response .body {color:#696969; background:white; margin-top:3px;}
+div.response .body {color:#696969; background:white; margin-top:3px; word-wrap:break-word; width:550px;}
 div.parent a {text-decoration:none;}
 
 div.response {padding:5px 10px;}
 
-div.parent ul.responses {background:white; color:black; width: 670px; margin: 0 0 5px 25px;}
 strong.cancel-upload { display: none; cursor:pointer; color:red; }
 /*div.response {margin: 10px 10px 10px 25px;}*/
 /**** Posts END ****/
@@ -150,17 +149,20 @@ strong#enable-fullscreen { cursor:pointer; margin: 15px 0; }
 
 /* PHOTO COMMENTS */
 td.avatar-box div { margin-top: 6px;}
-div#photo-comments, td.rooot-comments { width:300px; }
-td.photo-comment, td.root-comment { padding: 15px;}
-td.photo-comment div, td.root-comment div { margin: 10px 0 }
-div.photo-comment-footer, div.root-comment-footer { color: gray; font-size: 11px; }
+div#photo-comments { width:300px; }
+td.photo-comment { padding: 15px;}
+td.photo-comment div { margin: 10px 0 }
+div.photo-comment-footer { color: gray; font-size: 11px; }
 /* END */
 
 /* PROFILE COMMENTS */
-div#profile-comments {width:300px;}
-td.profile-comment { padding: 15px; }
-td.profile-comment div {margin:10px 0;}
-div.profile-comment-footer { color:gray; font-size: 11px; }
+div#profile-comments, div#root-comments {width:300px;}
+td.profile-comment, td.root-comment { padding: 15px; }
+td.profile-comment div, td.root-comment div {margin:10px 0;}
+div.profile-comment-footer, div.root-comment-footer { color:gray; font-size: 11px; }
+div.root-comment-body, div.profile-comment-body, div.photo-comment-body {
+    width:600px; word-wrap: break-word; overflow:hidden;
+}
 /* PROFILE COMMENTS END */
 
 /***************** Profiles END ***************/
