@@ -1,6 +1,7 @@
 class MessagesController < ApplicationController
 
   SECTIONS = ['sent']
+
   layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
 
   before_filter :require_owner, :only => :index

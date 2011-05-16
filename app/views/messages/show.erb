@@ -1,3 +1,29 @@
 <%= @message.subject %>
 <br />
 <%= @message.body %>
+
+<% sender = @message.user -%>
+
+<div id='message'>
+  <table>
+     <tr>
+        <td class='avatar-box'>
+          <div><%= image_tag(sender.avatar.url(:thumb)) %></div>
+        </td>
+        <td class="middle-vertical-align message-details">
+          <div><%= link_to sender.login, user_profile_path(sender) %></div>
+          <div><%= l message.created_at %></div>
+        </td>
+          <td class='middle-vertical-align message-body'>
+            <%= link_to show_message_path(current_user, message.id), :class => 'show-message' do %>
+              <div> Subject: <%= message.subject %> </div>
+              <div> Body: <%= message.body %></div>
+            <% end %>
+          </td>
+        <td class="middle-vertical-align">
+          <%= link_to t(:delete_message), message, :method => :delete, :remote => true, :class => 'delete-message' %>
+        </td>
+      </tr>
+  </table>
+</div>
+
