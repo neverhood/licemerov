@@ -3,7 +3,9 @@
 <% end %>
 
 <% if profile_owner? %>
-    <% pending_friends_count = User.pending_friends_of(current_user).count.to_i %>
+    <% pending_friends_count = User.pending_friends_of(current_user).count.to_i -%>
+    <% pending_messages_count = current_user.incoming_messages.
+            unread.count -%>
     <% if pending_friends_count > 0 %>
         <%= link_to friends_path(current_user, :section => 'pending') do %>
             <span><%= t(:friends) %>(<strong><%= pending_friends_count %></strong>)</span>
@@ -11,7 +13,13 @@
     <% else %>
         <%= link_to t(:friends), friends_path(current_user) %>
     <% end %>
-    <%= link_to t(:messages), user_messages_path(current_user) %>
+    <% if pending_messages_count > 0 %>
+        <%= link_to user_messages_path(current_user) do %>
+            <span><%= t(:messages)%>(<strong><%= pending_messages_count %></strong>)</span>
+        <% end %>
+    <% else %>
+        <%= link_to t(:messages), user_messages_path(current_user) %>
+    <% end %>
 <% else %>
     <%= link_to t(:friends), friends_path(@user) %>
 <% end %>

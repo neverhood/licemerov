@@ -43,6 +43,7 @@ class MessagesController < ApplicationController
 
   def show
     @message = Message.find params[:id]
+    @message.update_attribute(:read, true)
   end
 
   def create

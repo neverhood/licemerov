@@ -22,8 +22,10 @@
                       :method => :delete, :class => 'delete-profile-comment',
                       :confirm => t(:are_you_sure) %>
       <% end %>
-      <strong class="reply"><%= t :reply %></strong>
-      <div class="form-placeholder"></div>
+      <% if current_user %>
+          <strong class="reply"><%= t :reply %></strong>
+          <div class="form-placeholder"></div>
+      <% end %>
     </div>
 
     <div class="profile-comment-responses">
@@ -31,7 +33,7 @@
           <%= render :partial => 'profile_comments/comments/response', :locals => {:profile_comment => response} %>
       <% end %>
     </div>
-    
+
 
   </td>
 </tr>

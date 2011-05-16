@@ -16,6 +16,7 @@ class Message < ActiveRecord::Base
   validates :receiver_id, :presence => true
 
   scope :deleted, where(['"messages".marked_as_deleted = ?', true])
+  scope :unread, where(:read => false)
 
   scope :of, proc {|user|
     where(['((user_id = ?) or (receiver_id = ?))', user.id, user.id])

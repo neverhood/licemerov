@@ -218,7 +218,7 @@ $(document).ready(function() {
             $this.clearForm().
                     find(':submit').attr('disabled', true).
                     parents('#new-album-form-container').toggle('fast')
-        }, 1);
+        }, 10);
     });
 
 
