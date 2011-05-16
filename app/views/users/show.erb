@@ -25,6 +25,23 @@
 <% end %>
 <%= link_to t(:albums), user_albums_path(@user) %>
 
+
+<% if !profile_owner? && current_user %>
+    <% if current_user.friendship_with(@user).first %>
+        <%= destroy(current_user.friendship_with(@user).first) %>
+    <% elsif current_user.friendship_with(@user, :approved => :all).first.nil? %>
+        <%= add %>
+    <% end %>
+
+    <%= link_to t(:write_message), nil, :class => 'write-message', 'data-popup' => '#message-form-container',
+      'data-recipient' => "{\"id\":\"#{@user.id}\", \"login\":\"#{@user.login}\"}"  %>
+
+    <%= render :layout => 'shared/popup', :locals => {:id => 'message-form-container'}  do %>
+      <%= render :partial => 'messages/new_message_form' %>
+    <% end %>
+
+<% end %>
+
 <% if current_user %>
     <%= form_for ProfileComment.new, :remote => true, :html => { :id => 'parent_form' } do |f| %>
         <%= f.text_area :body, :cols => 45, :rows => 5 %> <br />
@@ -54,11 +71,3 @@
 
 </table>
 
-
-<% if !profile_owner? && current_user %>
-    <% if current_user.friendship_with(@user).first %>
-        <%= destroy(current_user.friendship_with(@user).first) %>
-    <% elsif current_user.friendship_with(@user, :approved => :all).first.nil? %>
-        <%= add %>
-    <% end %>
-<% end %>

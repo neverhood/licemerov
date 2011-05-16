@@ -22,10 +22,13 @@
       </td>
 
       <td class='friend-options top-vertical-align'>
-        <div>
-          <%= link_to t(:write_message), nil, :class => 'write-message', 'data-popup' => '#message-form-container',
+        <% if friend.id != current_user.id %>
+          <div>
+            <%= link_to t(:write_message), nil, :class => 'write-message', 'data-popup' => '#message-form-container',
                      'data-recipient' => "{\"id\":\"#{friend.id}\", \"login\":\"#{friend.login}\"}"  %>
-        </div>
+          </div>
+        <% end %>
+
         <% if profile_owner? %>
           <div>
              <%= link_to t(:delete_friend), friendship_path(friendship), :remote => true,

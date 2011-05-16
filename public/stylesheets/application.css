@@ -158,10 +158,10 @@ div.photo-comment-footer { color: gray; font-size: 11px; }
 /* PROFILE COMMENTS */
 div#profile-comments, div#root-comments {width:300px;}
 td.profile-comment, td.root-comment { padding: 15px; }
-td.profile-comment div, td.root-comment div {margin:10px 0;}
+td.profile-comment div, td.root-comment div {margin:5px 0 ;}
 div.profile-comment-footer, div.root-comment-footer { color:gray; font-size: 11px; }
 div.root-comment-body, div.profile-comment-body, div.photo-comment-body {
-    width:600px; word-wrap: break-word; overflow:hidden;
+    width:600px; word-wrap: break-word;
 }
 /* PROFILE COMMENTS END */
 

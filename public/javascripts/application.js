@@ -199,7 +199,7 @@ $(document).ready(function() {
         var submit = $('#album_submit'),
                 length = this.value.length;
 
-        submit.attr('disabled', !( length > 2 && length <= 25 ));
+        submit.attr('disabled', !( length >= 2 && length <= 25 ));
     });
 
     $('form#new_album').bind('ajax:complete', function(event, xhr, status) {
@@ -288,7 +288,7 @@ $(document).ready(function() {
                     message = friendshipsApi.messageFor( $this.attr('class'), params.message  ),
                     notice = $('<div class="' + params.html_class + '">' + message + '</div>');
 
-            $.licemerov.noticesContainer.find('.' + params.html_class)
+            $.licemerov.noticesContainer.find('.' + params.html_class).html('')
                     .append(notice);
             row.addClass('hidden');
         }
