@@ -58,21 +58,21 @@ class User < ActiveRecord::Base
   delegate :first_name, :first_name=, :last_name, :last_name=, :city, :city=, :country, :country=,
            :phone, :phone=, :birth_date, :birth_date=, :website, :website=, :age, :to => :user_details
 
-  has_one :user_details # e.g -> Name, gender etc
+  has_one :user_details, :dependent => :destroy # e.g -> Name, gender etc
 
-  has_many :root_entries
+  has_many :root_entries, :dependent => :destroy
 
 
-  has_many :friendships
-  has_many :inverse_friendships, :class_name => 'Friendship', :foreign_key => :friend_id
+  has_many :friendships, :dependent => :destroy
+  has_many :inverse_friendships, :class_name => 'Friendship', :foreign_key => :friend_id, :dependent => :destroy
 
-  has_many :messages
-  has_many :incoming_messages, :class_name => 'Message', :foreign_key => :receiver_id
+  has_many :messages, :dependent => :destroy
+  has_many :incoming_messages, :class_name => 'Message', :foreign_key => :receiver_id, :dependent => :destroy
 
-  has_many :albums
-  has_many :photos
-  has_many :photo_comments
-  has_many :profile_comments
+  has_many :albums, :dependent => :destroy
+  has_many :photos, :dependent => :destroy
+  has_many :photo_comments, :dependent => :destroy
+  has_many :profile_comments, :dependent => :destroy
 
   # Make one db request instead of two ( for both direct and inverse friendships )
   # you must show it some love even though it's ugly
@@ -142,8 +142,8 @@ class User < ActiveRecord::Base
   end
 
   def randomize_file_name
-    extension = File.extname(avatar_file_name).downcase
-    self.avatar.instance_write(:file_name, "#{ActiveSupport::SecureRandom.hex(16)}#{extension}")
+    #extension = File.extname(avatar_file_name).downcase
+    self.avatar.instance_write(:file_name, "#{ActiveSupport::SecureRandom.hex(16)}.jpg")
   end
 
   def reprocess_avatar
