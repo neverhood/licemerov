@@ -1,29 +1,31 @@
-<%= @message.subject %>
-<br />
-<%= @message.body %>
-
-<% sender = @message.user -%>
-
-<div id='message'>
-  <table>
-     <tr>
-        <td class='avatar-box'>
-          <div><%= image_tag(sender.avatar.url(:thumb)) %></div>
-        </td>
-        <td class="middle-vertical-align message-details">
-          <div><%= link_to sender.login, user_profile_path(sender) %></div>
-          <div><%= l message.created_at %></div>
-        </td>
-          <td class='middle-vertical-align message-body'>
-            <%= link_to show_message_path(current_user, message.id), :class => 'show-message' do %>
-              <div> Subject: <%= message.subject %> </div>
-              <div> Body: <%= message.body %></div>
-            <% end %>
-          </td>
-        <td class="middle-vertical-align">
-          <%= link_to t(:delete_message), message, :method => :delete, :remote => true, :class => 'delete-message' %>
-        </td>
-      </tr>
-  </table>
-</div>
-
+<% if @message.user_id == current_user.id %> <%# outgoing message %>
+    <% user = User.where(:id => @message.receiver_id).first -%>
+<% else %>
+    <% user = @message.user %>
+<% end %>
+<table id='message'>
+  <tr>
+    <td class='message-avatar'>
+      <%= image_tag user.avatar.url(:thumb) %>
+    </td>
+    <td class='message-info top-vertical-align'>
+      <div class='author-info'>
+        <%= link_to user.login, user_profile_path(user), :class => "author-#{user.gender} user-profile-url" %>
+      </div>
+      <div class='message-created-at'>
+        <%= l @message.created_at %>
+      </div>
+      <% unless user.name.blank? %>
+          <div class='user-name'>
+            <%= user.name %>
+          </div>
+      <% end %>
+      <div class='message-body'>
+        <%= @message.body %>
+      </div>
+    </td>
+    <td style='padding-left:10px;' class='top-vertical-align'>
+      delete
+    </td>
+  </tr>
+</table>

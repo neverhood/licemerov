@@ -56,8 +56,10 @@ a.new-friends {margin-left: -4px; text-decoration:none; color:red;}
 /**** Posts ****/
 strong.reply {cursor:pointer}
 
-.author-male a {color:#32A6D4}
+.author-male a, .author-male a:visited {color:#32A6D4}
 .author-female a {color:#D94A64}
+a.author-male, a:visited.author-male { color: #32A6D4}
+a.author-female, a:visited.author-female { color: #D94A64 }
 
 /*div.response div {margin-top:15px; padding: 10px;}*/
 
@@ -116,6 +118,11 @@ div#options { display:none; padding: 15px;  }
 div#options-placeholder { height: 50px; width:600px; }
 a.recover-message { color:gray; text-decoration:none; font-size:12px; border-bottom: 1px dashed gray; }
 a.recover-messages { margin-left: 100px; color:gray; font-size:12px; }
+
+table#message td { padding: 30px; }
+div.message-created-at { margin-top:10px; color: gray; font-size:12px;}
+div.user-name, div.message-body { margin-top: 10px; }
+div.message-body { width:300px; word-wrap: break-word; }
 /* MESSAGES END */
 
 /* FRIENDSHIPS */
