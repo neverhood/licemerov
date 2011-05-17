@@ -594,6 +594,15 @@ $(document).ready(function() {
 
 
     // Main page (comments and stuff)
+    //
+    $('#main-show-more').click(function(){
+        $.getJSON('/main', function(data) {
+          var entries = data.entries;
+          for (var entrie in entries) {
+            alert(entrie);
+          }
+        });
+    })
 
     $('.reply').live('click', function() {
         var form = $('#response_form'),

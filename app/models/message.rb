@@ -22,11 +22,6 @@ class Message < ActiveRecord::Base
     where(['((user_id = ?) or (receiver_id = ?))', user.id, user.id])
   }
 
-  scope :with_user_details, select("'messages'.*, 'users'.sex, 'users'.avatar_file_name,
-           'users'.avatar_updated_at, 'users'.login").
-      joins(:user)
-
-
 
   # Parent_id is set once you reply someones message ( for messaging history purposes)
   # If the message you reply to already has parent_id (i.e. parent_id IS NOT NULL) - new message parent_id is set to it (

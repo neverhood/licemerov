@@ -1,6 +1,8 @@
 
 class RootEntry < ActiveRecord::Base
 
+  include Pagination::Model
+
   validates :body, :presence => true, :length => {:minimum => 1, :maximum => 1000}
 
   attr_accessible :mood, :body, :parent_id, :image

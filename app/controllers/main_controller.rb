@@ -1,12 +1,28 @@
 class MainController < ApplicationController
 
+  include Pagination::Controller
+
   skip_before_filter :existent_user
+
   before_filter :require_user, :only => [:create, :update, :destroy]
   before_filter :valid_comment, :only => [:update, :destroy]
+  before_filter :valid_page, :only => :index
 
   def index
-    @entries = RootEntry.with_user_details.where(:parent_id => nil).order('created_at DESC')
-    @entry = RootEntry.new
+    @entries = RootEntry.with_user_details.where(:parent_id => nil)
+      .order('created_at DESC')
+      .limit(10)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        if @page_entries
+          render :json => {:entries => @page_entries.map {|e| json_for(e)[:root_entry]}}
+        else
+          render :nothing => true
+        end
+      end
+    end
   end
 
   def create
