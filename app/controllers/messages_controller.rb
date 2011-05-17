@@ -66,10 +66,10 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @success
-        format.json { 
+        format.json {
           render :json => { :message => t(:message_created), :html_class => :notice }
         }
-        format.html { redirect_to :back, :notice => t(:message_created) }
+        format.html { redirect_to user_messages_path(@messages.first), :notice => t(:message_created) }
       else
         format.json {
           render :json => { :errors => @errors.values.map(&:first), :html_class => :alert },
@@ -105,7 +105,7 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       format.json { render :json => { :single => t(:cancel), :multiple => t(:recover_messages) }, :status => 200 }
-      format.html { redirect_to :back }
+      format.html { redirect_to user_messages_path(@messages.first), :flash => {:warning => t(:message_deleted)} }
     end
 
   end
@@ -170,5 +170,6 @@ class MessagesController < ApplicationController
   def valid_section
     params[:section] = 'inbox' unless SECTIONS.include?(params[:section])
   end
+
 end
 
