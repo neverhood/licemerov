@@ -4,12 +4,13 @@ class MessagesController < ApplicationController
 
   layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
 
-  before_filter :require_owner, :only => :index
+  before_filter :require_owner, :only => [:index, :show]
   before_filter :require_user, :only => :new
   before_filter :valid_term, :only => :new # Only hit database with trusted LIKE statement
   before_filter :valid_section, :only => :index
   before_filter :valid_parent, :only => :create
   before_filter :valid_message_ids, :only => [:destroy, :recover, :update]
+
   skip_before_filter :existent_user, :only => [:new, :create, :destroy, :recover, :update]
   skip_before_filter :delete_messages, :only => [:destroy, :update, :recover]
 
