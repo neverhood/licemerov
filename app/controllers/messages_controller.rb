@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
   before_filter :valid_term, :only => :new # Only hit database with trusted LIKE statement
   before_filter :valid_section, :only => :index
   before_filter :valid_parent, :only => :create
-  before_filter :valid_message_ids, :only => [:destroy, :recover, :update]
+  before_filter :valid_message_ids, :only => [:destroy, :recover, :update, :show]
 
   skip_before_filter :existent_user, :only => [:new, :create, :destroy, :recover, :update]
   skip_before_filter :delete_messages, :only => [:destroy, :update, :recover]
@@ -158,11 +158,13 @@ class MessagesController < ApplicationController
               .find_all { |id| id =~ /^\d+$/ }
              ])
 
-      render(guilty_response) unless (@messages.size > 0 || params[:id].to_s == 'all')
-
+      unless (@messages.size > 0 || params[:id].to_s == 'all')
+        request.xhr?? (render :nothing => true) : (redirect_to user_messages_path(current_user))
+      end
     else
-      render :nothing => true
+      request.xhr?? (render :nothing => true) : (redirect_to user_messages_path(current_user) )
     end
+
   end
 
   def valid_section

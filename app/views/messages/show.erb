@@ -1,8 +1,12 @@
 <% if @message.user_id == current_user.id %> <%# outgoing message %>
+    <% outgoing, incoming = true, false %>
     <% user = User.where(:id => @message.receiver_id).first -%>
 <% else %> <%# incoming message %>
+    <% outgoing, incoming = false, true %>
     <% user = @message.user %>
 <% end %>
+
+<% parent_id = incoming ? (@message.parent_id || @message.id) : (@message.parent_id) %>
 
 <table id='message'>
   <tr>
@@ -25,7 +29,7 @@
         <%= @message.body %>
       </div>
     </td>
-    <td style='padding-left:10px;' class='top-vertical-align'>
+    <td class='top-vertical-align message-options'>
       delete
     </td>
   </tr>
@@ -33,7 +37,7 @@
 <div id='new-message-form'>
   <%= form_for Message.new do |f| %>
       <%= f.hidden_field :recipients, :value => user.id %>
-      <%= f.hidden_field :parent_id, :value => @message.id %>
+      <%= f.hidden_field :parent_id, :value => parent_id %>
       <%= f.hidden_field :subject, :value => @message.subject %>
 
       <div>
