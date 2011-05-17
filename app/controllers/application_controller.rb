@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
 
   def delete_messages
     if current_user
-      current_user.messages.deleted.each {|message|  message.destroy  }
+      Message.of(current_user).deleted.each {|message|  message.destroy  }
     end
   end
 

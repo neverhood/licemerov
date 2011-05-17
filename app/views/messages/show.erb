@@ -30,10 +30,11 @@
       </div>
     </td>
     <td class='top-vertical-align message-options'>
-      delete
+      <%= link_to t(:delete_message), @message, :method => :delete, :confirm => t(:are_you_sure) %>
     </td>
   </tr>
 </table>
+
 <div id='new-message-form'>
   <%= form_for Message.new do |f| %>
       <%= f.hidden_field :recipients, :value => user.id %>

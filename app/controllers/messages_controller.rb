@@ -69,7 +69,7 @@ class MessagesController < ApplicationController
         format.json {
           render :json => { :message => t(:message_created), :html_class => :notice }
         }
-        format.html { redirect_to user_messages_path(@messages.first), :notice => t(:message_created) }
+        format.html { redirect_to user_messages_path(current_user), :notice => t(:message_created) }
       else
         format.json {
           render :json => { :errors => @errors.values.map(&:first), :html_class => :alert },
@@ -104,8 +104,12 @@ class MessagesController < ApplicationController
     # crafted with $.licemerov.utils.linkTo(). Somewhat clumsy hence we should think of a better option
 
     respond_to do |format|
-      format.json { render :json => { :single => t(:cancel), :multiple => t(:recover_messages) }, :status => 200 }
-      format.html { redirect_to user_messages_path(@messages.first), :flash => {:warning => t(:message_deleted)} }
+      format.json { 
+        render :json => { :single => t(:cancel), :multiple => t(:recover_messages) }, :status => 200 
+      }
+      format.html {
+        redirect_to user_messages_path(current_user), :flash => {:warning => t(:message_deleted)} 
+      }
     end
 
   end
