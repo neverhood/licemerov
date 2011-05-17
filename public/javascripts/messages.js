@@ -28,7 +28,9 @@ $(document).ready(function() {
             inputField = $('#users-select'),
             submitButton = $('#message_submit'),
             messageBody = $('#message_body'),
-            messageForm = $('form#new-message');
+            messageForm = $('form#new-message').bind('submit', function() {
+              $(this).find(':submit').after($.licemerov.loader).remove();
+            });
 
 
 
@@ -80,7 +82,7 @@ $(document).ready(function() {
 
     messageBody.keyup(function() {
         submitButton.attr('disabled',
-                !( $('.token').length > 0 && this.value.length >= 2 ));
+                !( $('.token').length > 0 && (this.value.length >= 1 && this.value.length <= 1000) ));
     });
 
     //  IE refuses to obey to 'submit' event ( stupid fuck )
@@ -209,13 +211,13 @@ $(document).ready(function() {
                     .width( calcOffset() - margin );
         }
         inputField.val('');
-        if ( messageBody.val().length >= 2 ) submitButton.attr('disabled', false);
+        if ( messageBody.val().length >= 1 && messageBody.val().length <= 1000 ) submitButton.attr('disabled', false);
         return false
     };
 
     if (autocompleteType == 'local') {
         inputField.autocomplete({
-            minLength: 2,
+            minLength: 1,
             source: $.licemerov.user.friends,
             focus: function(event, ui) {
                 appendAvatar(ui.item.avatar);
