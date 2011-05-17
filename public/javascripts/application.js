@@ -502,8 +502,14 @@ $(document).ready(function() {
         var submit = $('#single-receiver-message-form').find(':submit'),
                 length = this.value.length;
 
-        submit.attr('disabled', !(length >= 2 && length < 1000));
+        submit.attr('disabled', !(length >= 1 && length < 1000));
     });
+    $('form#new_message #message_body').bind('keyup keydown', function() {
+        var submit = $(this).parents('form').find(':submit'),
+            length = this.value.length;
+
+        submit.attr('disabled', !(length >= 1 && length < 1000));
+    }); // TODO: REFACTOR
 
     $('.write-message').click(function() {
         var recipient = $.parseJSON( $(this).attr('data-recipient') );

@@ -1,8 +1,9 @@
 <% if @message.user_id == current_user.id %> <%# outgoing message %>
     <% user = User.where(:id => @message.receiver_id).first -%>
-<% else %>
+<% else %> <%# incoming message %>
     <% user = @message.user %>
 <% end %>
+
 <table id='message'>
   <tr>
     <td class='message-avatar'>
@@ -29,3 +30,17 @@
     </td>
   </tr>
 </table>
+<div id='new-message-form'>
+  <%= form_for Message.new do |f| %>
+      <%= f.hidden_field :recipients, :value => user.id %>
+      <%= f.hidden_field :parent_id, :value => @message.id %>
+      <%= f.hidden_field :subject, :value => @message.subject %>
+
+      <div>
+        <%= f.text_area :body, :cols => 35, :rows => 5 %>
+      </div>
+
+      <%= f.submit t(:send_message), :disable_with => t(:please_wait), :disabled => true %>
+  <% end %>
+</div>
+

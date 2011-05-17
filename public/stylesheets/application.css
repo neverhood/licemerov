@@ -123,6 +123,7 @@ table#message td { padding: 30px; }
 div.message-created-at { margin-top:10px; color: gray; font-size:12px;}
 div.user-name, div.message-body { margin-top: 10px; }
 div.message-body { width:300px; word-wrap: break-word; }
+div#new-message-form { margin-left: 30px;}
 /* MESSAGES END */
 
 /* FRIENDSHIPS */

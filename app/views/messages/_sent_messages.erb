@@ -41,8 +41,10 @@
           <div><%= l message.created_at %></div>
         </td>
         <td class='middle-vertical-align message-body'>
-          <div> Subject: <%= message.subject %> </div>
-          <div> Body: <%= message.body %></div>
+          <%= link_to show_message_path(current_user, message.id), :class => 'show-message' do %>
+              <div> Subject: <%= message.subject %> </div>
+              <div> Body: <%= message.body %></div>
+          <% end %>
         </td>
         <td class="middle-vertical-align">
           <%= link_to t(:delete_message), message, :method => :delete, :remote => true, :class => 'delete-message' %>
