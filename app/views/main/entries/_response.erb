@@ -1,15 +1,15 @@
-<div id='<%= entry.id %>' class="response">
-  <strong class="author-<%= entry.author_gender %>">
-    <%= link_to entry.login, user_profile_path(:user_profile => entry.login) %>
+<div id='<%= root_entry.id %>' class="response">
+  <strong class="author-<%= root_entry.author_gender %>">
+    <%= link_to root_entry.login, user_profile_path(:user_profile => root_entry.login) %>
   </strong> <%= t(:said) %>:
   <div class="body">
-    <%= simple_format entry.body %>
+    <%= simple_format root_entry.body %>
   </div>
 
   <div class='profile-comment-footer'>
-    <%= l entry.created_at %>
-    <% if (current_user && (entry.user_id == current_user.id)) %>
-        <%= link_to t(:delete), entry, :remote => true, 'data-notify' => true,
+    <%= l root_entry.created_at %>
+    <% if (current_user && (root_entry.user_id == current_user.id)) %>
+        <%= link_to t(:delete), root_entry, :remote => true, 'data-notify' => true,
                     :method => :delete, :class => 'delete-root-response',
                     :confirm => t(:are_you_sure) %>
     <% end %>

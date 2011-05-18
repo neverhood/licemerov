@@ -1,15 +1,14 @@
 module Pagination
   module Controller
 
-
-    private
-
     ENTRIES_PER_PAGE = 10
     OFFSET = proc {|page| ((page*ENTRIES_PER_PAGE) - (ENTRIES_PER_PAGE - 1))}
 
+    private
+
     def valid_page
       if params[:page]
-        @page_entries = nil
+        @page_entries = []
         page = params[:page].to_i
 
         return false unless page > 0
@@ -23,8 +22,6 @@ module Pagination
         @page_entries = model.offset(OFFSET.call(page)).limit(ENTRIES_PER_PAGE).
           order("'#{model.to_s.underscore.pluralize}'.created_at DESC")
         @page_entries = @page_entries.send(:with_user_details) if (model.with_user_details?)
-
-        @page_entries = nil unless @page_entries.any?
 
       end
     end

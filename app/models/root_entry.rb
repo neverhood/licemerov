@@ -49,7 +49,7 @@ class RootEntry < ActiveRecord::Base
   end
 
   def type_partial
-    self.parent? ? 'main/entries/parent' : 'main/entries/response'
+    self.parent? ? 'main/root_entry' : 'main/entries/response'
   end
 
   def parent?

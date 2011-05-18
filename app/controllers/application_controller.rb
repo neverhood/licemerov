@@ -17,10 +17,16 @@ class ApplicationController < ActionController::Base
     else
       instance = object.class.name.underscore.downcase
       partial = instance.dup.insert(0, '_').insert(-1, '.erb')
-      path = Pathname.new(Rails.root.join('app', 'views', instance.pluralize))
+      folder = case instance
+                 when 'root_entry' then 'main'
+                 else instance.pluralize
+               end
+
+      logger.debug('Looking for partial ' + partial)
+      path = Pathname.new(Rails.root.join('app', 'views', folder))
 
       if path.directory? && path.entries.map { |e| e.to_s }.include?(partial)
-        Hash[ [ [instance.to_sym, render_to_string(:partial => instance.pluralize + '/' + instance,
+        Hash[ [ [instance.to_sym, render_to_string(:partial => folder + '/' + instance,
                                                    :locals => {instance.to_sym => object})],
                 [:message, t(instance.insert(-1, '_created'))],
                 [:html_class, :notice]

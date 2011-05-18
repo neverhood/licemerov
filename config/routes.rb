@@ -2,6 +2,7 @@ Licemerov::Application.routes.draw do
 
   root :to => 'main#index'
   resources :root_entries, :only => [:create, :update, :destroy], :controller => :main
+  get '/main' => 'main#show'
 
   # user sessions routes
   get 'registration' => 'users#new', :as => :register

@@ -2,7 +2,7 @@
 var type = "<%= @entry.type %>";
 var form = $('#' + type + '_form');
 var id = "entry-<%= @entry.id %>";
-var entry = $("<%= escape_javascript(render :partial => @entry.type_partial, :locals => {:entry => @entry_with_user_details} ) %>");
+var entry = $("<%= escape_javascript(render :partial => @entry.type_partial, :locals => {:root_entry => @entry_with_user_details} ) %>");
 var errors = "<%= @entry.errors.any? ? @entry.errors.full_messages.join(',') : nil %>".split(',');
 if (errors[0] == '') errors.pop(); // Remove blank element
 

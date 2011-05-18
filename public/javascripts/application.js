@@ -596,13 +596,11 @@ $(document).ready(function() {
     // Main page (comments and stuff)
     //
     $('#main-show-more').click(function(){
-        $.getJSON('/main', function(data) {
+        $.getJSON('/main?page=2', function(data) {
           var entries = data.entries;
-          for (var entrie in entries) {
-            alert(entrie);
-          }
-        });
-    })
+            alert(entries.length);
+        })
+    });
 
     $('.reply').live('click', function() {
         var form = $('#response_form'),
