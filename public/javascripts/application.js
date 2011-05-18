@@ -596,9 +596,14 @@ $(document).ready(function() {
     // Main page (comments and stuff)
     //
     $('#main-show-more').click(function(){
-        $.getJSON('/main?page=2', function(data) {
+        var $this = $(this),
+            page = parseInt($this.attr('data-page')) + 1;
+        $.getJSON('/main?page=' + page, function(data) {
           var entries = data.entries;
-            alert(entries.length);
+          for (entry in entries) {
+            $('#root-comments').append(entries[entry]);
+          }
+            $this.attr('data-page', page + 1);
         })
     });
 

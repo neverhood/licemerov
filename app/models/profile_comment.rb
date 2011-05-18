@@ -28,6 +28,7 @@ class ProfileComment < ActiveRecord::Base
   scope :with_user_details, select("'profile_comments'.*, 'users'.sex, 'users'.avatar_file_name,
            'users'.avatar_updated_at, 'users'.login").
       joins(:user)
+  scope :parent, where(:parent_id => nil)
 
   before_destroy proc {|comment| comment.children.each {|response| response.destroy }}
 
@@ -37,7 +38,7 @@ class ProfileComment < ActiveRecord::Base
   end
 
   def type_partial
-    self.parent? ? 'profile_comments/comments/parent' : 'profile_comments/comments/response'
+    self.parent? ? 'profile_comments/profile_comment' : 'profile_comments/comments/response'
   end
 
   def parent?

@@ -66,7 +66,7 @@
 <table id='profile-comments'>
 
   <% @comments.each do |comment| %>
-      <%= render :partial => 'profile_comments/comments/parent', :locals => {:profile_comment => comment} %>
+      <%= render :partial => 'profile_comments/profile_comment', :locals => {:profile_comment => comment} %>
   <% end %>
 
 </table>

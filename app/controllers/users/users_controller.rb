@@ -7,8 +7,9 @@ class UsersController < ApplicationController
   before_filter :require_owner, :only => [:edit]
 
   def show
-    @comments = ProfileComment.with_user_details.where(:user_id => @user.id).
-        where('"profile_comments".parent_id is NULL').order('"profile_comments".created_at DESC')
+    #@comments = ProfileComment.with_user_details.where(:user_id => @user.id).
+     #   parent.order('"profile_comments".created_at DESC')
+    @comments = @user.profile_comments.with_user_details.parent.order('"profile_comments".created_at DESC')
   end
 
   def edit
