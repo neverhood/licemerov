@@ -1,8 +1,6 @@
 class MainController < ApplicationController
 
-  ENTRIES_PER_PAGE = 10
-  OFFSET = proc {|page| ((page*ENTRIES_PER_PAGE) - (ENTRIES_PER_PAGE - 1))}
-  #include Pagination::Controller
+  include Pagination::Controller
 
   skip_before_filter :existent_user
 
@@ -58,26 +56,6 @@ class MainController < ApplicationController
     if params[:id] || params[:root_entry]
       @entry = current_user.root_entries.where(:id => params[:id]).first
       render guilty_response unless @entry
-    end
-  end
-
-  def valid_page
-    if params[:page]
-      @page_entries = []
-      page = params[:page].to_i
-
-      return false unless page > 0
-
-      model = case self.class.name
-                when 'MainController' then RootEntry
-                else self.class.name.sub(/Controller/, '').
-                    singularize.constantize
-              end
-
-      @page_entries = model.order("'#{model.to_s.underscore.pluralize}'.created_at DESC").
-          offset(OFFSET.call(page)).limit(ENTRIES_PER_PAGE)
-      @page_entries = @page_entries.send(:with_user_details) if (model.with_user_details?)
-
     end
   end
 

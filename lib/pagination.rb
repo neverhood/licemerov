@@ -2,7 +2,7 @@ module Pagination
   module Controller
 
     ENTRIES_PER_PAGE = 10
-    OFFSET = proc {|page| ((page*ENTRIES_PER_PAGE) - (ENTRIES_PER_PAGE - 1))}
+    OFFSET = proc {|page| ((page*ENTRIES_PER_PAGE) - (ENTRIES_PER_PAGE - 1) - 1)}
 
     private
 
@@ -21,6 +21,8 @@ module Pagination
 
         @page_entries = model.offset(OFFSET.call(page)).limit(ENTRIES_PER_PAGE).
           order("'#{model.to_s.underscore.pluralize}'.created_at DESC")
+
+        @page_entries = @page_entries.send(:parent) if model.parent_entries?
         @page_entries = @page_entries.send(:with_user_details) if (model.with_user_details?)
 
       end
@@ -32,6 +34,10 @@ module Pagination
     module ClassMethods
       def with_user_details?
         respond_to? :with_user_details
+      end
+
+      def parent_entries?
+        respond_to? :parent
       end
     end
 

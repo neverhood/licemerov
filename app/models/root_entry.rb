@@ -32,6 +32,8 @@ class RootEntry < ActiveRecord::Base
            'users'.avatar_updated_at, 'users'.login").
       joins(:user)
 
+  scope :parent, where(:parent_id => nil)
+
   def author
     User.where(:id => self.user_id).first
   end
