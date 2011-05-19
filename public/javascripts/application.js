@@ -607,6 +607,18 @@ $(document).ready(function() {
         })
     });
 
+    $('#profile-show-more').click(function() {
+      var $this = $(this).toggleLoader(),
+          page = parseInt($this.attr('data-page')) + 1;
+          $.getJSON('/' + $.user.attributes.login + '/profile_comments?page=' + page, function(data) {
+            var entries = data.entries;
+            for (entry in entries) {
+              $('#profile-comments').append(entries[entry]);
+            }
+            $this.attr('data-page', page + 1).toggleLoader();
+          });
+    });
+
     $('.reply').live('click', function() {
         var form = $('#response_form'),
                 $this = $(this),

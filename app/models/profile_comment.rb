@@ -1,5 +1,7 @@
 class ProfileComment < ActiveRecord::Base
 
+  include Pagination::Model
+
   attr_accessible :body, :image, :parent_id, :user_id
 
   belongs_to :user

@@ -54,6 +54,7 @@ Licemerov::Application.routes.draw do
 
   #  ****************** Profile Comments ******************
   resources :profile_comments, :only => [:create, :update, :destroy]
+  get '/:user_profile/profile_comments' => 'profile_comments#show'
   #  ****************** Profile Comments END******************
   #  ****************** Photos END ******************
 

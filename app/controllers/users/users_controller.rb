@@ -9,7 +9,9 @@ class UsersController < ApplicationController
   def show
     #@comments = ProfileComment.with_user_details.where(:user_id => @user.id).
      #   parent.order('"profile_comments".created_at DESC')
-    @comments = @user.profile_comments.with_user_details.parent.order('"profile_comments".created_at DESC')
+    @comments = @user.profile_comments.with_user_details.parent.
+      order('"profile_comments".created_at DESC')
+      .limit(10)
   end
 
   def edit

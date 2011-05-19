@@ -1,6 +1,11 @@
 class ProfileCommentsController < ApplicationController
 
-  skip_before_filter :existent_user
+  include Pagination::Controller
+
+  skip_before_filter :existent_user, :except => :show
+
+  before_filter :valid_page, :only => :show
+
   before_filter :require_user, :only => [:create, :update, :destroy]
   before_filter :valid_comment, :only => [:destroy, :update]
   before_filter :valid_parent_id, :only => :create
@@ -18,6 +23,14 @@ class ProfileCommentsController < ApplicationController
         format.html { redirect_to :back, :notice => t(:comment_created)}
       else
         render :nothing => true
+      end
+    end
+  end
+
+  def show
+    respond_to do |format|
+      format.json do
+        render :json => {:entries => @page_entries.map {|e| json_for(e)[:profile_comment]}}
       end
     end
   end

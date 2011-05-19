@@ -18,9 +18,16 @@ module Pagination
                 else self.class.name.sub(/Controller/, '').
                   singularize.constantize
                 end
+        table = model.to_s.underscore.pluralize
+        order = "'#{table}'.created_at DESC"
 
-        @page_entries = model.offset(OFFSET.call(page)).limit(ENTRIES_PER_PAGE).
-          order("'#{model.to_s.underscore.pluralize}'.created_at DESC")
+        if @user
+          @page_entries = @user.send(table).offset(OFFSET.call(page)).
+            limit(ENTRIES_PER_PAGE).order(order)
+        else
+          @page_entries = model.offset(OFFSET.call(page)).limit(ENTRIES_PER_PAGE).
+            order(order)
+        end
 
         @page_entries = @page_entries.send(:parent) if model.parent_entries?
         @page_entries = @page_entries.send(:with_user_details) if (model.with_user_details?)
