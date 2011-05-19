@@ -596,14 +596,14 @@ $(document).ready(function() {
     // Main page (comments and stuff)
     //
     $('#main-show-more').click(function(){
-        var $this = $(this),
+        var $this = $(this).toggleLoader(),
             page = parseInt($this.attr('data-page')) + 1;
         $.getJSON('/main?page=' + page, function(data) {
           var entries = data.entries;
           for (entry in entries) {
             $('#root-comments').append(entries[entry]);
           }
-            $this.attr('data-page', page + 1);
+            $this.attr('data-page', page + 1).toggleLoader();
         })
     });
 
@@ -682,14 +682,16 @@ $.fn.toggleLoader = function() {
             $('#' + thisLoaderId).remove();
             $this.data('loader', null);
             if ( tag == 'form' ) $this.find(':submit').show();
+            if ( tag == 'div' ) $this.show();
         } else { // Starting action, append loader
             thisLoaderId = 'loader-' + (loadersCount + 1);
             $this.
                     after("<img class='loader' id='" + thisLoaderId + "' src='/images/loader.gif' />").
                     data('loader', thisLoaderId);
-            if ( tag == 'a' ) $this.hide();
             if ( tag == 'form' ) {
                 $this.find(':submit').hide();
+            } else {
+              $this.hide();
             }
         }
     });
