@@ -1,9 +1,14 @@
 class PhotoCommentsController < ApplicationController
 
+  include Pagination::Controller
+
   skip_before_filter :existent_user
+
   before_filter :require_user, :only => [:create, :destroy, :update]
   before_filter :valid_comment, :only => [:destroy, :update]
-  before_filter :valid_photo_id, :only => :create
+  before_filter :valid_photo_id, :only => [:create, :show]
+
+  before_filter :valid_page, :only => :show
 
 
   def create
@@ -31,6 +36,15 @@ class PhotoCommentsController < ApplicationController
     end
   end
 
+  def show
+    @photo = Photo.find params[:photo_id]
+    respond_to do |format|
+      format.json do
+        render :json => {:entries => @page_entries.map {|e| json_for(e)[:photo_comment]}}
+      end
+    end
+  end
+
   def destroy
     respond_to do |format|
       if @comment.destroy
@@ -51,7 +65,11 @@ class PhotoCommentsController < ApplicationController
   end
 
   def valid_photo_id
-    render guilty_response unless Photo.where(:id => params[:photo_comment][:photo_id]).count > 0
+    if (params[:photo_comment] && params[:photo_comment][:photo_id]) || params[:photo_id]
+      photo_id = params[:photo_id] || params[:photo_comment][:photo_id]
+      @photo = Photo.where(:id => photo_id).first
+      render guilty_response unless @photo
+    end
   end
 
 end

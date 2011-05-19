@@ -1,5 +1,7 @@
 class PhotoComment < ActiveRecord::Base
 
+  include Pagination::Model
+
   belongs_to :photo
   belongs_to :user
 

@@ -8,7 +8,8 @@ class PhotosController < ApplicationController
 
   def show
     @photo = @user.photos.where(['photos.id = ?', params[:id]]).first
-    @comments = {:photo_comments => PhotoComment.of(@photo).map { |c| json_for(c)[:photo_comment] }}
+    @comments = {:photo_comments => PhotoComment.of(@photo).order("'photo_comments'.created_at DESC").
+                 limit(10).map { |c| json_for(c)[:photo_comment] }}
     respond_to do |format|
       if @photo
         format.json {render :json => {:photo => @photo.photo.url(:large)}.merge(@comments) }

@@ -51,6 +51,7 @@ Licemerov::Application.routes.draw do
 
   #  ****************** Photo Comments ******************
   resources :photo_comments, :only => [:create, :update, :destroy]
+  get '/photo_comments/:photo_id' => 'photo_comments#show'
 
   #  ****************** Profile Comments ******************
   resources :profile_comments, :only => [:create, :update, :destroy]

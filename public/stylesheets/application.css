@@ -160,7 +160,7 @@ form#new_photo { clear:both }
 div#new-photo-comment-form { display:none }
 div#photos { width: 800px; }
 div.photo { float:left; margin-left: 5px; }
-div#current-photo { width: 600px; height:400px; position:fixed; left:630px; top:90px; display:none; }
+div#current-photo { width: 600px; height:400px; position:absolute; left:630px; top:90px; display:none; }
 strong#enable-fullscreen { cursor:pointer; margin: 15px 0; }
 /* PHOTOS END */
 

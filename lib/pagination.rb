@@ -21,8 +21,8 @@ module Pagination
         table = model.to_s.underscore.pluralize
         order = "'#{table}'.created_at DESC"
 
-        if @user
-          @page_entries = @user.send(table).offset(OFFSET.call(page)).
+        if @user || @photo # TODO: fix that
+          @page_entries = (@user || @photo).send(table).offset(OFFSET.call(page)).
             limit(ENTRIES_PER_PAGE).order(order)
         else
           @page_entries = model.offset(OFFSET.call(page)).limit(ENTRIES_PER_PAGE).

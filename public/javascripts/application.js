@@ -594,6 +594,7 @@ $(document).ready(function() {
 
 
     // Main page (comments and stuff)
+    // TODO: optimize
     //
     $('#main-show-more').click(function(){
         var $this = $(this).toggleLoader(),
@@ -603,7 +604,10 @@ $(document).ready(function() {
           for (entry in entries) {
             $('#root-comments').append(entries[entry]);
           }
-            $this.attr('data-page', page + 1).toggleLoader();
+          if ( entries.length >= 10 ) {
+            $this.attr('data-page', page + 1);
+          }
+          $this.toggleLoader();
         })
     });
 
@@ -615,7 +619,25 @@ $(document).ready(function() {
             for (entry in entries) {
               $('#profile-comments').append(entries[entry]);
             }
-            $this.attr('data-page', page + 1).toggleLoader();
+            if (entries.length >= 10) {
+              $this.attr('data-page', page + 1);
+            }
+            $this.toggleLoader();
+          });
+    });
+
+    $('#photo-show-more').live('click', function(){
+      var $this = $(this).toggleLoader(),
+          page = parseInt($this.attr('data-page')) + 1;
+          $.getJSON('/photo_comments/' + $.photo.id + '?page=' + page, function(data) {
+            var entries = data.entries;
+            for (entry in entries) {
+              $('#photo-comments').append(entries[entry]);
+            }
+            if (entries.length >= 10) {
+              $this.attr('data-page', page + 1);
+            }
+            $this.toggleLoader();
           });
     });
 
