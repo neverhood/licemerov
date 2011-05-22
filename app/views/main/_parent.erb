@@ -1,0 +1,37 @@
+<tr id="<%= root_entry.id %>" class='parent root-comment'>
+  <td class='avatar-box'>
+    <div><%= image_tag(root_entry.author_avatar(:thumb)) %></div>
+  </td>
+  <td class="middle-vertical-align root-comment">
+    <div>
+      <strong class="author-<%= root_entry.author_gender %>">
+        <%= link_to root_entry.login, user_profile_path(:user_profile => root_entry.login) %>
+      </strong>
+    </div>
+    <div class='root-comment-body'>
+      <div>
+        <%= image_tag(root_entry.image.url(:regular), :class => 'regular') if root_entry.image.exists? %>
+      </div>
+      <%= simple_format root_entry.body %>
+    </div>
+
+    <div class='root-comment-footer'>
+      <%= l root_entry.created_at %>
+      <% if (current_user && (root_entry.user_id == current_user.id)) %>
+          <%= link_to t(:delete), root_entry, :remote => true, 'data-notify' => true,
+                      :method => :delete, :class => 'delete-root-comment',
+                      :confirm => t(:are_you_sure) %>
+      <% end %>
+      <% if current_user %>
+          <strong class="reply"><%= t :reply %></strong>
+          <div class="form-placeholder"></div>
+      <% end %>
+    </div>
+
+    <div class="root-comment-responses">
+      <% root_entry.children.each do |response| %>
+          <%= render :partial => 'main/entries/response', :locals => {:root_entry => response} %>
+      <% end %>
+    </div>
+  </td>
+</tr>

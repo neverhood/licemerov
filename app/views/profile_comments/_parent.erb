@@ -1,0 +1,48 @@
+<tr id="<%= profile_comment.id %>" class='parent profile-comment'>
+  <td class='avatar-box'>
+    <div><%= image_tag(profile_comment.author_avatar(:thumb)) %></div>
+  </td>
+  <td class="middle-vertical-align profile-comment">
+    <div>
+      <strong class="author-<%= profile_comment.author_gender %>">
+        <%= link_to profile_comment.login, user_profile_path(:user_profile => profile_comment.login) %>
+      </strong>
+    </div>
+    <div class='profile-comment-body'>
+      <div>
+        <%= image_tag(profile_comment.image.url(:regular), :class => 'regular') if profile_comment.image.exists? %>
+      </div>
+      <%= simple_format profile_comment.body %>
+    </div>
+
+    <div class='profile-comment-footer'>
+      <%= l profile_comment.created_at %>
+      <% if (current_user && (profile_comment.author_id == current_user.id)) || profile_owner? %>
+          <%= link_to t(:delete), profile_comment, :remote => true, 'data-notify' => true,
+                      :method => :delete, :class => 'delete-profile-comment',
+                      :confirm => t(:are_you_sure) %>
+      <% end %>
+      <% if current_user %>
+          <strong class="reply"><%= t :reply %></strong>
+          <div class="form-placeholder"></div>
+      <% end %>
+    </div>
+
+    <div class="profile-comment-responses">
+      <% responses = profile_comment.responses %>
+      <% responses.each do |response| %>
+          <%= render :partial => 'profile_comments/response', :locals => {:profile_comment => response} %>
+      <% end %>
+    </div>
+    <% if profile_comment.responses(:all).count > 3 %>
+        <div>
+          <%= link_to t(:more_responses), nil, 'data-offset' => 3, :class => 'show-more-responses',
+                      'data-id' => profile_comment.id,
+                      :remote => true
+          %>
+        </div>
+    <% end %>
+
+
+  </td>
+</tr>
