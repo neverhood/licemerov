@@ -9,7 +9,7 @@ class MainController < ApplicationController
   before_filter :valid_page, :only => :show
 
   def index
-    @entries = RootEntry.with_user_details.where(:parent_id => nil).
+    @entries = RootEntry.with_user_details.parent.
         order('"root_entries".created_at DESC').
         limit(10)
     @entry = RootEntry.new
@@ -18,7 +18,7 @@ class MainController < ApplicationController
   def show
     respond_to do |format|
       format.json do
-        render :json => {:entries => @page_entries.map {|e| json_for(e)[:root_entry]}}
+        render :json => @page_entries_json #{:entries => @page_entries.map {|e| json_for(e)[:root_entry]}}
       end
     end
   end

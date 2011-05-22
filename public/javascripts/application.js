@@ -641,6 +641,21 @@ $(document).ready(function() {
           });
     });
 
+    $('.show-more-responses').live('click', function() {
+        var $this = $(this),
+            responsesBox = $this.parents('tr.profile-comment').find('.profile-comment-responses'),
+            parentEntryId = $this.attr('data-id'),
+            offset = $this.attr('data-offset'),
+            url = '/' + $.user.attributes.login + '/profile_comments?offset=' + offset + '&id=' + parentEntryId;
+
+        $.getJSON(url, function(data) {
+            for (var entry in data.entries) {
+                responsesBox.append(data.entries[entry])
+            }
+        });
+
+    });
+
     $('.reply').live('click', function() {
         var form = $('#response_form'),
                 $this = $(this),

@@ -32,6 +32,13 @@ class ProfileComment < ActiveRecord::Base
       joins(:user)
   scope :parent, where(:parent_id => nil)
 
+  scope :latest_responses, proc {
+      |parent_id, limit| where(:parent_id => parent_id).
+        with_user_details.
+        order("'profile_comments'.created_at DESC").
+        limit(limit)
+  }
+
   before_destroy proc {|comment| comment.children.each {|response| response.destroy }}
 
 
@@ -40,12 +47,22 @@ class ProfileComment < ActiveRecord::Base
   end
 
   def type_partial
-    self.parent? ? 'profile_comments/profile_comment' : 'profile_comments/comments/response'
+    self.parent? ? 'profile_comments/parent' : 'profile_comments/response'
   end
 
   def parent?
     self.parent_id.nil?
   end
+
+  def responses(filter = :latest)
+    if filter == :latest
+      self.class.latest_responses(self.id, 3)
+    elsif filter == :all
+      self.class.latest_responses(self.id, 100)
+    end
+  end
+
+
 
   def children
     return @children if defined?(@children)

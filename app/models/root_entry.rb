@@ -33,6 +33,7 @@ class RootEntry < ActiveRecord::Base
       joins(:user)
 
   scope :parent, where(:parent_id => nil)
+  scope :response, where('"root_entries".parent_id IS NOT NULL')
 
   def author
     User.where(:id => self.user_id).first

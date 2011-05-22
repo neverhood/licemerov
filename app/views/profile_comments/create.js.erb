@@ -14,7 +14,16 @@ else { // No errors
     if (type == 'parent')
         comment.prependTo('#profile-comments').hide().fadeIn();
     else {
-        $('tr#<%= @comment.parent_id %> .profile-comment-responses').prepend( comment );
+        var responsesBox = $('tr#<%= @comment.parent_id %>'),
+            showMoreLink = responsesBox.find('a.show-more-responses');
+
+        responsesBox.find('.profile-comment-responses').prepend( comment );
+
+        if (showMoreLink.length) {
+            alert('asg');
+            showMoreLink.attr('data-offset', parseInt(showMoreLink.attr('data-offset')) + 1)
+        }
+
         $(form).hide();
         $("html:not(:animated)"+( ! $.browser.opera ? ",body:not(:animated)" : "")).
                 animate({scrollTop: comment.offset().top - 25}, 700);

@@ -16,7 +16,8 @@ class ApplicationController < ActionController::Base
       Hash[[ [:errors, object.errors.values.map(&:first)], [:html_class, :alert] ]]
     else
       instance = object.class.name.underscore.downcase
-      partial = instance.dup.insert(0, '_').insert(-1, '.erb')
+      partial = (object.respond_to?(:parent?) && object.parent?)? '_parent.erb' : '_response.erb'
+      partial_short = partial.gsub(/^_/, '').gsub('.erb', '')
       folder = case instance
                  when 'root_entry' then 'main'
                  else instance.pluralize
@@ -26,7 +27,7 @@ class ApplicationController < ActionController::Base
       path = Pathname.new(Rails.root.join('app', 'views', folder))
 
       if path.directory? && path.entries.map { |e| e.to_s }.include?(partial)
-        Hash[ [ [instance.to_sym, render_to_string(:partial => folder + '/' + instance,
+        Hash[ [ [instance.to_sym, render_to_string(:partial => folder + '/' + partial_short,
                                                    :locals => {instance.to_sym => object})],
                 [:message, t(instance.insert(-1, '_created'))],
                 [:html_class, :notice]

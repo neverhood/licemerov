@@ -5,7 +5,7 @@
 
   <table id='root-comments'>
     <% @entries.each do |entry| %>
-        <%= render :partial => 'main/root_entry', :locals => {:root_entry => entry} %>
+        <%= render :partial => 'main/parent', :locals => {:root_entry => entry} %>
     <% end %>
   </table>
 
