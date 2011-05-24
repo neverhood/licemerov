@@ -30,7 +30,7 @@
 
     <div class="root-comment-responses">
       <% root_entry.children.each do |response| %>
-          <%= render :partial => 'main/entries/response', :locals => {:root_entry => response} %>
+          <%= render :partial => 'main/response', :locals => {:root_entry => response} %>
       <% end %>
     </div>
   </td>

@@ -652,6 +652,7 @@ $(document).ready(function() {
             for (var entry in data.entries) {
                 responsesBox.append(data.entries[entry])
             }
+
         });
 
     });

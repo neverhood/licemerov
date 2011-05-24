@@ -14,10 +14,10 @@ else { // No errors
     if (type == 'parent')
         comment.prependTo('#profile-comments').hide().fadeIn();
     else {
-        var responsesBox = $('tr#<%= @comment.parent_id %>'),
-            showMoreLink = responsesBox.find('a.show-more-responses');
+        var parentBox = $('tr#<%= @comment.parent_id %>'),
+            showMoreLink = parentBox.find('a.show-more-responses');
 
-        responsesBox.find('.profile-comment-responses').prepend( comment );
+        parentBox.find('.profile-comment-responses').prepend( comment );
 
         if (showMoreLink.length) {
             alert('asg');
