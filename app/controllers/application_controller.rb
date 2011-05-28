@@ -12,11 +12,16 @@ class ApplicationController < ActionController::Base
   # Prepare a hash( to be converted to json ) for a newly created object
   # Includes partial, message and an html class for a notice
   def json_for(object)
+    possible_responses = [:root_entry, :profile_comment]
     if object.errors.any?
       Hash[[ [:errors, object.errors.values.map(&:first)], [:html_class, :alert] ]]
     else
       instance = object.class.name.underscore.downcase
-      partial = (object.respond_to?(:parent?) && object.parent?)? '_parent.erb' : '_response.erb'
+      if possible_responses.include?(instance)
+        partial = (object.respond_to?(:parent?) && object.parent?)? '_parent.erb' : '_response.erb'
+      else
+        partial = '_' + instance + '.erb'
+      end
       partial_short = partial.gsub(/^_/, '').gsub('.erb', '')
       folder = case instance
                  when 'root_entry' then 'main'

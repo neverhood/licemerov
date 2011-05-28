@@ -23,6 +23,10 @@ class PhotoComment < ActiveRecord::Base
     end
   end
 
+  def parent?
+    true
+  end
+
   def author_gender
     self.sex == 0 ? 'female' : 'male'
   end
