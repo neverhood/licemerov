@@ -506,7 +506,7 @@ $(document).ready(function() {
     });
     $('form#new_message #message_body').bind('keyup keydown', function() {
         var submit = $(this).parents('form').find(':submit'),
-            length = this.value.length;
+                length = this.value.length;
 
         submit.attr('disabled', !(length >= 1 && length < 1000));
     }); // TODO: REFACTOR
@@ -535,6 +535,9 @@ $(document).ready(function() {
         if ( status == 'success' ) {
             container.append( photo );
             $('#enable-fullscreen').show();
+
+            container.
+                    animate({scrollTop: container[0].scrollHeight}, 700);
         }
     });
 
@@ -598,55 +601,55 @@ $(document).ready(function() {
     //
     $('#main-show-more').click(function(){
         var $this = $(this).toggleLoader(),
-            page = parseInt($this.attr('data-page')) + 1;
+                page = parseInt($this.attr('data-page')) + 1;
         $.getJSON('/main?page=' + page, function(data) {
-          var entries = data.entries;
-          for (entry in entries) {
-            $('#root-comments').append(entries[entry]);
-          }
-          if ( entries.length >= 10 ) {
-            $this.attr('data-page', page + 1);
-          }
-          $this.toggleLoader();
+            var entries = data.entries;
+            for (entry in entries) {
+                $('#root-comments').append(entries[entry]);
+            }
+            if ( entries.length >= 10 ) {
+                $this.attr('data-page', page + 1);
+            }
+            $this.toggleLoader();
         })
     });
 
     $('#profile-show-more').click(function() {
-      var $this = $(this).toggleLoader(),
-          page = parseInt($this.attr('data-page')) + 1;
-          $.getJSON('/' + $.user.attributes.login + '/profile_comments?page=' + page, function(data) {
+        var $this = $(this).toggleLoader(),
+                page = parseInt($this.attr('data-page')) + 1;
+        $.getJSON('/' + $.user.attributes.login + '/profile_comments?page=' + page, function(data) {
             var entries = data.entries;
             for (entry in entries) {
-              $('#profile-comments').append(entries[entry]);
+                $('#profile-comments').append(entries[entry]);
             }
             if (entries.length >= 10) {
-              $this.attr('data-page', page + 1);
+                $this.attr('data-page', page + 1);
             }
             $this.toggleLoader();
-          });
+        });
     });
 
     $('#photo-show-more').live('click', function(){
-      var $this = $(this).toggleLoader(),
-          page = parseInt($this.attr('data-page')) + 1;
-          $.getJSON('/photo_comments/' + $.photo.id + '?page=' + page, function(data) {
+        var $this = $(this).toggleLoader(),
+                page = parseInt($this.attr('data-page')) + 1;
+        $.getJSON('/photo_comments/' + $.photo.id + '?page=' + page, function(data) {
             var entries = data.entries;
             for (var entry in entries) {
-              $('#photo-comments').append(entries[entry]);
+                $('#photo-comments').append(entries[entry]);
             }
             if (entries.length >= 10) {
-              $this.attr('data-page', page + 1);
+                $this.attr('data-page', page + 1);
             }
             $this.toggleLoader();
-          });
+        });
     });
 
     $('.show-more-responses').live('click', function(event) {
         var $this = $(this).toggleLoader(),
-            responsesBox = $this.parents('tr.profile-comment').find('.profile-comment-responses'),
-            parentEntryId = $this.attr('data-id'),
-            offset = $this.attr('data-offset'),
-            url = '/' + $.user.attributes.login + '/profile_comments?offset=' + offset + '&id=' + parentEntryId;
+                responsesBox = $this.parents('tr.profile-comment').find('.profile-comment-responses'),
+                parentEntryId = $this.attr('data-id'),
+                offset = $this.attr('data-offset'),
+                url = '/' + $.user.attributes.login + '/profile_comments?offset=' + offset + '&id=' + parentEntryId;
 
         $.getJSON(url, function(data) {
             for (var entry in data.entries) {
@@ -703,8 +706,8 @@ $(document).ready(function() {
 
     $('.delete-profile-response, .delete-root-response').live('ajax:complete', function() {
         var $this = $(this),
-            showMoreLink = $this.parents('.parent').find('.show-more-responses'),
-            offset = parseInt(showMoreLink.data('offset'));
+                showMoreLink = $this.parents('.parent').find('.show-more-responses'),
+                offset = parseInt(showMoreLink.data('offset'));
 
         showMoreLink.attr('data-offset', offset - 1);
         $(this).parents('.response').fadeOut('fast', function() { $(this).remove(); })
@@ -750,7 +753,7 @@ $.fn.toggleLoader = function() {
             if ( tag == 'form' ) {
                 $this.find(':submit').hide();
             } else {
-              $this.hide();
+                $this.hide();
             }
         }
     });
