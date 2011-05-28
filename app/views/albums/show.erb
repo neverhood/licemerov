@@ -30,21 +30,29 @@
 
   <% end %>
 
-  <div id='photos'>
-    <div>
-      <% if @photos.count > 0 %>
-          <strong id='enable-fullscreen'> Enable Full Screen Mode </strong>
-      <% else %>
-          <strong id='enable-fullscreen' class='hidden'> Enable Full Screen Mode </strong>
-      <% end %>
-    </div>
-
-    <% @photos.each do |photo| %>
-        <%= render :partial => 'photos/photo', :locals => {:photo => photo} %>
+  <div>
+    <% if @photos.count > 0 %>
+        <strong id='enable-fullscreen'> Enable Full Screen Mode </strong>
+    <% else %>
+        <strong id='enable-fullscreen' class='hidden'> Enable Full Screen Mode </strong>
     <% end %>
   </div>
 
-  <div id='current-photo'>
+  <div style='float:left;'>
+    <div style='overflow:auto;width:340px; height:500px;' id='photos'>
+      <% @photos.each do |photo| %>
+          <%= render :partial => 'photos/photo', :locals => {:photo => photo} %>
+      <% end %>
+    </div>
+    <% if profile_owner? %>
+        <%= form_for Photo.new, :html => {:multipart => true, 'data-notify' => true } do |f| %>
+            <%= f.hidden_field :album_id, :value => @album.id %>
+            <%= f.file_field :photo %>
+        <% end %>
+    <% end %>
+  </div>
+
+  <div id='current-photo' style='margin-left:360px;'>
     <table id='photo-comments'>
 
     </table>
@@ -60,13 +68,5 @@
         </div>
     <% end %>
   </div>
-
-  <% if profile_owner? %>
-      <%= form_for Photo.new, :html => {:multipart => true, 'data-notify' => true } do |f| %>
-          <%= f.hidden_field :album_id, :value => @album.id %>
-          <%= f.file_field :photo %>
-      <% end %>
-  <% end %>
-
 </div>
 
