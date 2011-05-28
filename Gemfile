@@ -22,6 +22,7 @@ gem 'unicode'
 # rails g jquery:install.
 gem 'jquery-rails'
 
+gem 'sass'
 
 # Use unicorn as the web server
 # gem 'unicorn'
