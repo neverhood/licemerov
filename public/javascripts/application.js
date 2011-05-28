@@ -631,7 +631,7 @@ $(document).ready(function() {
           page = parseInt($this.attr('data-page')) + 1;
           $.getJSON('/photo_comments/' + $.photo.id + '?page=' + page, function(data) {
             var entries = data.entries;
-            for (entry in entries) {
+            for (var entry in entries) {
               $('#photo-comments').append(entries[entry]);
             }
             if (entries.length >= 10) {
@@ -641,8 +641,8 @@ $(document).ready(function() {
           });
     });
 
-    $('.show-more-responses').live('click', function() {
-        var $this = $(this),
+    $('.show-more-responses').live('click', function(event) {
+        var $this = $(this).toggleLoader(),
             responsesBox = $this.parents('tr.profile-comment').find('.profile-comment-responses'),
             parentEntryId = $this.attr('data-id'),
             offset = $this.attr('data-offset'),
@@ -652,8 +652,12 @@ $(document).ready(function() {
             for (var entry in data.entries) {
                 responsesBox.append(data.entries[entry])
             }
-
+            $this.toggleLoader();
         });
+
+        event.preventDefault();
+
+        return false;
 
     });
 
@@ -698,6 +702,11 @@ $(document).ready(function() {
     });
 
     $('.delete-profile-response, .delete-root-response').live('ajax:complete', function() {
+        var $this = $(this),
+            showMoreLink = $this.parents('.parent').find('.show-more-responses'),
+            offset = parseInt(showMoreLink.data('offset'));
+
+        showMoreLink.attr('data-offset', offset - 1);
         $(this).parents('.response').fadeOut('fast', function() { $(this).remove(); })
     });
 });

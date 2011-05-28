@@ -37,8 +37,7 @@
     <% if profile_comment.responses(:all).count > 3 %>
         <div>
           <%= link_to t(:more_responses), nil, 'data-offset' => 3, :class => 'show-more-responses',
-                      'data-id' => profile_comment.id,
-                      :remote => true
+                      'data-id' => profile_comment.id
           %>
         </div>
     <% end %>

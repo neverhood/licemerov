@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
       Hash[[ [:errors, object.errors.values.map(&:first)], [:html_class, :alert] ]]
     else
       instance = object.class.name.underscore.downcase
-      if possible_responses.include?(instance)
+      if possible_responses.include?(instance.to_sym)
         partial = (object.respond_to?(:parent?) && object.parent?)? '_parent.erb' : '_response.erb'
       else
         partial = '_' + instance + '.erb'
