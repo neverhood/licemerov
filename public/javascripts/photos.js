@@ -62,9 +62,6 @@ $('document').ready(function() {
           $.each(data.photo_comments, function(index) {
               photosApi.commentSection.append(data.photo_comments[index])
           });
-          if (data.photo_comments.length >= 10) {
-            photosApi.commentSection.after("<div class='more-entries button' id='photo-show-more' data-page='1'>Ещё</div>");
-          }
 
         photosApi.commentForm.show().find('#photo_comment_photo_id').val(photoId);
       });

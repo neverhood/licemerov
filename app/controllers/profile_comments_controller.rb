@@ -30,7 +30,7 @@ class ProfileCommentsController < ApplicationController
   def show
     respond_to do |format|
       format.json do
-        render :json => {:entries => @page_entries.map {|e| json_for(e)[:profile_comment]}}
+        render :json => @page_entries_json
       end
     end
   end

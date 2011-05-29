@@ -599,35 +599,38 @@ $(document).ready(function() {
     // Main page (comments and stuff)
     // TODO: optimize
     //
-    $('#main-show-more').click(function(){
+
+    $('.more-entries').click(function() {
         var $this = $(this).toggleLoader(),
-                page = parseInt($this.attr('data-page')) + 1;
-        $.getJSON('/main?page=' + page, function(data) {
-            var entries = data.entries;
-            for (entry in entries) {
-                $('#root-comments').append(entries[entry]);
-            }
-            if ( entries.length >= 10 ) {
-                $this.attr('data-page', page + 1);
-            }
+            id = $this.attr('id'),
+            page = parseInt($this.attr('data-page')) + 1,
+            container = $('#' + id.replace('show-more','comments')),
+            url;
+
+        if (id == 'root-show-more') url = '/main?page=' + page;
+        if (id == 'profile-show-more') url = '/' + $.user.attributes.login + '/profile_comments?page=' + page;
+
+        $.getJSON(url, function(data) {
+            var entries = data.entries,
+                entry;
             $this.toggleLoader();
+
+            if ( entries.length ) {
+                for (entry in entries) {
+                    container.append(entries[entry]);
+                }
+                if ( entries.length < 10 ) {
+                    $this.hide(); // No more entries
+                } else {
+                    $this.attr('data-page', page);
+                }
+            } else {
+                $this.hide()
+            }
+
         })
     });
 
-    $('#profile-show-more').click(function() {
-        var $this = $(this).toggleLoader(),
-                page = parseInt($this.attr('data-page')) + 1;
-        $.getJSON('/' + $.user.attributes.login + '/profile_comments?page=' + page, function(data) {
-            var entries = data.entries;
-            for (entry in entries) {
-                $('#profile-comments').append(entries[entry]);
-            }
-            if (entries.length >= 10) {
-                $this.attr('data-page', page + 1);
-            }
-            $this.toggleLoader();
-        });
-    });
 
     $('#photo-show-more').live('click', function(){
         var $this = $(this).toggleLoader(),
@@ -644,24 +647,27 @@ $(document).ready(function() {
         });
     });
 
+
     $('.show-more-responses').live('click', function(event) {
         var $this = $(this).toggleLoader(),
-                responsesBox = $this.parents('tr.profile-comment').find('.profile-comment-responses'),
-                parentEntryId = $this.attr('data-id'),
-                offset = $this.attr('data-offset'),
-                url = '/' + $.user.attributes.login + '/profile_comments?offset=' + offset + '&id=' + parentEntryId;
+            responsesBox = $this.parents('.parent').find('.responses'),
+            parentEntryId = $this.attr('data-id'),
+            offset = $this.attr('data-offset'),
+            url, entry;
+
+        if ($.licemerov.controller == 'main') url = '/main?offset=' + offset + '&id=' + parentEntryId;
+        if ($.licemerov.controller == 'users')
+            url = '/' + $.user.attributes.login + '/profile_comments?offset=' + offset + '&id=' + parentEntryId;
 
         $.getJSON(url, function(data) {
-            for (var entry in data.entries) {
+            for (entry in data.entries) {
                 responsesBox.append(data.entries[entry])
             }
             $this.toggleLoader();
         });
 
         event.preventDefault();
-
         return false;
-
     });
 
     $('.reply').live('click', function() {

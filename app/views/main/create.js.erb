@@ -12,8 +12,15 @@ else { // No errors
     if (type == 'parent')
         entry.prependTo('table#root-comments').hide().fadeIn();
     else {
-        $('#<%= @entry.parent_id%>.parent').find('.root-comment-responses').
-                append(entry);
+        var parentBox = $('tr#<%= @entry.parent_id %>'),
+                showMoreLink = parentBox.find('a.show-more-responses');
+
+        parentBox.find('.responses').prepend(entry);
+
+        if (showMoreLink.length) {
+            showMoreLink.attr('data-offset', parseInt(showMoreLink.attr('data-offset')) + 1)
+        }
+
         $(form).hide();
         $("html:not(:animated)"+( ! $.browser.opera ? ",body:not(:animated)" : "")).
                 animate({scrollTop: entry.offset().top - 25}, 700);

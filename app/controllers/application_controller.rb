@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   # Includes partial, message and an html class for a notice
   def json_for(object)
     possible_responses = [:root_entry, :profile_comment]
+
     if object.errors.any?
       Hash[[ [:errors, object.errors.values.map(&:first)], [:html_class, :alert] ]]
     else

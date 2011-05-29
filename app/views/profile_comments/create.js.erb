@@ -17,7 +17,7 @@ else { // No errors
         var parentBox = $('tr#<%= @comment.parent_id %>'),
             showMoreLink = parentBox.find('a.show-more-responses');
 
-        parentBox.find('.profile-comment-responses').prepend( comment );
+        parentBox.find('.responses').prepend( comment );
 
         if (showMoreLink.length) {
             showMoreLink.attr('data-offset', parseInt(showMoreLink.attr('data-offset')) + 1)

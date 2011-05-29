@@ -28,10 +28,18 @@
       <% end %>
     </div>
 
-    <div class="root-comment-responses">
-      <% root_entry.children.each do |response| %>
+    <div class="responses">
+      <% responses = root_entry.responses %>
+      <% responses.each do |response| %>
           <%= render :partial => 'main/response', :locals => {:root_entry => response} %>
       <% end %>
     </div>
+    <% if root_entry.responses(:all).count > 3 %>
+        <div>
+          <%= link_to t(:more_responses), nil, 'data-offset' => 3, :class => 'show-more-responses',
+                      'data-id' => root_entry.id %>
+        </div>
+    <% end %>
+
   </td>
 </tr>

@@ -35,6 +35,13 @@ class RootEntry < ActiveRecord::Base
   scope :parent, where(:parent_id => nil)
   scope :response, where('"root_entries".parent_id IS NOT NULL')
 
+  scope :latest_responses, proc {
+      |parent_id, limit| where(:parent_id => parent_id).
+        with_user_details.
+        order("'root_entries'.created_at DESC").
+        limit(limit)
+  }
+
   def author
     User.where(:id => self.user_id).first
   end
@@ -62,6 +69,14 @@ class RootEntry < ActiveRecord::Base
   def children
     return @children if defined?(@children)
     @children = RootEntry.with_user_details.where(:parent_id => self.id)
+  end
+
+  def responses(filter = :latest)
+    if filter == :latest
+      self.class.latest_responses(self.id, 3)
+    elsif filter == :all
+      self.class.latest_responses(self.id, 100)
+    end
   end
 
   def author_gender

@@ -28,7 +28,7 @@
       <% end %>
     </div>
 
-    <div class="profile-comment-responses">
+    <div class="responses">
       <% responses = profile_comment.responses %>
       <% responses.each do |response| %>
           <%= render :partial => 'profile_comments/response', :locals => {:profile_comment => response} %>
