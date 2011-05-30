@@ -522,27 +522,23 @@ $(document).ready(function() {
     // Messages end
 
     // Photos
-    
 
-    $('#enable-photo-modify-mode').click(function() {
-        var notice = $('.photo-modify-mode-notice'),
-            settings = $('.photo-modify'),
-            noticeShown = notice.attr('data-shown') == 'true';
-
-        if (! noticeShown) {
-            settings.show();
-            notice.fadeIn('fast').attr('data-shown', true);
-        } else {
-            settings.hide(); notice.attr('data-shown', false);
-        }
-    });
+    // TODO: think if I need that
+//    $('#enable-photo-modify-mode').click(function() {
+//        var notice = $('.photo-modify-mode-notice'),
+//            settings = $('.photo-modify'),
+//            noticeShown = notice.attr('data-shown') == 'true';
+//
+//        if (! noticeShown) {
+//            settings.show();
+//            notice.fadeIn('fast').attr('data-shown', true);
+//        } else {
+//            settings.hide(); notice.attr('data-shown', false);
+//        }
+//    });
 
     $('.confirm').live('click', function() {
         $(this).parent().fadeOut();
-    });
-
-    $('.delete-photo').live('click', function() {
-        $(this).toggleClass('delete-photo-rotate', 1000);
     });
 
     var currentPhotoContainer = $('#current-photo'),
@@ -562,9 +558,30 @@ $(document).ready(function() {
         }
     });
 
-    $('.photo').live('click', function() {
+    $('.photos-in-row-count').click(function() {
+        var count = parseInt($(this).text()),
+            newWidth;
+
+        if ( count > 0 && count <= 3)
+
+        if (count == 3) {
+            newWidth = '100px'
+        } else if (count == 2) {
+            newWidth = '150px'
+        } else if (count == 1) {
+            newWidth = '300px';
+        }
+
+        if ($.licemerov.photos.photosInRow != count) {
+            $.licemerov.photos.photoContainers.width(newWidth);
+            $.licemerov.photos.photos.width(newWidth);
+            $.licemerov.photos.photosInRow = count;
+        }
+    });
+
+    $('.user-photo').live('click', function() {
         var $this = $(this),
-                smallImg = $this.find('img').attr('src'),
+                smallImg = $this.attr('src'),
                 largeImg = $('<img/>').attr('src', smallImg.replace('medium', 'large')),
                 photoId = $this.attr('id').replace('photo-', ''),
                 url = '/' + $.user.attributes.login + '/photos/' + photoId;

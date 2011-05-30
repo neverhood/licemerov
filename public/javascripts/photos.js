@@ -7,6 +7,9 @@ $('document').ready(function() {
         albumId : $('div.album-container').attr('id'),
         uploader : $('#photo_photo'),
         commentSection : $('#photo-comments'),
+        photoContainers: $('.photo'),
+        photos: $('.user-photo'),
+        photosInRow: 1,
         commentForm : $('#new-photo-comment-form')
     };
 

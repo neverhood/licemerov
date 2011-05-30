@@ -159,7 +159,7 @@ div#album-settings {float:left; width:200px; height:500px; border-right:1px soli
 form#new_photo { clear:both }
 div#new-photo-comment-form { display:none }
 div#photos { width: 800px; }
-div.photo { float:left; margin-left: 5px; }
+div.photo { float:left; margin-left: 5px; display:inline; }
 /*div#current-photo { width: 600px; height:400px; position:absolute; left:630px; top:90px; display:none; }*/
 strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; margin: 15px 0; color:#87ceeb; }
 
@@ -176,6 +176,7 @@ strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; marg
                      M11=0.9914448613738104, M12=-0.13052619222005157,M21=0.13052619222005157, M22=0.9914448613738104, sizingMethod='auto expand');
                zoom: 1;
 }
+.photos-in-row-count { color:#4169e1; cursor:pointer; padding:15px; }
 
 /* PHOTOS END */
 

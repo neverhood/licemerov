@@ -35,19 +35,27 @@
         <strong id='enable-fullscreen' class="<%= (@photos.count > 0)? '' : 'hidden' %>">
           <%= t :photo_fullscreen_mode %>
         </strong>
-        <strong id='enable-photo-modify-mode' class="<%= (@photos.count > 0)? '' : 'hidden' %>">
-          <%= t :photo_modify_mode %>
-        </strong>
-        <div class='photo-modify-mode-notice' data-shown='false'>
-          <%= t(:photo_modify_mode_notice).
-                      gsub('MINUS', '<img src="/images/minus.png" class="minus" />').
+        <!--<strong id='enable-photo-modify-mode' class="<%= (@photos.count > 0)? '' : 'hidden' %>">-->
+          <!--<%# t :photo_modify_mode %>-->
+        <!--</strong>-->
+        <!-- UNDER QUESTION
+        <div class='photo-modify-mode-notice' data-shown='false'>-->
+          <%# t(:photo_modify_mode_notice).
+#                      gsub('MINUS', '<img src="/images/minus.png" class="minus" />').
                       html_safe %>
-          <div class='button confirm'>OK</div>
-        </div>
+          <!--<div class='button confirm'>OK</div>-->
+        <!--</div>-->
     <% end %>
   </div>
 
   <div style='float:left;'>
+    <% if @photos.count > 0 %>
+        <div id='photos-in-row'>
+          <strong class='photos-in-row-count'>1</strong>
+          <strong class='photos-in-row-count'>2</strong>
+          <strong class='photos-in-row-count'>3</strong>
+        </div>
+    <% end %>
     <div style='overflow:auto;width:340px; height:500px;' id='photos'>
       <% @photos.each do |photo| %>
           <%= render :partial => 'photos/photo', :locals => {:photo => photo} %>

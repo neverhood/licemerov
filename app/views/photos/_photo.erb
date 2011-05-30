@@ -1,14 +1,10 @@
-<table>
-  <tr>
-    <td class='photo' id='photo-<%= photo.id %>'>
-      <%= image_tag photo.photo.url(:medium) %>
-    </td>
-    <% if profile_owner? %>
-        <td class='middle-vertical-align hidden photo-modify'>
-          <%= image_tag '/images/minus.png', :class => 'delete-photo delete-photo-rotate' %>
-          <%= image_tag '/images/settings.png', :class => 'photo-settings-inactive' %>
-        </td>
-    <% end %>
-  </tr>
-</table>
 
+<div class='photo'>
+  <%= image_tag photo.photo.url(:medium), :class => 'user-photo', :id => "photo-#{photo.id}" %>
+  <% if profile_owner? %>
+      <div>
+        <%# image_tag '/images/minus.png', :class => 'delete-photo delete-photo-rotate' %>
+        <%= image_tag '/images/settings.png', :class => 'photo-settings-inactive' %>
+      </div>
+  <% end %>
+</div>
