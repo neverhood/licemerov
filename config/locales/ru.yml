@@ -112,6 +112,9 @@ ru:
 
   # Photos
   photo_created: Фотография добавлена
+  photo_fullscreen_mode: Включть Полноэкранный режим
+  photo_modify_mode: Режим настройки
+  photo_modify_mode_notice: Фотографии, помеченные горизонтальной чертой ( MINUS ) будут удалены как только Вы покините эту страницу
 
   # Comments
   photo_comment_created: Комментарий добавлен

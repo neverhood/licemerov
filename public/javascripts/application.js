@@ -522,7 +522,28 @@ $(document).ready(function() {
     // Messages end
 
     // Photos
+    
 
+    $('#enable-photo-modify-mode').click(function() {
+        var notice = $('.photo-modify-mode-notice'),
+            settings = $('.photo-modify'),
+            noticeShown = notice.attr('data-shown') == 'true';
+
+        if (! noticeShown) {
+            settings.show();
+            notice.fadeIn('fast').attr('data-shown', true);
+        } else {
+            settings.hide(); notice.attr('data-shown', false);
+        }
+    });
+
+    $('.confirm').live('click', function() {
+        $(this).parent().fadeOut();
+    });
+
+    $('.delete-photo').live('click', function() {
+        $(this).toggleClass('delete-photo-rotate', 1000);
+    });
 
     var currentPhotoContainer = $('#current-photo'),
             photoCommentSection = $('#photo-comments'),

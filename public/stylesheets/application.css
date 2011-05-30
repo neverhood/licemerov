@@ -10,11 +10,11 @@ div.warning {color:orange;}
 /***************** Shared *****************/
 
 div.button { width: 100px; padding:10px;
-  border-radius:2px;
-  text-align:center;
-  color:white; background:black;
-  margin:10px;
-  cursor:pointer;
+    border-radius:2px;
+    text-align:center;
+    color:white; background:black;
+    margin:10px;
+    cursor:pointer;
 }
 
 li.error { color: red }
@@ -36,9 +36,9 @@ a.inactive {color:gray; text-decoration:none; cursor:default;}
     margin-bottom: 10px;
 }
 .popup-header {
-  height:25px;
-  margin-bottom:5px;
-  text-align:right;
+    height:25px;
+    margin-bottom:5px;
+    text-align:right;
 }
 .close { cursor:pointer }
 .clear-both { clear:both }
@@ -149,7 +149,7 @@ div#new-album-form-container { display:none; }
 h1#create-album { cursor:pointer; }
 div#albums { width: 800px; }
 div.album { float:left; padding: 15px; margin: 10px;  width:170px; height:170px;
-  border:1px solid black; -webkit-border-radius:2px; background:black;color:white;
+    border:1px solid black; -webkit-border-radius:2px; background:black;color:white;
 }
 div.album .album-cover { width:150px; height: 150px; }
 div#album-settings {float:left; width:200px; height:500px; border-right:1px solid red; margin-top:15px;}
@@ -161,7 +161,22 @@ div#new-photo-comment-form { display:none }
 div#photos { width: 800px; }
 div.photo { float:left; margin-left: 5px; }
 /*div#current-photo { width: 600px; height:400px; position:absolute; left:630px; top:90px; display:none; }*/
-strong#enable-fullscreen { cursor:pointer; margin: 15px 0; }
+strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; margin: 15px 0; color:#87ceeb; }
+
+.delete-photo, .photo-settings-inactive, .photo-settings-active { width:20px; height:20px; cursor:pointer;}
+.minus {margin-top:10px; width:20px; height:20px;}
+.photo-modify-mode-notice { color: black; font-weight:bold; display:none; background:#6495ed; width:410px; padding:15px; margin:25px;}
+.delete-photo-rotate {
+    -moz-transform: rotate(90deg);
+       -o-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90degg);
+             filter: progid:DXImageTransform.Microsoft.Matrix(
+                     M11=0.9914448613738104, M12=-0.13052619222005157,M21=0.13052619222005157, M22=0.9914448613738104, sizingMethod='auto expand');
+               zoom: 1;
+}
+
 /* PHOTOS END */
 
 /* PHOTO COMMENTS */
