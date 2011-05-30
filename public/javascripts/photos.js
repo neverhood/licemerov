@@ -10,6 +10,18 @@ $('document').ready(function() {
         photoContainers: $('.photo'),
         photos: $('.user-photo'),
         photosInRow: 1,
+        photoWidth: function(count) {
+            var newWidth;
+
+            if (count == 3) {
+                newWidth = '100px'
+            } else if (count == 2) {
+                newWidth = '150px'
+            } else if (count == 1) {
+                newWidth = '300px';
+            }
+            return newWidth;
+        },
         commentForm : $('#new-photo-comment-form')
     };
 

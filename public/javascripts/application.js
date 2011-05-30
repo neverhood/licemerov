@@ -548,9 +548,10 @@ $(document).ready(function() {
     $('#new_photo').bind('ajax:complete', function(event, xhr, status)  {
         var params = $.parseJSON(xhr.responseText),
                 container = $('#photos'),
-                photo = params.photo;
+                photo = $(params.photo);
         if ( status == 'success' ) {
-            container.append( photo );
+            var newWidth = ($.licemerov.photos.photoWidth($.licemerov.photos.photosInRow));
+            container.append( photo ); photo.width(newWidth).find('.user-photo').width(newWidth);
             $('#enable-fullscreen').show();
 
             container.
@@ -560,17 +561,7 @@ $(document).ready(function() {
 
     $('.photos-in-row-count').click(function() {
         var count = parseInt($(this).text()),
-            newWidth;
-
-        if ( count > 0 && count <= 3)
-
-        if (count == 3) {
-            newWidth = '100px'
-        } else if (count == 2) {
-            newWidth = '150px'
-        } else if (count == 1) {
-            newWidth = '300px';
-        }
+            newWidth = $.licemerov.photos.photoWidth(count);
 
         if ($.licemerov.photos.photosInRow != count) {
             $.licemerov.photos.photoContainers.width(newWidth);
