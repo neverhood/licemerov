@@ -1,9 +1,8 @@
 
 <div class='photo'>
   <%= image_tag photo.photo.url(:medium), :class => 'user-photo', :id => "photo-#{photo.id}" %>
-  <% if profile_owner? %>
+  <% if profile_owner? || @upload %> 
       <div>
-        <%# image_tag '/images/minus.png', :class => 'delete-photo delete-photo-rotate' %>
         <%= image_tag '/images/settings.png', :class => 'photo-settings-inactive' %>
       </div>
   <% end %>

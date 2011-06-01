@@ -12,6 +12,7 @@ class PhotosController < ApplicationController
                  limit(10).map { |c| json_for(c)[:photo_comment] }}
     respond_to do |format|
       if @photo
+        @photo.update_attributes(:views => @photo.views + 1)
         format.json {render :json => {:photo => @photo.photo.url(:large)}.merge(@comments) }
       else
         render :nothing => true

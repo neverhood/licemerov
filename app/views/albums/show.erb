@@ -56,7 +56,7 @@
           <strong class='photos-in-row-count'>3</strong>
         </div>
     <% end %>
-    <div style='overflow:auto;width:340px; height:500px;' id='photos'>
+    <div style='overflow:auto;width:340px; height:500px;' id='photos' data-photos='<%= @photos.count %>'>
       <% @photos.each do |photo| %>
           <%= render :partial => 'photos/photo', :locals => {:photo => photo} %>
       <% end %>

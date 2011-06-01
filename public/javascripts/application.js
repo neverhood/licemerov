@@ -543,19 +543,30 @@ $(document).ready(function() {
 
     var currentPhotoContainer = $('#current-photo'),
             photoCommentSection = $('#photo-comments'),
-            photoCommentForm = $('#new-photo-comment-form');
+            photoCommentForm = $('#new-photo-comment-form'),
+            photosContainer = $('#photos');
+
 
     $('#new_photo').bind('ajax:complete', function(event, xhr, status)  {
         var params = $.parseJSON(xhr.responseText),
                 container = $('#photos'),
+                photosCount = parseInt(container.attr('data-photos')),
                 photo = $(params.photo);
+
         if ( status == 'success' ) {
             var newWidth = ($.licemerov.photos.photoWidth($.licemerov.photos.photosInRow));
-            container.append( photo ); photo.width(newWidth).find('.user-photo').width(newWidth);
+
+            container.attr('data-photos', photosCount + 1).prepend(
+                    photo.width(newWidth)
+                    );
+            photo.find('.user-photo').width(newWidth);
+
+//            $.licemerov.photos.photos.push($(params.photo)[0]);
+
             $('#enable-fullscreen').show();
 
             container.
-                    animate({scrollTop: container[0].scrollHeight}, 700);
+                    animate({scrollTop: 0}, 700);
         }
     });
 
@@ -564,8 +575,11 @@ $(document).ready(function() {
             newWidth = $.licemerov.photos.photoWidth(count);
 
         if ($.licemerov.photos.photosInRow != count) {
-            $.licemerov.photos.photoContainers.width(newWidth);
-            $.licemerov.photos.photos.width(newWidth);
+            $.each( $('.photo'), function() {
+               $(this).width(newWidth).find('.user-photo').width(newWidth)
+            });
+//            $.licemerov.photos.photoContainers.width(newWidth);
+//            $.licemerov.photos.photos.width(newWidth);
             $.licemerov.photos.photosInRow = count;
         }
     });
