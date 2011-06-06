@@ -615,7 +615,8 @@ $(document).ready(function() {
                 smallImg = $this.attr('src'),
                 largeImg = $('<img/>').attr('src', smallImg.replace('medium', 'large')),
                 photoId = $this.attr('id').replace('photo-', ''),
-                url = '/' + $.user.attributes.login + '/photos/' + photoId;
+                date = new Date(),
+                url = '/' + $.user.attributes.login + '/photos/' + photoId + '?ie=' + date.getTime(); // ie caches ajax requests. 
 
         location.hash = '#' + photoId;
         $('#photo_comment_body').val('')
@@ -624,7 +625,14 @@ $(document).ready(function() {
         currentPhotoContainer.find('img').remove();
         currentPhotoContainer.prepend( largeImg ).show();
 
-        photoCommentSection.html('').append($.licemerov.loader);
+        photoCommentSection.html('');
+
+        if ( $.browser.msie ) {
+          photoCommentSection.append("\'" + $.licemerov.loader);
+        } else {
+          photoCommentSection.append( $.licemerov.loader );
+        }
+
         $.getJSON(url, function(data) {
             photoCommentSection.html('');
             for (var comment in data.photo_comments) {
