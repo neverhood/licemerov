@@ -546,6 +546,35 @@ $(document).ready(function() {
             photoCommentForm = $('#new-photo-comment-form'),
             photosContainer = $('#photos');
 
+    photosContainer.scroll(function() {
+        var $this = $(this),
+            top = this.scrollTop,
+            height = this.scrollHeight,
+            photosInRow = $.licemerov.photos.photosInRow,
+            percentage = $.licemerov.photos.morePhotos[photosInRow],
+            allPhotos = photosContainer.attr('data-all-photos') == 'true',
+            gettingPhotos = photosContainer.attr('data-getting-photos') == 'true';
+
+        if ( (parseInt((top/height)*100) >= percentage) && !allPhotos && !gettingPhotos )  {
+            photosContainer.attr('data-getting-photos', 'true');
+
+            var url = '/' + $.user.attributes.login + '/more_photos/' + $this.attr('data-photos');
+            $.getJSON(url, function(data) {
+                var newWidth = ($.licemerov.photos.photoWidth($.licemerov.photos.photosInRow)),
+                    photosCount = parseInt(photosContainer.attr('data-photos')) + data.photos.length;
+                if ( data.photos.length < 30 ) photosContainer.attr('data-all-photos', 'true');
+                photosContainer.attr('data-getting-photos', 'false');
+                for (var index in data.photos) {
+                    var photo = $(data.photos[index]);
+                    photosContainer.append(photo);
+                    $(photo).width(newWidth).find('.user-photo').width(newWidth);
+                }
+                photosContainer.attr('data-photos', photosCount );
+            });
+        }
+
+    });
+
 
     $('#new_photo').bind('ajax:complete', function(event, xhr, status)  {
         var params = $.parseJSON(xhr.responseText),
@@ -560,8 +589,6 @@ $(document).ready(function() {
                     photo.width(newWidth)
                     );
             photo.find('.user-photo').width(newWidth);
-
-//            $.licemerov.photos.photos.push($(params.photo)[0]);
 
             $('#enable-fullscreen').show();
 
@@ -578,8 +605,7 @@ $(document).ready(function() {
             $.each( $('.photo'), function() {
                $(this).width(newWidth).find('.user-photo').width(newWidth)
             });
-//            $.licemerov.photos.photoContainers.width(newWidth);
-//            $.licemerov.photos.photos.width(newWidth);
+
             $.licemerov.photos.photosInRow = count;
         }
     });

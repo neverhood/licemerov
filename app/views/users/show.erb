@@ -34,10 +34,10 @@
     <% end %>
 
     <%= link_to t(:write_message), nil, :class => 'write-message', 'data-popup' => '#message-form-container',
-      'data-recipient' => "{\"id\":\"#{@user.id}\", \"login\":\"#{@user.login}\"}"  %>
+                'data-recipient' => "{\"id\":\"#{@user.id}\", \"login\":\"#{@user.login}\"}"  %>
 
     <%= render :layout => 'shared/popup', :locals => {:id => 'message-form-container'}  do %>
-      <%= render :partial => 'messages/new_message_form' %>
+        <%= render :partial => 'messages/new_message_form' %>
     <% end %>
 
 <% end %>
@@ -71,9 +71,11 @@
 
 </table>
 
-<div class='more-entries button' id='profile-show-more' data-page='1'>
-    <%= t(:show_more) %>
-</div>
+<% if @comments.count >= 10 %>
+    <div class='more-entries button' id='profile-show-more' data-page='1'>
+      <%= t(:show_more) %>
+    </div>
+<% end %>
 
 
 

@@ -56,10 +56,14 @@
           <strong class='photos-in-row-count'>3</strong>
         </div>
     <% end %>
-    <div style='overflow:auto;width:340px; height:500px;' id='photos' data-photos='<%= @photos.count %>'>
+    <div style='overflow:auto;width:340px; height:500px;' id='photos'
+         data-photos='<%= @photos.count %>' data-all-photos='<%= (@photos.count >= 30)? "false" : "true"%>'
+         data-getting-photos='false'>
+
       <% @photos.each do |photo| %>
           <%= render :partial => 'photos/photo', :locals => {:photo => photo} %>
       <% end %>
+
     </div>
     <% if profile_owner? %>
         <%= form_for Photo.new, :html => {:multipart => true, 'data-notify' => true } do |f| %>

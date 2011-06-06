@@ -14,7 +14,7 @@ class AlbumsController < ApplicationController
   end
 
   def show
-    @photos = @album.photos.order('"photos".created_at DESC').limit(40)
+    @photos = @album.photos.order('"photos".created_at DESC').limit(30).all
   end
 
   def edit

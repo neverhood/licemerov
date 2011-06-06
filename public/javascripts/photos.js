@@ -8,6 +8,11 @@ $('document').ready(function() {
         uploader : $('#photo_photo'),
         commentSection : $('#photo-comments'),
         photos: $('.photo'),
+        morePhotos: {
+            1: 75,
+            2: 55,
+            3: 20
+        },
         photosInRow: 1,
         photoWidth: function(count) {
             var newWidth;

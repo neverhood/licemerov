@@ -19,8 +19,8 @@ class MessagesController < ApplicationController
   def index
     @message = Message.new
     @messages = case params[:section]
-                  when 'inbox' then current_user.incoming_messages
-                  when 'sent' then current_user.messages
+                  when 'inbox' then current_user.incoming_messages.order('created_at DESC')
+                  when 'sent' then current_user.messages.order('created_at DESC')
                 end
   end
 
@@ -73,7 +73,7 @@ class MessagesController < ApplicationController
       else
         format.json {
           render :json => { :errors => @errors.values.map(&:first), :html_class => :alert },
-            :status => :unprocessable_entity
+                 :status => :unprocessable_entity
         }
       end
     end
@@ -87,7 +87,7 @@ class MessagesController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render :json => {:hello => 'test'}, :status => 200 } 
+      format.json { render :json => {:hello => 'test'}, :status => 200 }
       format.html { redirect_to :back }
     end
 
@@ -104,11 +104,11 @@ class MessagesController < ApplicationController
     # crafted with $.licemerov.utils.linkTo(). Somewhat clumsy hence we should think of a better option
 
     respond_to do |format|
-      format.json { 
-        render :json => { :single => t(:cancel), :multiple => t(:recover_messages) }, :status => 200 
+      format.json {
+        render :json => { :single => t(:cancel), :multiple => t(:recover_messages) }, :status => 200
       }
       format.html {
-        redirect_to user_messages_path(current_user), :flash => {:warning => t(:message_deleted)} 
+        redirect_to user_messages_path(current_user), :flash => {:warning => t(:message_deleted)}
       }
     end
 

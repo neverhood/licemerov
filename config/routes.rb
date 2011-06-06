@@ -48,6 +48,7 @@ Licemerov::Application.routes.draw do
   #  ****************** Photos ******************
   resources :photos, :only => [:create, :update, :destroy]
   get '/:user_profile/photos/:id' => 'photos#show', :as => :user_photo
+  get '/:user_profile/more_photos/:photos_count' => 'photos#show_more'
 
   #  ****************** Photo Comments ******************
   resources :photo_comments, :only => [:create, :update, :destroy]
