@@ -9,6 +9,17 @@ div.warning {color:orange;}
 
 /***************** Shared *****************/
 
+
+div#header {
+    background: url(/images/header.jpg);
+    height:100px;
+    margin-bottom:25px;
+}
+div#header a, div#header a:visited { 
+  color: #00BFFF; font-weight:bold;
+  background:white; padding:5px; text-decoration:none;
+}
+
 div.button { width: 100px; padding:10px;
     border-radius:2px;
     text-align:center;

@@ -2,9 +2,12 @@
   <%= link_to t(:main_page), root_path %>
   <% if current_user %>
     <%= link_to t(:profile), home_page %>
-    <%= link_to t(:logout), logout_path %>
+    <%= link_to t(:logout), logout_path, :class => 'log-out' %>
   <% else %>
-    <%= link_to t(:login), login_path %>
-    <%= link_to t(:register), register_path %>
+    <%= link_to t(:login), login_path, :class => 'log-in' %>
+    <%= link_to t(:register), register_path, :class => 'register' %>
   <% end %>
+
+  <%= yield %>
+
 </div>

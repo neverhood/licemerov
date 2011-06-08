@@ -12,12 +12,11 @@ class ProfileComment < ActiveRecord::Base
   has_attached_file :image, :styles => {
       :regular => ['300x300>', :jpg],
       :enlarged => ['400x400>', :jpg],
-  }
+  }, :path => ":rails_root/public/system/profiles/:id/:style/:filename",
+     :url => "/system/profiles/:id/:style/:filename"
 
 
   validates_attachment_content_type :image,
-                                    :path => ":rails_root/public/system/profiles/:id/:style/:filename",
-                                    :url => "/system/profiles/:id/:style/:filename",
                                     :content_type => ['image/jpeg', 'image/jpg',
                                                       'image/pjpeg', 'image/png', 'image/gif'],
                                     :unless => Proc.new  { |model| model.image }
