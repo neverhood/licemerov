@@ -72,7 +72,7 @@ class ProfileComment < ActiveRecord::Base
 
   def author_avatar(style)
     if avatar_file_name
-      "/system/avatars/#{user_id}/#{style}/#{self.avatar_file_name}?#{self.avatar_updated_at.to_time.to_i.to_s}"
+      "/system/avatars/#{author_id}/#{style}/#{self.avatar_file_name}?#{self.avatar_updated_at.to_time.to_i.to_s}"
     else
       "/avatars/#{style}/missing.png"
     end
