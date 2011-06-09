@@ -11,13 +11,19 @@ div.warning {color:orange;}
 
 
 div#header {
-    background: url(/images/header.jpg);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#333),to(#111));
+    background-image: -moz-linear-gradient(#333,#111);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#111111');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#111111')";
+    box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 1px 0 rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
     height:100px;
     margin-bottom:25px;
 }
-div#header a, div#header a:visited { 
-  color: #00BFFF; font-weight:bold;
-  background:white; padding:5px; text-decoration:none;
+div#header a, div#header a:visited {
+    color: #BBB ; font-weight:bold; font-size:12pt;
+    padding:5px; text-decoration:none;
 }
 
 div.button { width: 100px; padding:10px;
@@ -27,6 +33,7 @@ div.button { width: 100px; padding:10px;
     margin:10px;
     cursor:pointer;
 }
+
 
 li.error { color: red }
 a.inactive {color:gray; text-decoration:none; cursor:default;}
@@ -105,6 +112,11 @@ strong.cancel-upload { display: none; cursor:pointer; color:red; }
 div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
 input#release_jcrop {display:none;}
 
+a.user-profile { float:right; margin-right:25%; padding:25px; }
+a.user-profile-hover { background: #333; padding:25px;}
+ul.user-menu { list-style-type:none; float:right;   }
+ul.user-menu li { padding: 10px; backgroud-color:#333; color: white;}
+
 /* MESSAGES */
 input#message_subject { padding: 5px 7px; width:290px; border:1px solid gray;}
 
@@ -179,13 +191,13 @@ strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; marg
 .photo-modify-mode-notice { color: black; font-weight:bold; display:none; background:#6495ed; width:410px; padding:15px; margin:25px;}
 .delete-photo-rotate {
     -moz-transform: rotate(90deg);
-       -o-transform: rotate(90deg);
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90degg);
-             filter: progid:DXImageTransform.Microsoft.Matrix(
-                     M11=0.9914448613738104, M12=-0.13052619222005157,M21=0.13052619222005157, M22=0.9914448613738104, sizingMethod='auto expand');
-               zoom: 1;
+    -o-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90degg);
+    filter: progid:DXImageTransform.Microsoft.Matrix(
+        M11=0.9914448613738104, M12=-0.13052619222005157,M21=0.13052619222005157, M22=0.9914448613738104, sizingMethod='auto expand');
+    zoom: 1;
 }
 .photos-in-row-count { color:#4169e1; cursor:pointer; padding:15px; }
 .user-photo { cursor:pointer;}

@@ -1,10 +1,15 @@
 <div id='header'>
   <%= link_to t(:main_page), root_path %>
   <% if current_user %>
-    <%= link_to t(:profile), home_page %>
-    <%= link_to t(:logout), logout_path, :class => 'log-out' %>
+      <%= link_to t(:logout), logout_path, :class => 'log-out' %>
+      <%= link_to t(:profile), home_page, :class => 'user-profile' %>
+      <div>
+        <ul class='hidden user-menu'>
+          <li><%= link_to t(:edit_details), edit_user_profile_path %></li>
+        </ul>
+      </div>
   <% else %>
-    <%= link_to t(:login), login_path, :class => 'log-in' %>
-    <%= link_to t(:register), register_path, :class => 'register' %>
+      <%= link_to t(:login), login_path, :class => 'log-in' %>
+      <%= link_to t(:register), register_path, :class => 'register' %>
   <% end %>
 </div>

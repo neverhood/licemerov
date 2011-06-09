@@ -674,8 +674,6 @@ $(document).ready(function() {
 
 
     // Main page (comments and stuff)
-    // TODO: optimize
-    //
 
     $('.more-entries').click(function() {
         var $this = $(this).toggleLoader(),
@@ -795,6 +793,16 @@ $(document).ready(function() {
         showMoreLink.attr('data-offset', offset - 1);
         $(this).parents('.response').fadeOut('fast', function() { $(this).remove(); })
     });
+
+    // Users
+
+    $('a.user-profile').mouseover(function() {
+        var $this = $(this).addClass('user-profile-hover');
+    })
+    $('a.user-profile').hover(function() {
+        $(this).addClass('user-profile-hover');
+    }, function() {$(this).removeClass('user-profile-hover')});
+
 });
 
 
