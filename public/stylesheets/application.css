@@ -23,7 +23,7 @@ div#header {
 }
 div#header a, div#header a:visited {
     color: #BBB ; font-weight:bold; font-size:12pt;
-    padding:5px; text-decoration:none;
+    text-decoration:none;
 }
 
 div.button { width: 100px; padding:10px;
@@ -112,8 +112,10 @@ strong.cancel-upload { display: none; cursor:pointer; color:red; }
 div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
 input#release_jcrop {display:none;}
 
-a.user-profile { float:right; margin-right:25%; padding:25px; }
-a.user-profile-hover { background: #333; padding:25px;}
+a.user-profile { float:right; margin-right:25%; padding:10px;}
+img.user-profile-menu { width:15px; position:relative;}
+a.user-profile-hover { background: #333; }
+
 ul.user-menu { list-style-type:none; float:right;   }
 ul.user-menu li { padding: 10px; backgroud-color:#333; color: white;}
 
