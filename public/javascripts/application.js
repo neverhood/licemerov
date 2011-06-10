@@ -802,6 +802,10 @@ $(document).ready(function() {
           $(this).removeClass('user-menu-item-hover')
     });
 
+    $('a.main-page-link').hover(function() {
+      $(this).addClass('main-page-link-hover')
+    }, function() {$(this).removeClass('main-page-link-hover')});
+
     $('body').click(function(event) {
         if ( event.target != $('a.user-profile')[0] ){
             $('ul.user-menu').hide()

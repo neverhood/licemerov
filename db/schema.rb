@@ -17,9 +17,9 @@ ActiveRecord::Schema.define(:version => 20110601154618) do
     t.string   "cover",           :default => "/images/missing.png"
     t.string   "title",           :default => "",                    :null => false
     t.string   "description"
+    t.string   "latinized_title",                                    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "latinized_title"
   end
 
   create_table "friendships", :force => true do |t|
@@ -33,15 +33,15 @@ ActiveRecord::Schema.define(:version => 20110601154618) do
   end
 
   create_table "messages", :force => true do |t|
-    t.integer  "user_id",           :default => 0
-    t.integer  "receiver_id",       :default => 0
-    t.boolean  "read",              :default => false
-    t.text     "body",              :default => ""
+    t.integer  "user_id",           :default => 0,     :null => false
+    t.integer  "receiver_id",       :default => 0,     :null => false
+    t.boolean  "read",              :default => false, :null => false
+    t.text     "body",              :default => "",    :null => false
     t.string   "subject"
-    t.boolean  "marked_as_deleted", :default => false
+    t.boolean  "marked_as_deleted", :default => false, :null => false
+    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "parent_id"
   end
 
   create_table "photo_comments", :force => true do |t|
@@ -79,18 +79,14 @@ ActiveRecord::Schema.define(:version => 20110601154618) do
 
   create_table "root_entries", :force => true do |t|
     t.integer  "user_id",            :default => 0
-    t.string   "login",              :default => ""
     t.integer  "mood",               :default => 0
     t.text     "body",               :default => ""
-    t.string   "avatar_url",         :default => ""
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "parent_id"
-    t.integer  "author_sex"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
-    t.datetime "image_updated_at"
+    t.integer  "parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_details", :force => true do |t|
@@ -98,17 +94,12 @@ ActiveRecord::Schema.define(:version => 20110601154618) do
     t.string   "first_name"
     t.string   "last_name"
     t.date     "birth_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "country"
     t.string   "city"
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
     t.string   "phone"
     t.string   "website"
-    t.string   "avatar_dimensions"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
@@ -119,6 +110,12 @@ ActiveRecord::Schema.define(:version => 20110601154618) do
     t.string   "persistence_token",   :default => "", :null => false
     t.string   "single_access_token", :default => "", :null => false
     t.string   "perishable_token",    :default => "", :null => false
+    t.integer  "sex",                 :default => 1,  :null => false
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.string   "avatar_dimensions"
     t.integer  "login_count",         :default => 0,  :null => false
     t.integer  "failed_login_count",  :default => 0,  :null => false
     t.datetime "last_request_at"
@@ -128,12 +125,6 @@ ActiveRecord::Schema.define(:version => 20110601154618) do
     t.string   "last_login_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sex",                 :default => 1
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
-    t.string   "avatar_dimensions"
   end
 
 end

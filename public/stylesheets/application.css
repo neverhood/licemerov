@@ -18,13 +18,13 @@ div#header {
     box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 1px 0 rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
-    height:30.5px;
+    height:33px;
     margin-bottom:25px;
 }
 div#header a, div#header a:visited {
-    font-weight:bold; font-size:12pt;
+    font-weight:bold; font-size:11pt;
     text-decoration:none;
-    font-family: Ubuntu, UbuntuBeta, 'Droid Sans', Arial, sans-serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 a.user-profile, a.main-page-link, a.user-profile:visited, a.main-page-link:visited { color:#BBB; }
@@ -116,9 +116,10 @@ strong.cancel-upload { display: none; cursor:pointer; color:red; }
 div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
 input#release_jcrop {display:none;}
 
-a.main-page-link { float:left; margin-left:2%;padding:7px;}
-a.user-profile { float:left; padding:7px;}
-img.user-profile-menu { width:15px; position:relative;}
+a.main-page-link { float:left; margin-left:2%;padding:9px;}
+a.main-page-link-hover { background: #333 }
+a.user-profile { float:left; padding:8px;}
+img.user-profile-menu { width:14px; }
 a.user-profile-hover { background: #333; }
 
 ul.user-menu {
