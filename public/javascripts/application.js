@@ -796,12 +796,37 @@ $(document).ready(function() {
 
     // Users
 
-    $('a.user-profile').mouseover(function() {
-        var $this = $(this).addClass('user-profile-hover');
-    })
+    $('ul.user-menu li').hover(function() {
+       $(this).addClass('user-menu-item-hover')
+    }, function() {
+          $(this).removeClass('user-menu-item-hover')
+    });
+
+    $('body').click(function(event) {
+        if ( event.target != $('a.user-profile')[0] ){
+            $('ul.user-menu').hide()
+        }
+    });
+
     $('a.user-profile').hover(function() {
         $(this).addClass('user-profile-hover');
-    }, function() {$(this).removeClass('user-profile-hover')});
+    }, function() {if ( ! $('ul.user-menu').is(':visible') ) $(this).removeClass('user-profile-hover')}).
+            click(function(event) {
+        var $this = $(this),
+            menu = $('ul.user-menu'),
+            top = $this.offset().top + $this.height() + 11,
+            left = ($this.width() - menu.width()) + $this.offset().left + 35;
+
+        event.preventDefault();
+
+        if ( menu.is(':visible') ) {
+            menu.hide();
+        } else {
+            menu.css({left:left, top:top}).show().addClass('user-profile-hover');
+        }
+
+        return false;
+    })
 
 });
 

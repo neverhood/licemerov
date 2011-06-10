@@ -1,16 +1,15 @@
 <div id='header'>
-  <%= link_to t(:main_page), root_path %>
+  <%= link_to t(:main_page), root_path, :class => 'main-page-link' %>
   <% if current_user %>
-      <%= link_to t(:logout), logout_path, :class => 'log-out' %>
-      <%# link_to t(:profile), home_page, :class => 'user-profile' %>
-      <%# image_tag '/images/down.png', :class => 'user-profile-menu' %>
       <%= link_to home_page, :class => 'user-profile' do %>
-          <span class='user-profile-name'><%= t(:profile) %></span>
+          <span class='user-profile-name'><%= t(:profile) + "( #{current_user.login} )" %></span>
           <%= image_tag '/images/down.png', :class => 'user-profile-menu' %>
       <% end %>
       <div>
         <ul class='hidden user-menu'>
+          <li><%= link_to t(:home_page), home_page %></li>
           <li><%= link_to t(:edit_details), edit_user_profile_path(current_user) %></li>
+          <li><%= link_to t(:logout), logout_path %></li>
         </ul>
       </div>
   <% else %>

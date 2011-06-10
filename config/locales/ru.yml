@@ -3,6 +3,7 @@
 
 ru:
   hello: "Привет %{name}!"
+  home_page: Моя Страница
   show_more: Ещё
   first_name: Имя
   last_name: Фамилия

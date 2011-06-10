@@ -18,13 +18,17 @@ div#header {
     box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 1px 0 rgba(0,0,0,.1);
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
-    height:100px;
+    height:30.5px;
     margin-bottom:25px;
 }
 div#header a, div#header a:visited {
-    color: #BBB ; font-weight:bold; font-size:12pt;
+    font-weight:bold; font-size:12pt;
     text-decoration:none;
+    font-family: Ubuntu, UbuntuBeta, 'Droid Sans', Arial, sans-serif;
 }
+
+a.user-profile, a.main-page-link, a.user-profile:visited, a.main-page-link:visited { color:#BBB; }
+
 
 div.button { width: 100px; padding:10px;
     border-radius:2px;
@@ -112,12 +116,28 @@ strong.cancel-upload { display: none; cursor:pointer; color:red; }
 div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
 input#release_jcrop {display:none;}
 
-a.user-profile { float:right; margin-right:25%; padding:10px;}
+a.main-page-link { float:left; margin-left:2%;padding:7px;}
+a.user-profile { float:left; padding:7px;}
 img.user-profile-menu { width:15px; position:relative;}
 a.user-profile-hover { background: #333; }
 
-ul.user-menu { list-style-type:none; float:right;   }
-ul.user-menu li { padding: 10px; backgroud-color:#333; color: white;}
+ul.user-menu {
+    margin-top:3.5px;
+    list-style-type:none; float:right; position:absolute; font-size:1px;
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#333),to(#111));
+    background-image: -moz-linear-gradient(#333,#111);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#111111');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333',endColorstr='#111111')";
+    box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 1px 0 rgba(0,0,0,.1);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
+}
+ul.user-menu li { padding: 5px; }
+li.user-menu-item-hover { background:#333; }
+
+li.user-menu-item-hover a, li.user-menu-item-hover a:visited { color:white; }
+ul.user-menu li a:visited, ul.user-menu li a {color:#BBB;}
+
 
 /* MESSAGES */
 input#message_subject { padding: 5px 7px; width:290px; border:1px solid gray;}
