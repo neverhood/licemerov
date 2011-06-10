@@ -5,15 +5,17 @@
           <span class='user-profile-name'><%= t(:profile) + "( #{current_user.login} )" %></span>
           <%= image_tag '/images/down.png', :class => 'user-profile-menu' %>
       <% end %>
+  <% else %>
+      <%= link_to t(:login), login_path, :class => 'log-in' %>
+      <%= link_to t(:register), register_path, :class => 'register' %>
+  <% end %>
+</div>
+<% if current_user %>
       <div>
         <ul class='hidden user-menu'>
           <li><%= link_to t(:home_page), home_page %></li>
           <li><%= link_to t(:edit_details), edit_user_profile_path(current_user) %></li>
           <li><%= link_to t(:logout), logout_path %></li>
         </ul>
-      </div>
-  <% else %>
-      <%= link_to t(:login), login_path, :class => 'log-in' %>
-      <%= link_to t(:register), register_path, :class => 'register' %>
-  <% end %>
-</div>
+      </div> 
+<% end %>

@@ -795,6 +795,10 @@ $(document).ready(function() {
     });
 
     // Users
+    //
+    $('div#header a').not('.user-profile').hover(function() {
+      $(this).addClass('hover')
+    }, function() { $(this).removeClass('hover') });
 
     $('ul.user-menu li').hover(function() {
        $(this).addClass('user-menu-item-hover')
@@ -802,9 +806,9 @@ $(document).ready(function() {
           $(this).removeClass('user-menu-item-hover')
     });
 
-    $('a.main-page-link').hover(function() {
-      $(this).addClass('main-page-link-hover')
-    }, function() {$(this).removeClass('main-page-link-hover')});
+//    $('a.main-page-link').hover(function() {
+//      $(this).addClass('main-page-link-hover')
+//    }, function() {$(this).removeClass('main-page-link-hover')});
 
     $('body').click(function(event) {
         if ( event.target != $('a.user-profile')[0] ){
@@ -813,8 +817,8 @@ $(document).ready(function() {
     });
 
     $('a.user-profile').hover(function() {
-        $(this).addClass('user-profile-hover');
-    }, function() {if ( ! $('ul.user-menu').is(':visible') ) $(this).removeClass('user-profile-hover')}).
+        $(this).addClass('hover');
+    }, function() {if ( ! $('ul.user-menu').is(':visible') ) $(this).removeClass('hover')}).
             click(function(event) {
         var $this = $(this),
             menu = $('ul.user-menu'),
