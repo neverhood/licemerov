@@ -1,16 +1,3 @@
 <h1>Please login</h1>
 
-<%= form_for @session do |f| %>
-    <div class="row">
-      <%= f.label t(:user_login) %>: <%= f.text_field :login %>
-    </div>
-    <div class="row">
-      <%= f.label t(:password) %>: <%= f.password_field :password %>
-    </div>
-    <div class="row">
-      <%= f.label t(:remember_me) %> <%= f.check_box :remember_me %>
-    </div>
-    <div class="submit">
-      <%= f.submit t(:login), :disable_with => t(:please_wait) %>
-    </div>
-<% end %>
+<%= render :partial => 'user_sessions/login_form' %>

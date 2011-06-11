@@ -796,7 +796,7 @@ $(document).ready(function() {
 
     // Users
     //
-    $('div#header a').not('.user-profile').hover(function() {
+    $('div#header a').not('.user-profile').not('.log-in').hover(function() {
       $(this).addClass('hover')
     }, function() { $(this).removeClass('hover') });
 
@@ -810,9 +810,14 @@ $(document).ready(function() {
 //      $(this).addClass('main-page-link-hover')
 //    }, function() {$(this).removeClass('main-page-link-hover')});
 
-    $('body').click(function(event) {
+    $('html').click(function(event) {
         if ( event.target != $('a.user-profile')[0] ){
-            $('ul.user-menu').hide()
+            $('ul.user-menu').hide();
+            $('a.user-profile').removeClass('hover');
+        }
+        if ( ! $(event.target).parents('div#login-form').length ) {
+            $('div#login-form').hide();
+            $('a.log-in').removeClass('hover')
         }
     });
 
@@ -834,6 +839,28 @@ $(document).ready(function() {
         }
 
         return false;
+    });
+
+    $('a.log-in').hover(function() {
+        $(this).addClass('hover')
+    }, function() {
+        if ( ! $('div#login-form').is(':visible') ) $(this).removeClass('hover')
+    }).click(function(event) {
+        var $this = $(this),
+            form = $('div#login-form'),
+            top = $this.offset().top + $this.height() + 15,
+            left = $this.offset().left + 25;
+
+        event.preventDefault();
+
+        if ( form.is(':visible') ) {
+            form.hide();
+        } else {
+            form.css({left:left, top:top}).show();
+            $this.addClass('hover');
+        }
+        return false;
+
     })
 
 });

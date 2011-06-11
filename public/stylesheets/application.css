@@ -124,9 +124,9 @@ div#avatar-preview {width: 200px; height: 200px; overflow:hidden;}
 input#release_jcrop {display:none;}
 
 a.main-page-link { }
-img.user-profile-menu { width:10px; }
+img.dropdown-image { width:10px; }
 
-ul.user-menu {
+ul.user-menu, div#login-form {
     margin-top:3.5px;
     list-style-type:none; float:right; position:absolute; font-size:1px;
     background-image: -webkit-gradient(linear,0 0,0 100%,from(#333),to(#111));
@@ -137,6 +137,7 @@ ul.user-menu {
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
 }
+div#login-form { font-size: 10pt; color:white; padding:5px;}
 ul.user-menu a, ul.user-menu a:visited { color:#BBB; padding:15px; font-size:11pt; text-decoration:none; }
 ul.user-menu li { padding: 10px; }
 li.user-menu-item-hover { background: #333; color:white; }
