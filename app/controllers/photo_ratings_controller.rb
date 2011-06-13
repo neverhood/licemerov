@@ -1,0 +1,2 @@
+class PhotoRatingsController < ApplicationController
+end

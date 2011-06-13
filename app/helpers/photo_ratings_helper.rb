@@ -1,0 +1,2 @@
+module PhotoRatingsHelper
+end

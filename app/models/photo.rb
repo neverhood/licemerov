@@ -39,6 +39,22 @@ class Photo < ActiveRecord::Base
   before_save :randomize_file_name, :if => :uploading_photo?
   after_post_process :save_photo_dimensions
 
+  def restricted_items
+    perms = eval(permissions)
+    ratings = (perms[:gender] == "female")? PhotoRating::FEMALE_RATINGS : PhotoRating::MALE_RATINGS
+
+    restricted = Proc.new {|category|
+      ratings[category].map {|item| (perms[category].include? item)? nil : item}.compact
+    }
+
+    {:primary => restricted.call(:primary), :secondary => restricted.call(:secondary)}
+  end
+
+  def allowed_items
+    perms = eval(permissions)
+    {:primary => perms[:primary], :secondary => perms[:secondary]}
+  end
+
   private
 
   def randomize_file_name
@@ -56,5 +72,7 @@ class Photo < ActiveRecord::Base
                                :large => {:width => photo.geometry(:large).width, :height => photo.geometry(:large).height}}.to_s
     end
   end
+
+
 
 end
