@@ -543,8 +543,18 @@ $(document).ready(function() {
 
     var currentPhotoContainer = $('#current-photo'),
             photoCommentSection = $('#photo-comments'),
+            photoRatingsSection = $('#photo-ratings'),
             photoCommentForm = $('#new-photo-comment-form'),
-            photosContainer = $('#photos');
+            photosContainer = $('#photos'),
+            switchRatingsCategory = function(category) {
+                if (category == 'show-primary') {
+                    $('div.primary').show().next().hide()
+                } else {
+                    $('div.primary').hide().next().show()
+                }
+            };
+
+    $('span.show-primary, span.show-secondary').live('click', switchRatingsCategory($(this).className));
 
     photosContainer.scroll(function() {
         var $this = $(this),
@@ -638,11 +648,15 @@ $(document).ready(function() {
             for (var comment in data.photo_comments) {
                 photoCommentSection.append(data.photo_comments[comment])
             }
+            photoRatingsSection.html(data.items);
 
             photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
         });
 
     });
+
+
+
 
     $('#new_photo_comment').bind('ajax:complete', function(event, xhr, status) {
         var $this = $(this),

@@ -12,11 +12,11 @@ class PhotosController < ApplicationController
     @photo = @user.photos.where(['photos.id = ?', params[:id]]).first
     @comments = {:photo_comments => PhotoComment.of(@photo).order("'photo_comments'.created_at DESC").
         limit(10).map { |c| json_for(c)[:photo_comment] }}
-    @permissions = {:permissions => @photo.permissions}
+    @items = {:items => render_to_string(:partial => 'photos/ratings')}
     respond_to do |format|
       if @photo
         @photo.update_attributes(:views => @photo.views + 1)
-        format.json {render :json =>{:photo => @photo.photo.url(:large)}.merge(@comments).merge(@permissions)}
+        format.json {render :json =>{:photo => @photo.photo.url(:large)}.merge(@comments).merge(@items)}
       else
         render :nothing => true
       end

@@ -1,0 +1,16 @@
+
+<% permissions = eval(@photo.permissions) %>
+
+<div style='width:600px;background:blue;color:black;'>
+  <span class='show-primary'>PRIMARY</span> <span class='show-secondary'>SECONDARY</span>
+</div>
+<div class='primary'>
+  <% permissions[:primary].each do |item| %>
+      <div><%= item %></div>
+  <% end %>
+</div>
+<div class='secondary hidden'>
+  <% permissions[:secondary].each do |item| %>
+      <div><%= item %></div>
+  <% end %>
+</div>

@@ -31,7 +31,7 @@ div#header a, div#header a:visited {
 }
 
 div#header a.hover, div#header a.hover:visited {
-  background: #333;
+    background: #333;
 }
 
 a.user-profile, a.main-page-link, a.user-profile:visited, a.main-page-link:visited { color:#BBB; }
