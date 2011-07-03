@@ -213,6 +213,10 @@ div.photo { float:left; margin-left: 5px; display:inline; }
 /*div#current-photo { width: 600px; height:400px; position:absolute; left:630px; top:90px; display:none; }*/
 strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; margin: 15px 0; color:#87ceeb; }
 
+div#photo-ratings { background:black; color:white; font-weight:bold; width:300px; }
+div#rating-items-header { background:black;border-bottom:1px solid red; }
+div.primary, div.secondary { height:140px; }
+div.rating-item { font-style:italic; color:green; }
 span.show-primary, span.show-secondary { color:white; cursor:pointer; }
 
 .delete-photo, .photo-settings-inactive, .photo-settings-active { width:20px; height:20px; cursor:pointer;}

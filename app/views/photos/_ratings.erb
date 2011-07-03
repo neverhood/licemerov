@@ -1,16 +1,16 @@
 
 <% permissions = eval(@photo.permissions) %>
 
-<div style='width:600px;background:black;border-bottom:1px solid red;'>
+<div id='rating-items-header'>
   <span class='show-primary'>PRIMARY</span> <span class='show-secondary'>SECONDARY</span>
 </div>
 <div class='primary'>
   <% permissions[:primary].each do |item| %>
-      <div><%= item %></div>
+      <div class='rating-item'><%= item %></div>
   <% end %>
 </div>
 <div class='secondary hidden'>
   <% permissions[:secondary].each do |item| %>
-      <div><%= item %></div>
+      <div class='rating-item'><%= item %></div>
   <% end %>
 </div>

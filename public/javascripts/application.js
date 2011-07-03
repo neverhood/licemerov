@@ -685,10 +685,12 @@ $(document).ready(function() {
 
     $('.show-primary').live('click', function() {
         $('div.primary').show().next().hide();
+        return false;
     });
 
     $('.show-secondary').live('click', function() {
-        $('div.primary').hide().next().show();
+        $('div.secondary').show();
+        $('div.primary').hide();
     });
 
     // Photos end
