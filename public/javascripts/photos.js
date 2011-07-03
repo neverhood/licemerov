@@ -8,6 +8,7 @@ $('document').ready(function() {
         uploader : $('#photo_photo'),
         commentSection : $('#photo-comments'),
         photos: $('.photo'),
+        currentPhoto: '',
         morePhotos: {
             1: 75,
             2: 55,
@@ -71,19 +72,21 @@ $('document').ready(function() {
     }
 
     if ( location.hash.length ) {
-      $.photo = {};
-      var photoId = $.photo.id = location.hash.replace('#', ''),
-          url = '/' + $.user.attributes.login + '/photos/' + photoId;
+        $.photo = {};
+        var photoId = $.photo.id = location.hash.replace('#', ''),
+                url = '/' + $.user.attributes.login + '/photos/' + photoId;
 
-      $.getJSON(url, function(data) {
-        $('#current-photo').prepend($('<img />').attr('src', data.photo)).
-          show();
-          $.each(data.photo_comments, function(index) {
-              photosApi.commentSection.append(data.photo_comments[index])
-          });
+        $.licemerov.photos.currentPhoto = photoId;
 
-        photosApi.commentForm.show().find('#photo_comment_photo_id').val(photoId);
-      });
+        $.getJSON(url, function(data) {
+            $('#current-photo').prepend($('<img />').attr('src', data.photo)).
+                    show();
+            $.each(data.photo_comments, function(index) {
+                photosApi.commentSection.append(data.photo_comments[index])
+            });
+
+            photosApi.commentForm.show().find('#photo_comment_photo_id').val(photoId);
+        });
     }
 
 

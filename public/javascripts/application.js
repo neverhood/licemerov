@@ -545,25 +545,16 @@ $(document).ready(function() {
             photoCommentSection = $('#photo-comments'),
             photoRatingsSection = $('#photo-ratings'),
             photoCommentForm = $('#new-photo-comment-form'),
-            photosContainer = $('#photos'),
-            switchRatingsCategory = function(category) {
-                if (category == 'show-primary') {
-                    $('div.primary').show().next().hide()
-                } else {
-                    $('div.primary').hide().next().show()
-                }
-            };
-
-    $('span.show-primary, span.show-secondary').live('click', switchRatingsCategory($(this).className));
+            photosContainer = $('#photos');
 
     photosContainer.scroll(function() {
         var $this = $(this),
-            top = this.scrollTop,
-            height = this.scrollHeight,
-            photosInRow = $.licemerov.photos.photosInRow,
-            percentage = $.licemerov.photos.morePhotos[photosInRow],
-            allPhotos = photosContainer.attr('data-all-photos') == 'true',
-            gettingPhotos = photosContainer.attr('data-getting-photos') == 'true';
+                top = this.scrollTop,
+                height = this.scrollHeight,
+                photosInRow = $.licemerov.photos.photosInRow,
+                percentage = $.licemerov.photos.morePhotos[photosInRow],
+                allPhotos = photosContainer.attr('data-all-photos') == 'true',
+                gettingPhotos = photosContainer.attr('data-getting-photos') == 'true';
 
         if ( (parseInt((top/height)*100) >= percentage) && !allPhotos && !gettingPhotos )  {
             photosContainer.attr('data-getting-photos', 'true');
@@ -571,7 +562,7 @@ $(document).ready(function() {
             var url = '/' + $.user.attributes.login + '/more_photos/' + $this.attr('data-photos');
             $.getJSON(url, function(data) {
                 var newWidth = ($.licemerov.photos.photoWidth($.licemerov.photos.photosInRow)),
-                    photosCount = parseInt(photosContainer.attr('data-photos')) + data.photos.length;
+                        photosCount = parseInt(photosContainer.attr('data-photos')) + data.photos.length;
                 if ( data.photos.length < 30 ) photosContainer.attr('data-all-photos', 'true');
                 photosContainer.attr('data-getting-photos', 'false');
                 for (var index in data.photos) {
@@ -601,6 +592,7 @@ $(document).ready(function() {
             photo.find('.user-photo').width(newWidth);
 
             $('#enable-fullscreen').show();
+            $('#photos-in-row').show();
 
             container.
                     animate({scrollTop: 0}, 700);
@@ -609,11 +601,11 @@ $(document).ready(function() {
 
     $('.photos-in-row-count').click(function() {
         var count = parseInt($(this).text()),
-            newWidth = $.licemerov.photos.photoWidth(count);
+                newWidth = $.licemerov.photos.photoWidth(count);
 
         if ($.licemerov.photos.photosInRow != count) {
             $.each( $('.photo'), function() {
-               $(this).width(newWidth).find('.user-photo').width(newWidth)
+                $(this).width(newWidth).find('.user-photo').width(newWidth)
             });
 
             $.licemerov.photos.photosInRow = count;
@@ -628,30 +620,35 @@ $(document).ready(function() {
                 date = new Date(),
                 url = '/' + $.user.attributes.login + '/photos/' + photoId + '?ie=' + date.getTime(); // ie caches ajax requests. 
 
-        location.hash = '#' + photoId;
-        $('#photo_comment_body').val('')
-                .parents('form').find(':submit').attr('disabled', true);
+        if ($.licemerov.photos.currentPhoto != photoId) {
+            $.licemerov.photos.currentPhoto = photoId;
 
-        currentPhotoContainer.find('img').remove();
-        currentPhotoContainer.prepend( largeImg ).show();
+            location.hash = '#' + photoId;
+            $('#photo_comment_body').val('')
+                    .parents('form').find(':submit').attr('disabled', true);
 
-        photoCommentSection.html('');
+            currentPhotoContainer.find('img').remove();
+            currentPhotoContainer.prepend( largeImg ).show();
 
-        if ( $.browser.msie ) {
-          photoCommentSection.append("\'" + $.licemerov.loader);
-        } else {
-          photoCommentSection.append( $.licemerov.loader );
-        }
-
-        $.getJSON(url, function(data) {
             photoCommentSection.html('');
-            for (var comment in data.photo_comments) {
-                photoCommentSection.append(data.photo_comments[comment])
-            }
-            photoRatingsSection.html(data.items);
 
-            photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
-        });
+            if ( $.browser.msie ) {
+                photoCommentSection.append("\'" + $.licemerov.loader);
+            } else {
+                photoCommentSection.append( $.licemerov.loader );
+            }
+
+            $.getJSON(url, function(data) {
+                photoCommentSection.html('');
+                for (var comment in data.photo_comments) {
+                    photoCommentSection.append(data.photo_comments[comment])
+                }
+                photoRatingsSection.html(data.items);
+
+                photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
+            });
+
+        }
 
     });
 
@@ -691,17 +688,17 @@ $(document).ready(function() {
 
     $('.more-entries').click(function() {
         var $this = $(this).toggleLoader(),
-            id = $this.attr('id'),
-            page = parseInt($this.attr('data-page')) + 1,
-            container = $('#' + id.replace('show-more','comments')),
-            url;
+                id = $this.attr('id'),
+                page = parseInt($this.attr('data-page')) + 1,
+                container = $('#' + id.replace('show-more','comments')),
+                url;
 
         if (id == 'root-show-more') url = '/main?page=' + page;
         if (id == 'profile-show-more') url = '/' + $.user.attributes.login + '/profile_comments?page=' + page;
 
         $.getJSON(url, function(data) {
             var entries = data.entries,
-                entry;
+                    entry;
             $this.toggleLoader();
 
             if ( entries.length ) {
@@ -739,10 +736,10 @@ $(document).ready(function() {
 
     $('.show-more-responses').live('click', function(event) {
         var $this = $(this).toggleLoader(),
-            responsesBox = $this.parents('.parent').find('.responses'),
-            parentEntryId = $this.attr('data-id'),
-            offset = $this.attr('data-offset'),
-            url, entry;
+                responsesBox = $this.parents('.parent').find('.responses'),
+                parentEntryId = $this.attr('data-id'),
+                offset = $this.attr('data-offset'),
+                url, entry;
 
         if ($.licemerov.controller == 'main') url = '/main?offset=' + offset + '&id=' + parentEntryId;
         if ($.licemerov.controller == 'users')
@@ -811,13 +808,13 @@ $(document).ready(function() {
     // Users
     //
     $('div#header a').not('.user-profile').not('.log-in').hover(function() {
-      $(this).addClass('hover')
+        $(this).addClass('hover')
     }, function() { $(this).removeClass('hover') });
 
     $('ul.user-menu li').hover(function() {
-       $(this).addClass('user-menu-item-hover')
+        $(this).addClass('user-menu-item-hover')
     }, function() {
-          $(this).removeClass('user-menu-item-hover')
+        $(this).removeClass('user-menu-item-hover')
     });
 
 //    $('a.main-page-link').hover(function() {
@@ -840,9 +837,9 @@ $(document).ready(function() {
     }, function() {if ( ! $('ul.user-menu').is(':visible') ) $(this).removeClass('hover')}).
             click(function(event) {
         var $this = $(this),
-            menu = $('ul.user-menu'),
-            top = $this.offset().top + $this.height() + 11,
-            left = ($this.width() - menu.width()) + $this.offset().left + 35;
+                menu = $('ul.user-menu'),
+                top = $this.offset().top + $this.height() + 11,
+                left = ($this.width() - menu.width()) + $this.offset().left + 35;
 
         event.preventDefault();
 
@@ -861,9 +858,9 @@ $(document).ready(function() {
         if ( ! $('div#login-form').is(':visible') ) $(this).removeClass('hover')
     }).click(function(event) {
         var $this = $(this),
-            form = $('div#login-form'),
-            top = $this.offset().top + $this.height() + 15,
-            left = $this.offset().left + 25;
+                form = $('div#login-form'),
+                top = $this.offset().top + $this.height() + 15,
+                left = $this.offset().left + 25;
 
         event.preventDefault();
 
