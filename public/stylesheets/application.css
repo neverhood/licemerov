@@ -215,7 +215,7 @@ strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; marg
 
 div#photo-ratings { background:black; color:white; font-weight:bold; width:300px; }
 div#rating-items-header { background:black;border-bottom:1px solid red; }
-div.primary, div.secondary { height:140px; }
+div.primary, div.secondary { height:160px; }
 div.rating-item { font-style:italic; color:green; }
 span.show-primary, span.show-secondary { color:white; cursor:pointer; }
 

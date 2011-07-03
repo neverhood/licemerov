@@ -633,9 +633,11 @@ $(document).ready(function() {
             photoCommentSection.html('');
 
             if ( $.browser.msie ) {
-                photoCommentSection.append("\'" + $.licemerov.loader);
+                photoCommentSection.html("\'" + $.licemerov.loader);
+                photoRatingsSection.html("\'" + $.licemerov.loader)
             } else {
-                photoCommentSection.append( $.licemerov.loader );
+                photoCommentSection.html( $.licemerov.loader );
+                photoRatingsSection.html( $.licemerov.loader );
             }
 
             $.getJSON(url, function(data) {
@@ -691,6 +693,20 @@ $(document).ready(function() {
     $('.show-secondary').live('click', function() {
         $('div.secondary').show();
         $('div.primary').hide();
+    });
+
+    $('img.disable-rating-item, img.enable-rating-item').live('click', function() {
+        var $this = $(this),
+            type = $this.hasClass('enable-rating-item')? 'enable' : 'disable';
+
+        if (type == 'enable') {
+            $this.attr('src', '/images/minus.gif').removeClass('enable-rating-item').
+                    addClass('disable-rating-item')
+        } else {
+            $this.attr('src', '/images/plus.png').removeClass('disable-rating-item').
+                    addClass('enable-rating-item');
+        }
+
     });
 
     // Photos end

@@ -5,21 +5,17 @@ class PhotosController < ApplicationController
   before_filter :coerce_params, :only => :create
   before_filter :set_permissions, :only => :create
   before_filter :more_photos, :only => :show_more
+  before_filter :existent_photo, :only => [:show, :update]
 
   layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
 
   def show
-    @photo = @user.photos.where(['photos.id = ?', params[:id]]).first
     @comments = {:photo_comments => PhotoComment.of(@photo).order("'photo_comments'.created_at DESC").
         limit(10).map { |c| json_for(c)[:photo_comment] }}
     @items = {:items => render_to_string(:partial => 'photos/ratings')}
     respond_to do |format|
-      if @photo
-        @photo.update_attributes(:views => @photo.views + 1)
-        format.json {render :json =>{:photo => @photo.photo.url(:large)}.merge(@comments).merge(@items)}
-      else
-        render :nothing => true
-      end
+      @photo.update_attributes(:views => @photo.views + 1)
+      format.json {render :json =>{:photo => @photo.photo.url(:large)}.merge(@comments).merge(@items)}
     end
   end
 
@@ -56,6 +52,11 @@ class PhotosController < ApplicationController
         @photos = @user.photos.offset(photos_count).limit(30).order("'photos'.created_at DESC").map { |p| json_for(p)[:photo]}
       end
     end
+  end
+
+  def existent_photo
+    @photo = @user.photos.where(['photos.id = ?', params[:id]]).first
+    (render :nothing => true) unless @photo
   end
 
   def coerce_params

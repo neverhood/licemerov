@@ -108,6 +108,10 @@ class User < ActiveRecord::Base
     friendship
   end
 
+  def rating_items
+    self.sex == 0 ? PhotoRating::FEMALE_RATINGS : PhotoRating::MALE_RATINGS
+  end
+
   def gender
     self.sex == 0 ? 'female' : 'male'
   end
