@@ -681,6 +681,16 @@ $(document).ready(function() {
 
     // Other related code moved to photos.js ( to be merged later )
 
+    // ---- Photo Ratings -----
+
+    $('.show-primary').live('click', function() {
+        $('div.primary').show().next().hide();
+    });
+
+    $('.show-secondary').live('click', function() {
+        $('div.primary').hide().next().show();
+    });
+
     // Photos end
 
 

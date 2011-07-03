@@ -85,6 +85,8 @@ $('document').ready(function() {
                 photosApi.commentSection.append(data.photo_comments[index])
             });
 
+            $('#photo-ratings').html(data.items);
+
             photosApi.commentForm.show().find('#photo_comment_photo_id').val(photoId);
         });
     }

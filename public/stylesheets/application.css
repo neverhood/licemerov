@@ -213,6 +213,8 @@ div.photo { float:left; margin-left: 5px; display:inline; }
 /*div#current-photo { width: 600px; height:400px; position:absolute; left:630px; top:90px; display:none; }*/
 strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; margin: 15px 0; color:#87ceeb; }
 
+span.show-primary, span.show-secondary { color:white; cursor:pointer; }
+
 .delete-photo, .photo-settings-inactive, .photo-settings-active { width:20px; height:20px; cursor:pointer;}
 .minus {margin-top:10px; width:20px; height:20px;}
 .photo-modify-mode-notice { color: black; font-weight:bold; display:none; background:#6495ed; width:410px; padding:15px; margin:25px;}
