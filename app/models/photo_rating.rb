@@ -1,16 +1,13 @@
 class PhotoRating < ActiveRecord::Base
 
 
-  MALE_RATINGS = {
-      :primary => [:face, :chest, :haircut, :eyes, :smile, :appearance, :ass, :musculature],
+  FEMALE_RATINGS = {
+      :primary => [:haircut, :face, :breasts, :belly, :legs, :ass],
       :secondary => [:beard, :mustache, :accessories]
   }
-  FEMALE_RATINGS = {
-      :primary => [:face, :eyes, :smile, :appearance, :ass, :breasts, :legs, :haircut],
+  MALE_RATINGS = {
+      :primary => [:haircut, :face, :chest, :abs, :spine, :ass],
       :secondary => [:accessories, ]
   }
-
-
-
 
 end

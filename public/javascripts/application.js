@@ -62,6 +62,8 @@ $(document).ready(function() {
         location: window.location.href,
         loader: ("<img class='loader' src='/images/loader.gif' />"),
         user: {},
+        femaleRatings: ['haircut', 'face', 'breasts', 'belly', 'legs', 'ass'],
+        maleRatings: ['haircut', 'face', 'chest', 'abs', 'spine'],
         actions: {},
         noticesContainer: $('#notices'),
         controller: wrapper.attr('class')
@@ -647,6 +649,9 @@ $(document).ready(function() {
                 }
                 photoRatingsSection.html(data.items);
 
+                $.licemerov.photos.currentPhotoPermissions =
+                        $.licemerov.photos.currentPhotoNewPermissions = data.permissions;
+
                 photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
             });
 
@@ -685,15 +690,14 @@ $(document).ready(function() {
 
     // ---- Photo Ratings -----
 
-    $('.show-primary').live('click', function() {
-        $('div.primary').show().next().hide();
-        return false;
-    });
-
-    $('.show-secondary').live('click', function() {
-        $('div.secondary').show();
-        $('div.primary').hide();
-    });
+    var ratingsApi = $.licemerov.photoRatings = {
+        buttons: {
+            modify: $('span#modify-photo-permissions'),
+            save: $('span#save-photo-permissions'),
+            cancel: $('span#cancel-photo-permissions-editing')
+        },
+        itemsBox: $('div#primary-rating-items')
+    };
 
     $('img.disable-rating-item, img.enable-rating-item').live('click', function() {
         var $this = $(this),
@@ -701,13 +705,24 @@ $(document).ready(function() {
 
         if (type == 'enable') {
             $this.attr('src', '/images/minus.gif').removeClass('enable-rating-item').
-                    addClass('disable-rating-item')
+                    addClass('disable-rating-item');
+            $.licemerov.photos.currentPhotoNewPermissions.allowed.push()
         } else {
             $this.attr('src', '/images/plus.png').removeClass('disable-rating-item').
                     addClass('enable-rating-item');
         }
 
     });
+
+    $('#modify-photo-permissions').live('click', function() {
+        $(this).hide();
+        ratingsApi.buttons.cancel.show();
+        ratingsApi.buttons.save.show();
+    });
+
+    $('.cancel-photo-permissions-editing hidden').live('click', function() {
+        $(this).hide().prev().hide().prev().show()
+    })
 
     // Photos end
 

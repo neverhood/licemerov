@@ -9,6 +9,8 @@ $('document').ready(function() {
         commentSection : $('#photo-comments'),
         photos: $('.photo'),
         currentPhoto: '',
+        currentPhotoPermissions: {},
+        currentPhotoNewPermissions: {allowed: [], restricted: []},
         morePhotos: {
             1: 75,
             2: 55,
@@ -86,6 +88,8 @@ $('document').ready(function() {
             });
 
             $('#photo-ratings').html(data.items);
+
+            $.licemerov.photos.currentPhotoPermissions = data.permissions;
 
             photosApi.commentForm.show().find('#photo_comment_photo_id').val(photoId);
         });

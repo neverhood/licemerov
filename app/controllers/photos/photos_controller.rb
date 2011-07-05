@@ -13,9 +13,15 @@ class PhotosController < ApplicationController
     @comments = {:photo_comments => PhotoComment.of(@photo).order("'photo_comments'.created_at DESC").
         limit(10).map { |c| json_for(c)[:photo_comment] }}
     @items = {:items => render_to_string(:partial => 'photos/ratings')}
+    @items_json = {:permissions => {:allowed => eval(@photo.permissions)[:primary], :restricted => @photo.restricted_items[:primary] }}
     respond_to do |format|
       @photo.update_attributes(:views => @photo.views + 1)
-      format.json {render :json =>{:photo => @photo.photo.url(:large)}.merge(@comments).merge(@items)}
+      format.json {
+        render :json =>{:photo => @photo.photo.url(:large)}.
+            merge(@comments).   # photo comments
+            merge(@items).      # partial with ratings items
+            merge(@items_json)  # e.g: {allowed:['face', 'ass'...], restricted:['legs', 'belly'..]}
+      }
     end
   end
 
