@@ -82,7 +82,7 @@ td.top-vertical-align { vertical-align:top; }
 
 /**** Bases ****/
 /* body {background: url(/images/background.png)} */
-body {background: white;color:black;}
+body {background: url(/images/bg.jpg);color:white;}
 /**** Bases END ****/
 a.new-friends {margin-left: -4px; text-decoration:none; color:red;}
 
@@ -137,7 +137,7 @@ ul.user-menu, div#login-form {
     -moz-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
     -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25),inset 0 -1px 0 rgba(0,0,0,.1);
 }
-div#login-form { font-size: 10pt; color:white; padding:5px;}
+div#login-form { font-size: 10pt; color:white; padding:5px;  }
 ul.user-menu a, ul.user-menu a:visited { color:#BBB; padding:15px; font-size:11pt; text-decoration:none; }
 ul.user-menu li { padding: 10px; }
 li.user-menu-item-hover { background: #333; color:white; }
@@ -257,4 +257,14 @@ div.root-comment-body, div.profile-comment-body, div.photo-comment-body {
 .ui-menu-item { font-size: 14px; font-weight:bold; background:none; color:black;}
 .thin-border { border: 1px solid gray; }
 .autocompletion-item { border-bottom : 1px dashed black;}
-#photo-comments tr, #profile-comments tr, #root-comments tr { border-bottom:1px solid black; padding: 50px;}
+#photo-comments tr, #profile-comments tr, #root-comments tr { padding: 50px;}
+
+.curver { background:white; border-radius:10px; padding:10px; }
+.root-comment-body {
+    background-color: white; border:1px solid white;
+    -webkit-border-radius: 10px;     color:black;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.3);     padding:10px 15px;
+}
+.response .body { padding:5px; color:black; border-radius:5px; color:black}

@@ -1,3 +1,4 @@
+
 <tr id="<%= root_entry.id %>" class='parent root-comment'>
   <td class='avatar-box'>
     <div><%= image_tag(root_entry.author_avatar(:thumb)) %></div>
@@ -9,10 +10,12 @@
       </strong>
     </div>
     <div class='root-comment-body'>
-      <div>
-        <%= image_tag(root_entry.image.url(:regular), :class => 'regular') if root_entry.image.exists? %>
+      <div class='curver'>
+        <div>
+          <%= image_tag(root_entry.image.url(:regular), :class => 'regular') if root_entry.image.exists? %>
+        </div>
+        <%= simple_format root_entry.body %>
       </div>
-      <%= simple_format root_entry.body %>
     </div>
 
     <div class='root-comment-footer'>
@@ -43,3 +46,5 @@
 
   </td>
 </tr>
+
+
