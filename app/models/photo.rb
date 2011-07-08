@@ -9,7 +9,7 @@ end
 
 class Photo < ActiveRecord::Base
 
-  attr_accessible :user_id, :album_id, :photo, :views
+  attr_accessible :user_id, :album_id, :photo, :views, :permissions
 
   belongs_to :album
   belongs_to :user # just to stay on a safe side, might be removed later

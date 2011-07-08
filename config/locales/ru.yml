@@ -33,6 +33,19 @@ ru:
   are_you_sure: Точно?
   more_responses: Показать предыдущие ответы
 
+  # RATING ITEMS
+
+  haircut: прическа
+  face: лицо
+  breasts: грудь
+  belly: животик
+  legs: ноги
+  ass: попа
+  chest: торс
+  abs: пресс
+  spine: спина
+
+
   # HEADER
   main_page: На главную
   profile: Мой профиль

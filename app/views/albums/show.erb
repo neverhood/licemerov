@@ -49,13 +49,11 @@
   </div>
 
   <div style='float:left;'>
-    <% if @photos.count > 0 %>
-        <div id='photos-in-row'>
+        <div id='photos-in-row' class='<%= (@photos.count > 0)? "" : "hidden" %>'>
           <strong class='photos-in-row-count'>1</strong>
           <strong class='photos-in-row-count'>2</strong>
           <strong class='photos-in-row-count'>3</strong>
         </div>
-    <% end %>
     <div style='overflow:auto;width:340px; height:500px;' id='photos'
          data-photos='<%= @photos.count %>' data-all-photos='<%= (@photos.count >= 30)? "false" : "true"%>'
          data-getting-photos='false'>
@@ -77,6 +75,11 @@
     <table id='photo-comments'>
 
     </table>
+
+    <div id='photo-ratings'>
+    </div>
+
+
     <% if current_user %>
         <div id='new-photo-comment-form'>
           <%= form_for PhotoComment.new, :remote => true, :html => {'data-notify' => true} do |f| %>
