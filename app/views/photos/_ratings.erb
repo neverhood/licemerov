@@ -8,14 +8,15 @@
           <% if allowed_items[:primary].include?(item.to_sym) %>
 
               <div class='allowed-rating-item rating-item <%= item %>'>
-                <%= t item %> <%= image_tag '/images/minus.gif', :class => 'disable-rating-item hidden' %>
+                <label><%= t item %> <%= check_box_tag item, item, true, :class => 'hidden on-off-item' %></label>
               </div>
 
           <% else %>
 
               <div class='restricted-rating-item rating-item <%= item %>'>
-                <%= t item %> <%= image_tag '/images/plus.png', :class => 'enable-rating-item hidden' %>
+                <%= t item %> <%= check_box_tag item, item, false, :class => 'hidden on-off-item' %>
               </div>
+
 
           <% end %>
       <% end %>

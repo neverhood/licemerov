@@ -692,11 +692,11 @@ $(document).ready(function() {
 
     var ratingsApi = $.licemerov.photoRatings = {
         buttons: {
-            modify: $('span#modify-photo-permissions'),
-            save: $('span#save-photo-permissions'),
-            cancel: $('span#cancel-photo-permissions-editing')
+            modify: 'span#modify-photo-permissions',
+            save: 'span#save-photo-permissions',
+            cancel: 'span#cancel-photo-permissions-editing'
         },
-        itemsBox: $('div#primary-rating-items')
+        itemsBox: 'div#primary-rating-items'
     };
 
     $('img.disable-rating-item, img.enable-rating-item').live('click', function() {
@@ -714,15 +714,21 @@ $(document).ready(function() {
 
     });
 
-    $('#modify-photo-permissions').live('click', function() {
-        $(this).hide();
-        ratingsApi.buttons.cancel.show();
-        ratingsApi.buttons.save.show();
+    $(ratingsApi.buttons.modify).live('click', function() {
+        $('#primary-rating-items').find('input').show();
+        $('div.rating-item').addClass('rating-item-on-edit');
+        $(ratingsApi.buttons.modify).hide();
+        $(ratingsApi.buttons.cancel).show();
+        $(ratingsApi.buttons.save).show();
     });
 
-    $('.cancel-photo-permissions-editing hidden').live('click', function() {
-        $(this).hide().prev().hide().prev().show()
-    })
+    $(ratingsApi.buttons.cancel + ',' + ratingsApi.buttons.save).live('click', function() {
+        $('#primary-rating-items').find('input').hide();
+        $('div.rating-item').removeClass('rating-item-on-edit');
+        $(ratingsApi.buttons.cancel).hide();
+        $(ratingsApi.buttons.save).hide();
+        $(ratingsApi.buttons.modify).show();
+    });
 
     // Photos end
 
