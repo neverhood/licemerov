@@ -701,7 +701,7 @@ $(document).ready(function() {
 
     $('img.disable-rating-item, img.enable-rating-item').live('click', function() {
         var $this = $(this),
-            type = $this.hasClass('enable-rating-item')? 'enable' : 'disable';
+                type = $this.hasClass('enable-rating-item')? 'enable' : 'disable';
 
         if (type == 'enable') {
             $this.attr('src', '/images/minus.gif').removeClass('enable-rating-item').
@@ -713,6 +713,9 @@ $(document).ready(function() {
         }
 
     });
+
+
+    // TODO: PLEASE REFACTOR ME( Seriously, do it! )
 
     $(ratingsApi.buttons.modify).live('click', function() {
         $('#primary-rating-items').find('input').show();
@@ -728,6 +731,51 @@ $(document).ready(function() {
         $(ratingsApi.buttons.cancel).hide();
         $(ratingsApi.buttons.save).hide();
         $(ratingsApi.buttons.modify).show();
+        var permissions,
+            $this = $(this);
+
+        if ( $this.attr('id').toLowerCase() == 'cancel-photo-permissions-editing' ) {
+                permissions = $.licemerov.photos.currentPhotoPermissions;
+                var items = $('.rating-item');
+
+            $.each( items, function() {
+                var $this = $(this),
+                    classes = $(this).attr('class').split(' '),
+                    item = classes[classes.length - 1],
+                    itemAllowed = function() {
+                        for ( var i in permissions.allowed ) {
+                            if ( item.toLowerCase() == permissions.allowed[i].toLowerCase() ) return true;
+                        }
+                        return false;
+                    };
+
+                $this.find('input[type="checkbox"]').prop('checked', itemAllowed );
+            });
+
+        }
+
+        if ( $this.attr('id').toLowerCase() == 'save-photo-permissions' ) {
+
+             permissions = {allowed:[], restricted:[]};
+
+            $.each( $('.rating-item'), function() {
+                var $this = $(this),
+                    classes = $this.attr('class').split(' '),
+                    item = classes[classes.length - 1],
+                    allowed = $this.find('input[type="checkbox"]').prop('checked');
+
+                if ( allowed ) {
+                    permissions.allowed.push( item );
+                } else {
+                    permissions.restricted.push( item );
+                }
+
+                $.licemerov.photos.currentPhotoPermissions = permissions;
+            })
+
+
+        }
+
     });
 
     // Photos end
