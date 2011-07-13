@@ -43,6 +43,9 @@ class PhotosController < ApplicationController
 
   def update
 
+      permissions = {:primary => [params[:allowed]], :secondary => []}
+    logger.debug("============================\n#{params}\n========================")
+
   end
 
   def destroy
@@ -61,7 +64,8 @@ class PhotosController < ApplicationController
   end
 
   def existent_photo
-    @photo = @user.photos.where(['photos.id = ?', params[:id]]).first
+    user = @user || current_user
+    @photo = user.photos.where(['photos.id = ?', params[:id]]).first
     (render :nothing => true) unless @photo
   end
 

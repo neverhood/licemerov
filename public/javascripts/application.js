@@ -692,9 +692,9 @@ $(document).ready(function() {
 
     var ratingsApi = $.licemerov.photoRatings = {
         buttons: {
-            modify: 'span#modify-photo-permissions',
-            save: 'span#save-photo-permissions',
-            cancel: 'span#cancel-photo-permissions-editing'
+            modify: 'a#modify-photo-permissions',
+            save: 'a#save-photo-permissions',
+            cancel: 'a#cancel-photo-permissions-editing'
         },
         itemsBox: 'div#primary-rating-items'
     };

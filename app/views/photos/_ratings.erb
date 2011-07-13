@@ -22,9 +22,9 @@
       <% end %>
 
       <div id='rating-item-settings'>
-        <span id="modify-photo-permissions">Modify</span>
-        <span id="save-photo-permissions" class="hidden">Save</span>
-        <span id="cancel-photo-permissions-editing" class='hidden'>Cancel</span>
+        <a id='modify-photo-permissions'>Modify</a>
+        <%= link_to 'Save', @photo, :method => :put, :remote => true, :id => 'save-photo-permissions', :class => 'hidden' %>
+        <a id="cancel-photo-permissions-editing" class='hidden'>Cancel</a>
       </div>
     </div>
 
