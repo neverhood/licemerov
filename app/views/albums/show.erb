@@ -48,13 +48,14 @@
     <% end %>
   </div>
 
-  <div style='float:left;'>
+  <div class='float-left'>
         <div id='photos-in-row' class='<%= (@photos.count > 0)? "" : "hidden" %>'>
           <strong class='photos-in-row-count'>1</strong>
           <strong class='photos-in-row-count'>2</strong>
           <strong class='photos-in-row-count'>3</strong>
         </div>
-    <div style='overflow:auto;width:340px; height:500px;' id='photos'
+    <div id='photos'
+         class='full-screen-mode-disabled'
          data-photos='<%= @photos.count %>' data-all-photos='<%= (@photos.count >= 30)? "false" : "true"%>'
          data-getting-photos='false'>
 
@@ -93,4 +94,9 @@
     <% end %>
   </div>
 </div>
+
+<div class='hidden popup' id='photo'>
+  <div class='popup-header'><%= image_tag '/images/cancel.gif', :class => 'close' %></div>
+</div>
+
 

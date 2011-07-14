@@ -483,7 +483,7 @@ $(document).ready(function() {
         $opaco.height( $(document).height() ).toggleClass('hidden');
     });
 
-    $('.close').click(function() {
+    $('.close').live('click', function() {
         $.utils.closePopup( $(this).parents('.popup') );
     });
 
@@ -655,6 +655,11 @@ $(document).ready(function() {
                 photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
             });
 
+            if ( photosContainer.hasClass('full-screen-mode-enabled') ) {
+                $('.popup').append( $('#current-photo') ).show().alignCenter();
+                $('#opaco').height( $(document).height() ).toggleClass('hidden');
+            }
+
         }
 
     });
@@ -684,6 +689,19 @@ $(document).ready(function() {
     $('.delete-photo-comment, .delete-profile-comment, .delete-root-comment')
             .live('ajax:complete', function() { $(this).parents('tr').
             fadeOut('fast', function() { $(this).remove() })
+    });
+
+    $('#enable-fullscreen').live('click', function() {
+        var $this = $(this);
+        photosContainer.toggleClass('full-screen-mode-enabled full-screen-mode-disabled');
+
+//        if ( photosContainer.hasClass('full-screen-mode-enabled') ) {
+//            currentPhotoContainer.hide();
+//        } else {
+//            currentPhotoContainer.show();
+//        }
+
+        currentPhotoContainer.toggle();
     });
 
     // Other related code moved to photos.js ( to be merged later )
@@ -722,7 +740,7 @@ $(document).ready(function() {
 
     $('.cancel-photo-permissions-editing hidden').live('click', function() {
         $(this).hide().prev().hide().prev().show()
-    })
+    });
 
     // Photos end
 

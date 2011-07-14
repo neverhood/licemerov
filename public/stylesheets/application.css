@@ -206,9 +206,18 @@ div#album-settings {float:left; width:200px; height:500px; border-right:1px soli
 /* ALBUMS END */
 
 /* PHOTOS */
+
+div#photos.full-screen-mode-enabled {
+
+}
+div#photos.full-screen-mode-disabled {
+    width:340px;
+    height:500px;
+    overflow:auto;
+}
 form#new_photo { clear:both }
 div#new-photo-comment-form { display:none }
-div#photos { width: 800px; }
+
 div.photo { float:left; margin-left: 5px; display:inline; }
 /*div#current-photo { width: 600px; height:400px; position:absolute; left:630px; top:90px; display:none; }*/
 strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; margin: 15px 0; color:#87ceeb; }
