@@ -712,16 +712,16 @@ $(document).ready(function() {
 
     var ratingsApi = $.licemerov.photoRatings = {
         buttons: {
-            modify: $('span#modify-photo-permissions'),
-            save: $('span#save-photo-permissions'),
-            cancel: $('span#cancel-photo-permissions-editing')
+            modify: 'a#modify-photo-permissions',
+            save: 'a#save-photo-permissions',
+            cancel: 'a#cancel-photo-permissions-editing'
         },
-        itemsBox: $('div#primary-rating-items')
+        itemsBox: 'div#primary-rating-items'
     };
 
     $('img.disable-rating-item, img.enable-rating-item').live('click', function() {
         var $this = $(this),
-            type = $this.hasClass('enable-rating-item')? 'enable' : 'disable';
+                type = $this.hasClass('enable-rating-item')? 'enable' : 'disable';
 
         if (type == 'enable') {
             $this.attr('src', '/images/minus.gif').removeClass('enable-rating-item').
@@ -734,15 +734,70 @@ $(document).ready(function() {
 
     });
 
-    $('#modify-photo-permissions').live('click', function() {
-        $(this).hide();
-        ratingsApi.buttons.cancel.show();
-        ratingsApi.buttons.save.show();
+
+    // TODO: PLEASE REFACTOR ME( Seriously, do it! )
+
+    $(ratingsApi.buttons.modify).live('click', function() {
+        $('#primary-rating-items').find('input').show();
+        $('div.rating-item').addClass('rating-item-on-edit');
+        $(ratingsApi.buttons.modify).hide();
+        $(ratingsApi.buttons.cancel).show();
+        $(ratingsApi.buttons.save).show();
     });
 
-    $('.cancel-photo-permissions-editing hidden').live('click', function() {
-        $(this).hide().prev().hide().prev().show()
+
+    $(ratingsApi.buttons.cancel + ',' + ratingsApi.buttons.save).live('click', function() {
+        $('#primary-rating-items').find('input').hide();
+        $('div.rating-item').removeClass('rating-item-on-edit');
+        $(ratingsApi.buttons.cancel).hide();
+        $(ratingsApi.buttons.save).hide();
+        $(ratingsApi.buttons.modify).show();
+        var permissions,
+            $this = $(this);
+
+        if ( $this.attr('id').toLowerCase() == 'cancel-photo-permissions-editing' ) {
+                permissions = $.licemerov.photos.currentPhotoPermissions;
+                var items = $('.rating-item');
+
+            $.each( items, function() {
+                var $this = $(this),
+                    classes = $(this).attr('class').split(' '),
+                    item = classes[classes.length - 1],
+                    itemAllowed = function() {
+                        for ( var i in permissions.allowed ) {
+                            if ( item.toLowerCase() == permissions.allowed[i].toLowerCase() ) return true;
+                        }
+                        return false;
+                    };
+
+                $this.find('input[type="checkbox"]').prop('checked', itemAllowed );
+            });
+
+        }
+
+        if ( $this.attr('id').toLowerCase() == 'save-photo-permissions' ) {
+
+             permissions = {allowed:[], restricted:[]};
+
+            $.each( $('.rating-item'), function() {
+                var $this = $(this),
+                    classes = $this.attr('class').split(' '),
+                    item = classes[classes.length - 1],
+                    allowed = $this.find('input[type="checkbox"]').prop('checked');
+
+                if ( allowed ) {
+                    permissions.allowed.push( item );
+                } else {
+                    permissions.restricted.push( item );
+                }
+
+                $.licemerov.photos.currentPhotoPermissions = permissions;
+            })
+
+
+        }
     });
+
 
     // Photos end
 
