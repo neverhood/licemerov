@@ -74,7 +74,7 @@ a.inactive {color:gray; text-decoration:none; cursor:default;}
 .float-left { float:left }
 
 .popup {
-    background-color: #FFFFFF; position: fixed; left:50%; top:50%; min-width: 300px; z-index: 11;
+    background-color: #FFFFFF; position: absolute; left:50%; top:50%; min-width: 300px; z-index: 11;
 }
 td.middle-vertical-align { vertical-align:middle; }
 td.top-vertical-align { vertical-align:top; }

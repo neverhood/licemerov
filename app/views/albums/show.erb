@@ -36,24 +36,24 @@
           <%= t :photo_fullscreen_mode %>
         </strong>
         <!--<strong id='enable-photo-modify-mode' class="<%= (@photos.count > 0)? '' : 'hidden' %>">-->
-          <!--<%# t :photo_modify_mode %>-->
+        <!--<%# t :photo_modify_mode %>-->
         <!--</strong>-->
         <!-- UNDER QUESTION
         <div class='photo-modify-mode-notice' data-shown='false'>-->
-          <%# t(:photo_modify_mode_notice).
+        <%# t(:photo_modify_mode_notice).
 #                      gsub('MINUS', '<img src="/images/minus.png" class="minus" />').
                       html_safe %>
-          <!--<div class='button confirm'>OK</div>-->
+        <!--<div class='button confirm'>OK</div>-->
         <!--</div>-->
     <% end %>
   </div>
 
   <div class='float-left'>
-        <div id='photos-in-row' class='<%= (@photos.count > 0)? "" : "hidden" %>'>
-          <strong class='photos-in-row-count'>1</strong>
-          <strong class='photos-in-row-count'>2</strong>
-          <strong class='photos-in-row-count'>3</strong>
-        </div>
+    <div id='photos-in-row' class='<%= (@photos.count > 0)? "" : "hidden" %>'>
+      <strong class='photos-in-row-count'>1</strong>
+      <strong class='photos-in-row-count'>2</strong>
+      <strong class='photos-in-row-count'>3</strong>
+    </div>
     <div id='photos'
          class='full-screen-mode-disabled'
          data-photos='<%= @photos.count %>' data-all-photos='<%= (@photos.count >= 30)? "false" : "true"%>'
@@ -72,27 +72,32 @@
     <% end %>
   </div>
 
-  <div id='current-photo' style='margin-left:360px;'>
-    <table id='photo-comments'>
+  <div id='current-photo-container'>
 
-    </table>
+    <div id='current-photo' style='margin-left:360px;'>
+      <table id='photo-comments'>
 
-    <div id='photo-ratings'>
+      </table>
+
+      <div id='photo-ratings'>
+      </div>
+
+
+      <% if current_user %>
+          <div id='new-photo-comment-form'>
+            <%= form_for PhotoComment.new, :remote => true, :html => {'data-notify' => true} do |f| %>
+                <%= f.text_area :body, :cols => 45, :rows => 5 %>
+                <%= f.hidden_field :photo_id %>
+                <div>
+                  <%= f.submit t(:new_comment), :disable_with => t(:please_wait), :disabled => true %>
+                </div>
+            <% end %>
+          </div>
+      <% end %>
     </div>
 
-
-    <% if current_user %>
-        <div id='new-photo-comment-form'>
-          <%= form_for PhotoComment.new, :remote => true, :html => {'data-notify' => true} do |f| %>
-              <%= f.text_area :body, :cols => 45, :rows => 5 %>
-              <%= f.hidden_field :photo_id %>
-              <div>
-                <%= f.submit t(:new_comment), :disable_with => t(:please_wait), :disabled => true %>
-              </div>
-          <% end %>
-        </div>
-    <% end %>
   </div>
+
 </div>
 
 <div class='hidden popup' id='photo'>

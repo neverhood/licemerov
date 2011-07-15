@@ -124,7 +124,7 @@ $(document).ready(function() {
         closePopup: function(popUp) {
             var form = popUp.find('form');
             if ( popUp.is(':visible') ) {
-                popUp.toggleClass('hidden');
+                popUp.toggle();//Class('hidden');
                 $('#opaco').addClass('hidden').removeAttr('style');
                 if ( form.length ) {
                     form.clearForm();
@@ -487,7 +487,7 @@ $(document).ready(function() {
         $.utils.closePopup( $(this).parents('.popup') );
     });
 
-    $('#opaco').click(function() {
+    $('#opaco').live('click', function() {
         $.utils.closePopup( $('.popup').filter(':visible') );
     });
 
@@ -622,7 +622,7 @@ $(document).ready(function() {
                 date = new Date(),
                 url = '/' + $.user.attributes.login + '/photos/' + photoId + '?ie=' + date.getTime(); // ie caches ajax requests. 
 
-        if ($.licemerov.photos.currentPhoto != photoId) {
+        if ($.licemerov.photos.currentPhoto != photoId || photosContainer.hasClass('full-screen-mode-enabled')) {
             $.licemerov.photos.currentPhoto = photoId;
 
             location.hash = '#' + photoId;
@@ -658,6 +658,8 @@ $(document).ready(function() {
             if ( photosContainer.hasClass('full-screen-mode-enabled') ) {
                 $('.popup').append( $('#current-photo') ).show().alignCenter();
                 $('#opaco').height( $(document).height() ).toggleClass('hidden');
+            } else {
+                $('#current-photo-container').append( $('#current-photo').show() );
             }
 
         }
