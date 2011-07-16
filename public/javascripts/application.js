@@ -696,12 +696,10 @@ $(document).ready(function() {
     $('#enable-fullscreen').live('click', function() {
         var $this = $(this);
         photosContainer.toggleClass('full-screen-mode-enabled full-screen-mode-disabled');
+        $('#current-photo').toggleClass('full-screen-mode-enabled full-screen-mode-disabled');
 
-//        if ( photosContainer.hasClass('full-screen-mode-enabled') ) {
-//            currentPhotoContainer.hide();
-//        } else {
-//            currentPhotoContainer.show();
-//        }
+        if ( photosContainer.hasClass('full-screen-mode-disabled') )
+            $.licemerov.photos.currentPhoto = 0;
 
         currentPhotoContainer.toggle();
     });

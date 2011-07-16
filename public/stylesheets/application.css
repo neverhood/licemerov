@@ -208,7 +208,7 @@ div#album-settings {float:left; width:200px; height:500px; border-right:1px soli
 /* PHOTOS */
 
 div#photos.full-screen-mode-enabled {
-
+    margin: 0 10px auto;
 }
 div#photos.full-screen-mode-disabled {
     width:340px;
@@ -216,6 +216,15 @@ div#photos.full-screen-mode-disabled {
     overflow:auto;
 }
 form#new_photo { clear:both }
+
+div#current-photo.full-screen-mode-disabled {
+    margin-left:360px; display:block;
+}
+div#current-photo.full-screen-mode-enabled {
+    padding:100px;
+
+}
+
 div#new-photo-comment-form { display:none }
 
 div.photo { float:left; margin-left: 5px; display:inline; }
@@ -259,9 +268,10 @@ div#profile-comments, div#root-comments {width:300px;}
 td.profile-comment, td.root-comment { padding: 15px; }
 td.profile-comment div, td.root-comment div {margin:5px 0 ;}
 div.profile-comment-footer, div.root-comment-footer { color:gray; font-size: 11px; }
-div.root-comment-body, div.profile-comment-body, div.photo-comment-body {
+div.root-comment-body, div.profile-comment-body {
     width:600px; word-wrap: break-word;
 }
+div.photo-comment-body { width:350px; }
 /* PROFILE COMMENTS END */
 
 /***************** Profiles END ***************/

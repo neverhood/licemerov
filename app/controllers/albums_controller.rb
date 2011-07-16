@@ -1,6 +1,6 @@
 class AlbumsController < ApplicationController
 
-  before_filter :require_user, :only => [ :create, :update, :destroy ]
+  before_filter :require_user
   before_filter :valid_album, :only => [ :update, :destroy ]
   before_filter :valid_title, :only => [ :show, :edit ]
 
