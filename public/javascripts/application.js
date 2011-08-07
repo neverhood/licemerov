@@ -527,7 +527,7 @@ $(document).ready(function() {
 
 
     $('.confirm').live('click', function() {
-        $(this).parent().fadeOut();
+        $(this).parent().hide();
     });
 
     var currentPhotoContainer = $('#current-photo'),
@@ -680,8 +680,9 @@ $(document).ready(function() {
     });
 
     $('.delete-photo-comment, .delete-profile-comment, .delete-root-comment')
-            .live('ajax:complete', function() { $(this).parents('tr').
-            fadeOut('fast', function() { $(this).remove() })
+            .live('ajax:complete', function() {
+        $(this).parents('tr').
+        hide(); // fadeOut was here
     });
 
     $('#enable-fullscreen').live('click', function() {
@@ -873,7 +874,7 @@ $(document).ready(function() {
         if (! (div.children('#response_form').length && form.is(':visible')) )
             form.clearForm()
                     .appendTo(div)
-                    .fadeIn()
+                    .show()
                     .find('textarea').focus()
                     .next()
                     .val(id);
@@ -908,7 +909,7 @@ $(document).ready(function() {
                 offset = parseInt(showMoreLink.data('offset'));
 
         showMoreLink.attr('data-offset', offset - 1);
-        $(this).parents('.response').fadeOut('fast', function() { $(this).remove(); })
+        $(this).parents('.response').hide(); // fadeOut was here
     });
 
     // Users

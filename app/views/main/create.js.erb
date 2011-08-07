@@ -10,7 +10,7 @@ if (errors.length > 0)  // Errors didn't let it happen
     appendErrors(errors, form);
 else { // No errors
     if (type == 'parent')
-        entry.prependTo('table#root-comments').hide().fadeIn();
+        entry.prependTo('table#root-comments').hide().show();
     else {
         var parentBox = $('tr#<%= @entry.parent_id %>'),
                 showMoreLink = parentBox.find('a.show-more-responses');
