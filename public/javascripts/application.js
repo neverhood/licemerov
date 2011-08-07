@@ -525,19 +525,6 @@ $(document).ready(function() {
 
     // Photos
 
-    // TODO: think if I need that
-//    $('#enable-photo-modify-mode').click(function() {
-//        var notice = $('.photo-modify-mode-notice'),
-//            settings = $('.photo-modify'),
-//            noticeShown = notice.attr('data-shown') == 'true';
-//
-//        if (! noticeShown) {
-//            settings.show();
-//            notice.fadeIn('fast').attr('data-shown', true);
-//        } else {
-//            settings.hide(); notice.attr('data-shown', false);
-//        }
-//    });
 
     $('.confirm').live('click', function() {
         $(this).parent().fadeOut();
@@ -653,6 +640,10 @@ $(document).ready(function() {
                         $.licemerov.photos.currentPhotoNewPermissions = data.permissions;
 
                 photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
+
+                $('div#photo-ratings').show();
+
+
             });
 
             if ( photosContainer.hasClass('full-screen-mode-enabled') ) {
@@ -694,7 +685,6 @@ $(document).ready(function() {
     });
 
     $('#enable-fullscreen').live('click', function() {
-        var $this = $(this);
         photosContainer.toggleClass('full-screen-mode-enabled full-screen-mode-disabled');
         $('#current-photo').toggleClass('full-screen-mode-enabled full-screen-mode-disabled');
 

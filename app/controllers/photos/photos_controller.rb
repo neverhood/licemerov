@@ -12,8 +12,14 @@ class PhotosController < ApplicationController
   def show
     @comments = {:photo_comments => PhotoComment.of(@photo).order("'photo_comments'.created_at DESC").
         limit(10).map { |c| json_for(c)[:photo_comment] }}
+
     @items = {:items => render_to_string(:partial => 'photos/ratings')}
-    @items_json = {:permissions => {:allowed => eval(@photo.permissions)[:primary], :restricted => @photo.restricted_items[:primary] }}
+
+    @items_json = {:permissions => {
+        :allowed => eval(@photo.permissions)[:primary],
+        :restricted => @photo.restricted_items[:primary]
+    }}
+
     respond_to do |format|
       @photo.update_attributes(:views => @photo.views + 1)
       format.json {
@@ -43,7 +49,7 @@ class PhotosController < ApplicationController
 
   def update
 
-      permissions = {:primary => [params[:allowed]], :secondary => []}
+    permissions = {:primary => [params[:allowed]], :secondary => []}
     logger.debug("============================\n#{params}\n========================")
 
   end
@@ -58,7 +64,12 @@ class PhotosController < ApplicationController
     if params[:photos_count]
       photos_count = params[:photos_count].to_i
       if photos_count >= 30
-        @photos = @user.photos.offset(photos_count).limit(30).order("'photos'.created_at DESC").map { |p| json_for(p)[:photo]}
+        @photos = @user.
+            photos.
+            offset(photos_count).
+            limit(30).
+            order("'photos'.created_at DESC").
+            map { |p| json_for(p)[:photo]}
       end
     end
   end
