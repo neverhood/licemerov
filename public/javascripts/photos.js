@@ -92,6 +92,7 @@ $('document').ready(function() {
             $.licemerov.photos.currentPhotoPermissions = data.permissions;
 
             photosApi.commentForm.show().find('#photo_comment_photo_id').val(photoId);
+            $('div#photo-ratings').show();
         });
     }
 

@@ -525,22 +525,9 @@ $(document).ready(function() {
 
     // Photos
 
-    // TODO: think if I need that
-//    $('#enable-photo-modify-mode').click(function() {
-//        var notice = $('.photo-modify-mode-notice'),
-//            settings = $('.photo-modify'),
-//            noticeShown = notice.attr('data-shown') == 'true';
-//
-//        if (! noticeShown) {
-//            settings.show();
-//            notice.fadeIn('fast').attr('data-shown', true);
-//        } else {
-//            settings.hide(); notice.attr('data-shown', false);
-//        }
-//    });
 
     $('.confirm').live('click', function() {
-        $(this).parent().fadeOut();
+        $(this).parent().hide();
     });
 
     var currentPhotoContainer = $('#current-photo'),
@@ -653,6 +640,10 @@ $(document).ready(function() {
                         $.licemerov.photos.currentPhotoNewPermissions = data.permissions;
 
                 photoCommentForm.show().find('#photo_comment_photo_id').val(photoId);
+
+                $('div#photo-ratings').show();
+
+
             });
 
             if ( photosContainer.hasClass('full-screen-mode-enabled') ) {
@@ -689,12 +680,12 @@ $(document).ready(function() {
     });
 
     $('.delete-photo-comment, .delete-profile-comment, .delete-root-comment')
-            .live('ajax:complete', function() { $(this).parents('tr').
-            fadeOut('fast', function() { $(this).remove() })
+            .live('ajax:complete', function() {
+        $(this).parents('tr').
+        hide(); // fadeOut was here
     });
 
     $('#enable-fullscreen').live('click', function() {
-        var $this = $(this);
         photosContainer.toggleClass('full-screen-mode-enabled full-screen-mode-disabled');
         $('#current-photo').toggleClass('full-screen-mode-enabled full-screen-mode-disabled');
 
@@ -883,7 +874,7 @@ $(document).ready(function() {
         if (! (div.children('#response_form').length && form.is(':visible')) )
             form.clearForm()
                     .appendTo(div)
-                    .fadeIn()
+                    .show()
                     .find('textarea').focus()
                     .next()
                     .val(id);
@@ -918,7 +909,7 @@ $(document).ready(function() {
                 offset = parseInt(showMoreLink.data('offset'));
 
         showMoreLink.attr('data-offset', offset - 1);
-        $(this).parents('.response').fadeOut('fast', function() { $(this).remove(); })
+        $(this).parents('.response').hide(); // fadeOut was here
     });
 
     // Users

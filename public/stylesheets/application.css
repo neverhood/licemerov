@@ -9,6 +9,9 @@ div.warning {color:orange;}
 
 /***************** Shared *****************/
 
+div#wrapper {
+    padding:15px;
+}
 
 div#header {
     background-image: -webkit-gradient(linear,0 0,0 100%,from(#333),to(#111));
@@ -233,11 +236,28 @@ div.photo { float:left; margin-left: 5px; display:inline; }
 /*div#current-photo { width: 600px; height:400px; position:absolute; left:630px; top:90px; display:none; }*/
 strong#enable-fullscreen, strong#enable-photo-modify-mode { cursor:pointer; margin: 15px 0; color:#87ceeb; }
 
-div#photo-ratings { background:black; color:white; font-weight:bold; width:300px; padding:10px; }
-div.rating-item { color:#87ceeb; font-size:20px; }
-div#rating-item-settings span {cursor:pointer; }
+div#photo-ratings {
+    background:black;
+    color:white;
+    font-weight:bold;
+    width:300px;
+    padding:10px;
+    display:none;
+}
+
+div.rating-item {
+    color:#87ceeb;
+    font-size:20px;
+}
+
+div#rating-item-settings span { cursor:pointer; }
+
 div.rating-item-on-edit label, input.on-off-item { cursor:pointer; }
-input.on-off-item { float:right; margin-right:150px; }
+
+input.on-off-item {
+    float:right;
+    margin-right:150px;
+}
 
 .delete-photo, .photo-settings-inactive, .photo-settings-active { width:20px; height:20px; cursor:pointer;}
 .minus {margin-top:10px; width:20px; height:20px;}
