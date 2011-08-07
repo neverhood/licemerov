@@ -656,7 +656,7 @@ $(document).ready(function() {
             });
 
             if ( photosContainer.hasClass('full-screen-mode-enabled') ) {
-                $('.popup').append( $('#current-photo') ).show().alignCenter();
+                $('.popup').append( $('#current-photo') ).show().alignCenter().css('top', 325);
                 $('#opaco').height( $(document).height() ).toggleClass('hidden');
             } else {
                 $('#current-photo-container').append( $('#current-photo').show() );

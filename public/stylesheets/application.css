@@ -221,9 +221,11 @@ div#current-photo.full-screen-mode-disabled {
     margin-left:360px; display:block;
 }
 div#current-photo.full-screen-mode-enabled {
-    padding:100px;
+    padding:0 100px;
 
 }
+
+.photo-comment-body { color:black; }
 
 div#new-photo-comment-form { display:none }
 
