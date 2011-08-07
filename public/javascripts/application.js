@@ -682,7 +682,7 @@ $(document).ready(function() {
     $('.delete-photo-comment, .delete-profile-comment, .delete-root-comment')
             .live('ajax:complete', function() {
         $(this).parents('tr').
-        hide(); // fadeOut was here
+                hide(); // fadeOut was here
     });
 
     $('#enable-fullscreen').live('click', function() {
@@ -701,90 +701,79 @@ $(document).ready(function() {
 
     var ratingsApi = $.licemerov.photoRatings = {
         buttons: {
-            modify: 'a#modify-photo-permissions',
-            save: 'a#save-photo-permissions',
-            cancel: 'a#cancel-photo-permissions-editing'
+            modify: 'input#photo_modify',
+            save: 'input#photo_submit',
+            cancel: 'input#photo_cancel'
         },
-        itemsBox: 'div#primary-rating-items'
-    };
+        itemsBox: 'div#primary-rating-items',
+        toggleButtons: function() {
+            $.each(ratingsApi.buttons, function(key,value) {
+                $(value).toggleClass('hidden');
+            });
+            return ratingsApi;
+        },
+        toggleMode: function() {
+            var checkboxes =  $('#primary-rating-items').find('input[type="checkbox"]'),
+                    restrictedItems = $('div.restricted-rating-item'),
+                    allItems = $('div.rating-item');
 
-    $('img.disable-rating-item, img.enable-rating-item').live('click', function() {
-        var $this = $(this),
-                type = $this.hasClass('enable-rating-item')? 'enable' : 'disable';
+            checkboxes.toggleClass('hidden');
+            restrictedItems.toggleClass('hidden');
+            allItems.toggleClass('rating-item-on-edit');
 
-        if (type == 'enable') {
-            $this.attr('src', '/images/minus.gif').removeClass('enable-rating-item').
-                    addClass('disable-rating-item');
-            $.licemerov.photos.currentPhotoNewPermissions.allowed.push()
-        } else {
-            $this.attr('src', '/images/plus.png').removeClass('disable-rating-item').
-                    addClass('enable-rating-item');
-        }
-
-    });
-
-
-    // TODO: PLEASE REFACTOR ME( Seriously, do it! )
-
-    $(ratingsApi.buttons.modify).live('click', function() {
-        $('#primary-rating-items').find('input').show();
-        $('div.rating-item').addClass('rating-item-on-edit');
-        $(ratingsApi.buttons.modify).hide();
-        $(ratingsApi.buttons.cancel).show();
-        $(ratingsApi.buttons.save).show();
-    });
-
-
-    $(ratingsApi.buttons.cancel + ',' + ratingsApi.buttons.save).live('click', function() {
-        $('#primary-rating-items').find('input').hide();
-        $('div.rating-item').removeClass('rating-item-on-edit');
-        $(ratingsApi.buttons.cancel).hide();
-        $(ratingsApi.buttons.save).hide();
-        $(ratingsApi.buttons.modify).show();
-        var permissions,
-            $this = $(this);
-
-        if ( $this.attr('id').toLowerCase() == 'cancel-photo-permissions-editing' ) {
-                permissions = $.licemerov.photos.currentPhotoPermissions;
-                var items = $('.rating-item');
+            ratingsApi.toggleButtons();
+            return ratingsApi;
+        },
+        setPermissions: function(permissions) {
+            var items = $('div.rating-item');
 
             $.each( items, function() {
                 var $this = $(this),
-                    classes = $(this).attr('class').split(' '),
-                    item = classes[classes.length - 1],
-                    itemAllowed = function() {
-                        for ( var i in permissions.allowed ) {
-                            if ( item.toLowerCase() == permissions.allowed[i].toLowerCase() ) return true;
-                        }
-                        return false;
-                    };
+                        item = $this.attr('data-item'),
+                        itemCheckbox = $this.find('input[type="checkbox"]');
 
-                $this.find('input[type="checkbox"]').prop('checked', itemAllowed );
-            });
-
-        }
-
-        if ( $this.attr('id').toLowerCase() == 'save-photo-permissions' ) {
-
-             permissions = {allowed:[], restricted:[]};
-
-            $.each( $('.rating-item'), function() {
-                var $this = $(this),
-                    classes = $this.attr('class').split(' '),
-                    item = classes[classes.length - 1],
-                    allowed = $this.find('input[type="checkbox"]').prop('checked');
-
-                if ( allowed ) {
-                    permissions.allowed.push( item );
+                if ( permissions.allowed.indexOf(item) != -1 ) {
+                    $this.removeClass('restricted-rating-item hidden').
+                            addClass('allowed-rating-item');
+                    itemCheckbox.prop('checked', true);
                 } else {
-                    permissions.restricted.push( item );
+                    $this.removeClass('allowed-rating-item').
+                            addClass('restricted-rating-item hidden');
+                    itemCheckbox.prop('checked', false)
                 }
 
-                $.licemerov.photos.currentPhotoPermissions = permissions;
-            })
+                $this.find('input[type="checkbox"]').
+                        prop('checked', permissions.allowed.indexOf(item) != -1);
 
+                if ( $this.hasClass('hidden') && permissions.allowed.indexOf(item) != -1  ) {
+                    $this.removeClass('hidden restricted-rating-item').
+                            addClass('allowed-rating-item')
+                }
 
+            });
+            return ratingsApi;
         }
+    };
+
+    $(ratingsApi.buttons.modify).live('click', function() {
+        ratingsApi.toggleMode();
+    });
+
+
+    $(ratingsApi.buttons.cancel).live('click', function() {
+        ratingsApi.toggleMode().
+                setPermissions($.licemerov.photos.currentPhotoPermissions);
+    });
+
+    $('form#photo_permissions_form').live('ajax:complete', function(event, xhr) {
+        $.licemerov.photos.currentPhotoPermissions = $.parseJSON( xhr.responseText ).permissions;
+        ratingsApi.toggleMode().
+                setPermissions( $.licemerov.photos.currentPhotoPermissions );
+
+        $(ratingsApi.buttons.cancel).prop('disabled', false);
+
+    }).live('ajax:beforeSend', function() {
+        $(ratingsApi.buttons.cancel).prop('disabled', true)
     });
 
 

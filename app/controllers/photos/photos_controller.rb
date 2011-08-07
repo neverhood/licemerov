@@ -6,6 +6,7 @@ class PhotosController < ApplicationController
   before_filter :set_permissions, :only => :create
   before_filter :more_photos, :only => :show_more
   before_filter :existent_photo, :only => [:show, :update]
+  before_filter :existent_items, :only => [:update]
 
   layout Proc.new { |controller| controller.request.xhr?? false : 'application' }
 
@@ -15,7 +16,7 @@ class PhotosController < ApplicationController
 
     @items = {:items => render_to_string(:partial => 'photos/ratings')}
 
-    @items_json = {:permissions => {
+    @permissions = {:permissions => {
         :allowed => eval(@photo.permissions)[:primary],
         :restricted => @photo.restricted_items[:primary]
     }}
@@ -25,8 +26,8 @@ class PhotosController < ApplicationController
       format.json {
         render :json =>{:photo => @photo.photo.url(:large)}.
             merge(@comments).   # photo comments
-            merge(@items).      # partial with ratings items
-            merge(@items_json)  # e.g: {allowed:['face', 'ass'...], restricted:['legs', 'belly'..]}
+        merge(@items).      # partial with ratings items
+        merge(@permissions)  # e.g: {allowed:['face', 'ass'...], restricted:['legs', 'belly'..]}
       }
     end
   end
@@ -48,10 +49,20 @@ class PhotosController < ApplicationController
   end
 
   def update
+    @photo.permissions = {
+        :primary => @items,
+        :secondary => [],
+        :gender => current_user.gender
+    }.to_s
 
-    permissions = {:primary => [params[:allowed]], :secondary => []}
-    logger.debug("============================\n#{params}\n========================")
-
+    @photo.save
+    respond_to do |format|
+      format.json { render :json => { :permissions => {
+          :allowed => @items,
+          :restricted => @photo.restricted_items[:primary]
+      }
+      }, :status => 200 }
+    end
   end
 
   def destroy
@@ -72,6 +83,14 @@ class PhotosController < ApplicationController
             map { |p| json_for(p)[:photo]}
       end
     end
+  end
+
+  def existent_items
+    render guilty_response unless params[:photo][:items]
+    @items = params[:photo][:items].select {|key, value| value.to_i == 1}.keys.map(&:to_sym). # Here we have an array of rating items
+    delete_if {|item| !current_user.rating_items[:primary].include?(item) } # Reject the item if it's not valid
+    logger.debug("\n======================= #{@items} \n ======================")
+
   end
 
   def existent_photo

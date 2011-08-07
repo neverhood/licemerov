@@ -3,30 +3,37 @@
 
 <% if profile_owner? %>
 
-    <div id='primary-rating-items'>
-      <% current_user.rating_items[:primary].each do |item| %>
-          <% if allowed_items[:primary].include?(item.to_sym) %>
-
-              <div class='allowed-rating-item rating-item <%= item %>'>
-                <label><%= t item %> <%= check_box_tag item, item, true, :class => 'hidden on-off-item' %></label>
-              </div>
-
-          <% else %>
-
-              <div class='restricted-rating-item rating-item <%= item %>'>
-                <%= t item %> <%= check_box_tag item, item, false, :class => 'hidden on-off-item' %>
-              </div>
 
 
+    <%= form_for @photo, :remote => true, :method => :put, :html => {:id => :photo_permissions_form} do |f| %>
+
+        <div id='primary-rating-items'>
+
+          <%= f.fields_for :items do |items| %>
+              <% current_user.rating_items[:primary].each do |item| %>
+
+                  <% if allowed_items[:primary].include?(item.to_sym) %>
+                      <div class='allowed-rating-item rating-item' data-item='<%= item %>'>
+                        <label><%= t item %> <%= items.check_box item, :checked => true, :class => 'hidden on-off-item' %></label>
+                      </div>
+                  <% else %>
+                      <div class='restricted-rating-item rating-item hidden' data-item='<%= item %>'>
+                        <label><%= t item %> <%= items.check_box item, :checked => false, :class => 'hidden on-off-item' %></label>
+                      </div>
+                  <% end %>
+
+              <% end %>
           <% end %>
-      <% end %>
 
-      <div id='rating-item-settings'>
-        <a id='modify-photo-permissions'>Modify</a>
-        <%= link_to 'Save', @photo, :method => :put, :remote => true, :id => 'save-photo-permissions', :class => 'hidden' %>
-        <a id="cancel-photo-permissions-editing" class='hidden'>Cancel</a>
-      </div>
-    </div>
+          <div id='rating-item-settings'>
+            <input id='photo_modify' type='button' value='Modify' />
+            <%= f.submit t(:submit), :disable_with => t(:please_wait), :class => 'hidden' %>
+            <input id="photo_cancel" type='button' value='Cancel' class='hidden' />
+          </div>
+        </div>
+
+
+    <% end %>
 
 <% else %>
 
