@@ -26,7 +26,7 @@ $.fn.clearForm = function() {
             $(this).replaceWith($(this).clone(true));
         }
         if (type == 'submit'  ) {
-            $(this).attr('disabled', true);
+            $(this).prop('disabled', true);
         }
         if (type == 'text' || type == 'password' || tag == 'textarea') {
             this.value = '';  $('#' + this.id).val(''); }
@@ -181,14 +181,14 @@ $(document).ready(function() {
                 textArea = $this.find('textarea'),
                 length = textArea.val().length;
 
-        submit.attr('disabled', !(length >= 1 && length <= 1000) );
+        submit.prop('disabled', !(length >= 1 && length <= 1000) );
     })
             .bind("ajax:beforeSend", function() {$(this).toggleLoader()}).
             bind("ajax:complete", function() {$(this).toggleLoader()});
 
     $('form#edit_avatar :file').change(function() {
         $('form#edit_avatar :submit')
-                .attr('disabled', this.value.length == 0);
+                .prop('disabled', this.value.length == 0);
     });
 
     // Albums
@@ -201,7 +201,7 @@ $(document).ready(function() {
         var submit = $('#album_submit'),
                 length = this.value.length;
 
-        submit.attr('disabled', !( length >= 2 && length <= 25 ));
+        submit.prop('disabled', !( length >= 2 && length <= 25 ));
     });
 
     $('form#new_album').bind('ajax:complete', function(event, xhr, status) {
@@ -218,7 +218,7 @@ $(document).ready(function() {
         // jquery ujs set's input 'disabled' attr to false when using :disable_with
         setTimeout( function() {
             $this.clearForm().
-                    find(':submit').attr('disabled', true).
+                    find(':submit').prop('disabled', true).
                     parents('#new-album-form-container').toggle('fast')
         }, 10);
     });
@@ -352,7 +352,7 @@ $(document).ready(function() {
                     }),
 
 
-                    checkbox = row.find('input[type="checkbox"]').attr('disabled', true);
+                    checkbox = row.find('input[type="checkbox"]').prop('disabled', true);
 
 
             if (checkbox.is(':checked')) { // You're nasty or not confident with your hands
@@ -496,7 +496,7 @@ $(document).ready(function() {
         $.utils.closePopup( $this.parents('.popup') );
 
         setTimeout(function() {
-            $this.find(':submit').attr('disabled', true)
+            $this.find(':submit').prop('disabled', true)
         }, 1);
     });
 
@@ -504,13 +504,13 @@ $(document).ready(function() {
         var submit = $('#single-receiver-message-form').find(':submit'),
                 length = this.value.length;
 
-        submit.attr('disabled', !(length >= 1 && length < 1000));
+        submit.prop('disabled', !(length >= 1 && length < 1000));
     });
     $('form#new_message #message_body').bind('keyup keydown', function() {
         var submit = $(this).parents('form').find(':submit'),
                 length = this.value.length;
 
-        submit.attr('disabled', !(length >= 1 && length < 1000));
+        submit.prop('disabled', !(length >= 1 && length < 1000));
     }); // TODO: REFACTOR
 
     $('.write-message').click(function() {
@@ -614,7 +614,7 @@ $(document).ready(function() {
 
             location.hash = '#' + photoId;
             $('#photo_comment_body').val('')
-                    .parents('form').find(':submit').attr('disabled', true);
+                    .parents('form').find(':submit').prop('disabled', true);
 
             currentPhotoContainer.find('img').remove();
             currentPhotoContainer.prepend( largeImg ).show();
@@ -676,7 +676,7 @@ $(document).ready(function() {
         var submit = $(this).parents('form').find(':submit'),
                 length = this.value.length;
 
-        submit.attr('disabled', !(length >= 1 && length < 1000));
+        submit.prop('disabled', !(length >= 1 && length < 1000));
     });
 
     $('.delete-photo-comment, .delete-profile-comment, .delete-root-comment')
@@ -889,7 +889,7 @@ $(document).ready(function() {
 
         // Stupid workaround
         if ( $form.attr('id') == 'edit_avatar' )
-            $form.find(':submit').attr('disabled', true);
+            $form.find(':submit').prop('disabled', true);
     });
 
     $('.delete-profile-response, .delete-root-response').live('ajax:complete', function() {
@@ -1030,7 +1030,7 @@ function appendErrors(errors, form) { // Render object errors
 function releaseJcrop() {
     if ( typeof $.licemerov.jcrop_api != 'undefined' ) {
         $.licemerov.jcrop_api.release();
-        $('#release_jcrop').hide().parent('form').find(':submit').attr('disabled', 'disabled').
+        $('#release_jcrop').hide().parent('form').find(':submit').prop('disabled', 'disabled').
                 parent('form').find('input[id^="crop"]').val('');
     }
 }
@@ -1043,7 +1043,7 @@ $(document).ready(function() {
 
 function updateCrop(coords) {
     if ($('#release_jcrop').not(':visible')) {
-        $('#edit_avatar').clearForm().find(':submit').attr('disabled', false);
+        $('#edit_avatar').clearForm().find(':submit').prop('disabled', false);
         $('#release_jcrop').show();
     }
     var ratio = (parseFloat($('#cropbox').attr('data-ratio'))); // The rate of original image / re-sized image
