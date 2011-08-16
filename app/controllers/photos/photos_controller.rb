@@ -17,7 +17,7 @@ class PhotosController < ApplicationController
     @items = {:items => render_to_string(:partial => 'photos/ratings')}
 
     @permissions = {:permissions => {
-        :allowed => eval(@photo.permissions)[:primary],
+        :allowed => @photo.permissions[:primary],
         :restricted => @photo.restricted_items[:primary]
     }}
 
@@ -87,10 +87,10 @@ class PhotosController < ApplicationController
 
   def existent_items
     render guilty_response unless params[:photo][:items]
-    @items = params[:photo][:items].select {|key, value| value.to_i == 1}.keys.map(&:to_sym). # Here we have an array of rating items
-    delete_if {|item| !current_user.rating_items[:primary].include?(item) } # Reject the item if it's not valid
-    logger.debug("\n======================= #{@items} \n ======================")
-
+    @items = params[:photo][:items].select {
+        |key, value| value.to_i == 1
+    }.keys.map(&:to_sym). # Here we have an array of rating items
+    delete_if { |item| !current_user.items[:primary].include?(item) } # Reject the item if it's not valid
   end
 
   def existent_photo

@@ -59,9 +59,9 @@ class User < ActiveRecord::Base
            :phone, :phone=, :birth_date, :birth_date=, :website, :website=, :age, :to => :user_details
 
   has_one :user_details, :dependent => :destroy # e.g -> Name, gender etc
+  # has_one :items => see the 'items' method
 
   has_many :root_entries, :dependent => :destroy
-
 
   has_many :friendships, :dependent => :destroy
   has_many :inverse_friendships, :class_name => 'Friendship', :foreign_key => :friend_id, :dependent => :destroy
@@ -108,10 +108,6 @@ class User < ActiveRecord::Base
     friendship
   end
 
-  def rating_items
-    self.sex == 0 ? PhotoRating::FEMALE_RATINGS : PhotoRating::MALE_RATINGS
-  end
-
   def gender
     self.sex == 0 ? 'female' : 'male'
   end
@@ -123,6 +119,10 @@ class User < ActiveRecord::Base
   # Alias to relation
   def details
     self.user_details
+  end
+
+  def items
+    self.sex == 0 ? PhotoRating::FEMALE_RATINGS : PhotoRating::MALE_RATINGS
   end
 
   def cropping?

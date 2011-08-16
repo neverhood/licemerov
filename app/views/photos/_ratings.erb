@@ -1,5 +1,5 @@
 
-<% allowed_items = eval(@photo.permissions) %>
+<% allowed_items = @photo.permissions %>
 
 <% if profile_owner? %>
 
@@ -10,7 +10,7 @@
         <div id='primary-rating-items'>
 
           <%= f.fields_for :items do |items| %>
-              <% current_user.rating_items[:primary].each do |item| %>
+              <% current_user.items[:primary].each do |item| %>
 
                   <% if allowed_items[:primary].include?(item.to_sym) %>
                       <div class='allowed-rating-item rating-item' data-item='<%= item %>'>

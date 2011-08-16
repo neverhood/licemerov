@@ -39,8 +39,14 @@ class Photo < ActiveRecord::Base
   before_save :randomize_file_name, :if => :uploading_photo?
   after_post_process :save_photo_dimensions
 
+  def permissions
+    eval self.attributes.to_options[:permissions]
+  rescue Exception
+    nil # Should not happen
+  end
+
   def restricted_items
-    perms = eval(permissions)
+    perms = permissions
     ratings = (perms[:gender] == "female")? PhotoRating::FEMALE_RATINGS : PhotoRating::MALE_RATINGS
 
     restricted = Proc.new {|category|
@@ -51,7 +57,7 @@ class Photo < ActiveRecord::Base
   end
 
   def allowed_items
-    perms = eval(permissions)
+    perms = permissions
     {:primary => perms[:primary], :secondary => perms[:secondary]}
   end
 
