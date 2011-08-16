@@ -45,6 +45,18 @@ class Photo < ActiveRecord::Base
     nil # Should not happen
   end
 
+  def dimensions
+    eval self.photo_dimensions
+  end
+
+  def width
+    dimensions[:large][:width].to_i
+  end
+
+  def height
+    dimensions[:large][:height].to_i
+  end
+
   def restricted_items
     perms = permissions
     ratings = (perms[:gender] == "female")? PhotoRating::FEMALE_RATINGS : PhotoRating::MALE_RATINGS

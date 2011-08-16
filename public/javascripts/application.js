@@ -607,6 +607,9 @@ $(document).ready(function() {
                 largeImg = $('<img/>').attr('src', smallImg.replace('medium', 'large')),
                 photoId = $this.attr('id').replace('photo-', ''),
                 date = new Date(),
+                photoGeometry = $this.attr('data-geometry').split('x'),
+                width = photoGeometry[0],
+                height = photoGeometry[1],
                 url = '/' + $.user.attributes.login + '/photos/' + photoId + '?ie=' + date.getTime(); // ie caches ajax requests. 
 
         if ($.licemerov.photos.currentPhoto != photoId || photosContainer.hasClass('full-screen-mode-enabled')) {
@@ -616,10 +619,9 @@ $(document).ready(function() {
             $('#photo_comment_body').val('')
                     .parents('form').find(':submit').prop('disabled', true);
 
-            currentPhotoContainer.find('img').remove();
-            currentPhotoContainer.prepend( largeImg ).show();
 
-            photoCommentSection.html('');
+            currentPhotoContainer.removeAttr('style').find('img').remove();
+            currentPhotoContainer.prepend( largeImg.css({height:height, width:width}) ).show();
 
             if ( $.browser.msie ) {
                 photoCommentSection.html("\'" + $.licemerov.loader);
@@ -631,6 +633,7 @@ $(document).ready(function() {
 
             $.getJSON(url, function(data) {
                 photoCommentSection.html('');
+
                 for (var comment in data.photo_comments) {
                     photoCommentSection.append(data.photo_comments[comment])
                 }
@@ -647,8 +650,12 @@ $(document).ready(function() {
             });
 
             if ( photosContainer.hasClass('full-screen-mode-enabled') ) {
-                $('.popup').append( $('#current-photo') ).show().alignCenter().css('top', 325);
+                $('.popup').
+                        show().
+                        append( $('#current-photo') ).
+                        alignCenter();
                 $('#opaco').height( $(document).height() ).toggleClass('hidden');
+
             } else {
                 $('#current-photo-container').append( $('#current-photo').show() );
             }

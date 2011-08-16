@@ -1,4 +1,5 @@
 
 <div class='photo'>
-  <%= image_tag photo.photo.url(:medium), :class => 'user-photo', :id => "photo-#{photo.id}" %>
+  <%= image_tag photo.photo.url(:medium), :class => 'user-photo', :id => "photo-#{photo.id}",
+        'data-geometry' => "#{photo.width}x#{photo.height}" %>
 </div>
