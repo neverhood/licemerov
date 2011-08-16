@@ -7,7 +7,7 @@ class PhotoRating < ActiveRecord::Base
   }
   MALE_RATINGS = {
       :primary => [:haircut, :face, :chest, :abs, :spine, :ass],
-      :secondary => [:accessories, ]
+      :secondary => [:accessories]
   }
 
 end
